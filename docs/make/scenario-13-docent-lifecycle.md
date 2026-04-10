@@ -26,7 +26,7 @@ Automatiseert de volledige docent-lifecycle op basis van wijzigingen in `Lifecyc
 | Stage | Trigger door | Make.com actie |
 |-------|-------------|----------------|
 | `New` | Nieuwe aanmelding | → Scenario 12 (Claude analyse) |
-| `Interview Invited` | Handmatig in Salesforce | → Route 1: MailerLite + WhatsApp |
+| `Interview Invited` | Handmatig in Salesforce | → Route 1: MailerLite + email (bilingual) + WhatsApp |
 | `Interview Scheduled` | Handmatig | — |
 | `Interview Completed` | Handmatig | — |
 | `Contracting` | Handmatig na positief interview | → Route 2: DocuSeal contract |
@@ -50,7 +50,7 @@ Automatiseert de volledige docent-lifecycle op basis van wijzigingen in `Lifecyc
     │
     ├── Route 1 (Interview Invited)
     │   [MailerLite] → Voeg toe aan groep "Interview Invited"
-    │   [MailerLite] → Start automation "Interview Uitnodiging"
+    │   [MailerLite] → Stuur email (bilingual NL/EN, Google Calendar link)
     │   [HTTP POST] → WhatsApp naar docent (interview uitnodiging)
     │
     ├── Route 2 (Contracting)
@@ -65,6 +65,30 @@ Automatiseert de volledige docent-lifecycle op basis van wijzigingen in `Lifecyc
         [MailerLite] → Verwijder subscriber (of markeer als unsubscribed)
         [Salesforce Update] → Offboarded_Date__c = {{now}} (alleen bij Offboarded)
 ```
+
+---
+
+## Route 1 — Interview Invited: Acties
+
+### MailerLite Email
+- **Groep:** `Interview Invited`
+- **Email inhoud:** Bilingual (NL/EN) interview uitnodiging met Google Calendar link
+- **Google Calendar scheduling link:** `https://calendar.app.google/ArBhdKvAnLR924Xa6`
+
+### WhatsApp naar docent
+
+```json
+{
+  "messaging_product": "whatsapp",
+  "to": "{{replace(1.Phone; \"+\"; \"\")}}",
+  "type": "text",
+  "text": {
+    "body": "Hoi {{1.FirstName}}, we hebben je zojuist een uitnodiging voor een gesprek gestuurd via email. Check ook je spambox als je de mail niet ziet. Tot snel! 🐼 Team Bright Panda"
+  }
+}
+```
+
+> **Telefoonnummer formatting:** `replace(1.Phone; "+"; "")` verwijdert het `+` teken. Salesforce slaat op als `+31630892143` → 360dialog verwacht `31630892143`.
 
 ---
 

@@ -34,11 +34,12 @@ Analyseert automatisch nieuwe docent-aanmeldingen met **Claude AI** en schrijft 
 [3]  HTTP POST → Anthropic API (Claude analyse)
         ↓
 [4]  Salesforce → Update a Record (Claude_Recommendation__c)
+        ↓
+[5]  MailerLite → Create/Update Subscriber (groep: Nieuwe Docent Aanmelding)
 
 [Nog te bouwen]
         ↓
-[5]  Email → Bevestiging naar docent
-[6]  Morning briefing trigger
+[6]  Email → Bevestigingsmail naar docent
 ```
 
 ---
@@ -149,13 +150,33 @@ AANDACHTSPUNTEN:
 
 ---
 
+## Module 5 — MailerLite Create/Update Subscriber
+
+- **Actie:** Create/Update Subscriber
+- **Name:** `{{2.FirstName}}`
+- **Last name:** `{{2.LastName}}`
+- **Email:** `{{2.PersonEmail}}`
+- **Groep:** `Nieuwe Docent Aanmelding`
+
+---
+
+## Bevestigingsmail (module 6 — nog te bouwen)
+
+| Eigenschap | Waarde |
+|-----------|--------|
+| **Onderwerp** | `Welkom bij Bright Panda Bijles – we hebben je aanmelding ontvangen!` |
+| **Afzender** | `teachers@brightpanda.nl` (alias van info@ — nog te regelen) |
+| **Inhoud** | Ontvangstbevestiging + verwachte doorlooptijd |
+
+---
+
 ## Nog te bouwen
 
 | Onderdeel | Status | Details |
 |-----------|--------|---------|
-| Bevestigingsmail docent | ❌ Nog te bouwen | Automatische ontvangstbevestiging na aanmelding |
-| Morning briefing | ❌ Nog te bouwen | Dagelijks overzicht nieuwe aanmeldingen + Claude aanbevelingen via Claude.ai (Salesforce MCP) |
-| Docent profielformulier | ❌ Nog te bouwen | Tally form met: adres, vakken+niveau, IBAN, AVG checkbox, optioneel paspoort |
+| Bevestigingsmail docent | ❌ Nog te bouwen | Module 6 — afzender teachers@brightpanda.nl (alias aanmaken) |
+| Morning briefing | ❌ Nog te bouwen | Dagelijks overzicht via Claude.ai (Salesforce MCP verbinding) |
+| Docent profielformulier | ❌ Nog te bouwen | Tally Form 3 uitbreiden: geboortedatum, vakken+niveau, IBAN, AVG checkbox |
 
 ---
 

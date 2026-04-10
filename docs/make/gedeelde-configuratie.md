@@ -54,18 +54,111 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 |-----------|--------|
 | **Verbindingsnaam in Make.com** | Bright Panda Salesforce |
 | **Make.com omgeving** | eu1.make.com |
-| **URL** | brightpanda.lightning.force.com |
+| **Instance URL** | `https://brightpanda.my.salesforce.com` |
+| **Setup URL** | `https://brightpanda.my.salesforce-setup.com` |
+| **Username** | `info@brightpanda.nl` |
+| **Security Token** | `fQ1CK5nBYy8qpd5j05vHaFUnP` |
+| **MCP Server** | `@tsmztech/mcp-server-salesforce` |
+| **MCP Config pad** | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+
+> ⚠️ **MCP beperkingen:** @tsmztech MCP server ondersteunt geen LongTextArea of picklist waarden toevoegen via Metadata API. Workaround: Claude in Chrome voor browser automatisering, of handmatig via Setup UI.
+
+> ⚠️ **Salesforce Setup iframes:** Claude in Chrome heeft problemen met klik-coördinaten in Salesforce Setup pagina's die in iframes laden. Sommige handelingen moeten handmatig worden uitgevoerd.
+
+---
+
+## Google Calendar & Gmail
+
+| Service | Waarde |
+|---------|--------|
+| **Google Calendar scheduling link** | `https://calendar.app.google/ArBhdKvAnLR924Xa6` |
+| **Gmail account** | `info@brightpanda.nl` |
+| **Gmail MCP** | Read + draft only — **geen send capability** |
+| **Gebruik** | Scenario 13 Route 1: Google Calendar link in interview uitnodiging email |
+
+---
 
 ### Salesforce Record Structuur
 
-| Entiteit | Object type | Record Type | Relevante velden |
-|----------|-------------|-------------|-----------------|
-| Docenten | **Account (Person Account)** | Teacher (ID: `012KB000000ojZLYAY`) | `Phone`, `FirstName` |
-| Studenten/Ouders | **Account (Person Account)** | Student | `FirstName`, `Name`, `Parent_s_Name__c`, `Parent_s_Phone__c`, `Parent_s_Email__c` |
+| Entiteit | Object type | Record Type | Record Type ID |
+|----------|-------------|-------------|----------------|
+| Docenten | Account (Person Account) | Teacher | `012KB000000ojZLYAY` |
+| Studenten/Ouders | Account (Person Account) | Student | — |
 
-> **Ouder contactgegevens** zitten als custom velden op het **Student Account** (niet als Contact record). Gebruik `{{X.Parent_s_Name__c}}` en `{{X.Parent_s_Phone__c}}` direct na een Get a Record op het Student Account.
->
-> ⚠️ **Veldnaam variatie:** In sommige scenarios worden `ParentsName__c` / `ParentSPhone__c` gebruikt (oudere naamgeving). De officiële API namen zijn `Parent_s_Name__c` / `Parent_s_Phone__c`. Gebruik de API namen die Make.com toont in de module output.
+> **Ouder contactgegevens** zitten als custom velden op het **Student Account**. Gebruik `{{X.ParentsName__c}}` en `{{X.ParentSPhone__c}}` direct na een Get a Record op het Student Account.
+
+---
+
+### Teacher Account Velden
+
+**Standaard velden:**
+- `Id`, `Name`, `FirstName`, `LastName`
+- `PersonEmail` — primaire email
+- `Phone` — internationaal formaat met `+` (bijv. `+31630892143`)
+- `BillingStreet`, `BillingCity`, `BillingPostalCode`, `BillingCountry`
+- `RecordTypeId` = `012KB000000ojZLYAY`
+
+**Custom velden:**
+
+| API Naam | Type | Beschrijving |
+|----------|------|-------------|
+| `LifecycleStage__c` | Picklist | Huidige fase (zie lifecycle stages) |
+| `Subjects__c` | Multipicklist | Vakken in het Engels (zie vakkenlijst) |
+| `Can_Teach_Until_Education_Level__c` | Picklist | Max onderwijsniveau (Basisschool / VMBO-BBL,GL,KBL,TL / Havo / VWO / Gymnasium) |
+| `Can_Teach_Until_School_Year__c` | Picklist | Max leerjaar (Groep 1-8, 1-6) |
+| `Can_Give_Exam_Training__c` | Boolean | Examentraining mogelijk |
+| `CanTeachElementarySchool__c` | Boolean | Kan basisschool geven |
+| `Teaching_Level_Details__c` | LongTextArea (32768) | Gedetailleerde niveauinfo per onderwijsniveau |
+| `Level_Details__c` | Text (255) | ⛔ Oud veld — verwijderen na datamigratate naar Teaching_Level_Details__c |
+| `Claude_Recommendation__c` | LongTextArea | AI aanbeveling van Scenario 12 |
+| `IBAN__c` | Text (255) | IBAN bankrekening (via Tally + AVG toestemming) |
+| `NameOnBankCard__c` | Text (255) | Naam op bankpas |
+| `HourlyRate__c` | Currency | Uurtarief |
+| `Study__c` | Text (255) | Studie (vrij tekst) |
+| `University__c` | Text (255) | Universiteit/hogeschool (vrij tekst fallback) |
+| `University_WO__c` | Picklist | Universiteit WO (Global Value Set) |
+| `University_HBO__c` | Picklist | Hogeschool HBO (Global Value Set "University (HBO)") |
+| `HBO_WO__c` | Picklist | HBO (Bachelor) / WO Bachelor / WO Master |
+| `OfficialName__c` | Text | Officiële naam voor contract |
+| `Offboarded_Date__c` | Date | Datum offboarding (ingevuld door Scenario 13) |
+| `Notes__c` | Rich Text Area (32768) | Interne notities |
+| `Contract_Start_Date__c` | Date | Startdatum contract |
+| `Contract_End_Date__c` | Date | Einddatum contract (= start + 365 dagen) |
+| `Interview_Date__c` | Date | Datum interview |
+| `Experience__c` | Picklist | Junior / Medior / Senior |
+| `MaxStudentCapacity__c` | Number | Maximaal aantal leerlingen |
+
+> ⚠️ **`LifecycleStage__c`** — géén underscore tussen "Lifecycle" en "Stage". Eerder gedocumenteerd als `Lifecycle_Stage__c` (fout).
+
+**LifecycleStage__c waarden (Teacher):**
+`New` → `Interview Invited` → `Interview Scheduled` → `Interview Completed` → `Contracting` → `Pending Onboarding` → `On-boarded` → `Contract Expiring Soon` → `Renew` → `Offboarded` → `Not a Match` → `Not Interested`
+
+**Picklist: nieuwe waarden toevoegen:**
+Nieuwe universiteiten/vakken die niet in de picklist staan, moeten via browser handmatig worden toegevoegd. Kortste pad:
+`https://brightpanda.my.salesforce.com/setup/ui/recordtypefields.jsp?id=012KB000000ojZLYAY&type=Account&setupid=AccountRecordTypes`
+
+---
+
+### Student Account Velden
+
+| API Naam | Type | Beschrijving |
+|----------|------|-------------|
+| `Name` | Text | Naam leerling |
+| `FirstName` | Text | Voornaam leerling |
+| `ParentsName__c` | Text | Naam ouder (let op: hoofdletter S) |
+| `ParentSPhone__c` | Text | Telefoon ouder (internationaal formaat) |
+| `ParentSEmail__c` | Text | Email ouder |
+| `MailingCity` | Text | Woonplaats |
+| `MailingPostalCode` | Text | Postcode |
+| `LifecycleStage__c` | Picklist | Huidige fase student |
+| `Subjects__c` | Multipicklist | Vak(ken) — zelfde Global Value Set als Teacher |
+| `SchoolYear__c` | Text | Leerjaar (bijv. "Groep 5", "3 VWO") |
+| `ReferredToBPVia__c` | Text | Hoe verwezen naar BP |
+| `AnyConditions__c` | Text | Bijzonderheden leerling |
+| `IssuesWithSubject__c` | Text | Problemen met het vak |
+
+**LifecycleStage__c waarden (Student):**
+`New` → `Enrollment` → `Matching Teacher` → `Trial Class` → `Client` → `Churned` → `Wrong Match` → `Stopped - Never Converted` → `Stopped - Existing Client`
 
 ### Salesforce Custom Object: Student_Teacher_Matching__c
 
@@ -194,6 +287,29 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | **Plan** | Growing Business |
 | **Connectienaam in Make.com** | MailerLite Bright Panda |
 | **API Token** | Opgeslagen door gebruiker (niet gedocumenteerd) |
+
+**Custom Fields (merge tags):**
+
+| Merge tag | Type | Beschrijving |
+|-----------|------|-------------|
+| `{$student_name}` | Text | Voornaam leerling |
+| `{$teacher_name}` | Text | Voornaam docent |
+| `{$subjects}` | Text | Vakken (kommagescheiden NL) |
+| `{$school_year}` | **Text** (niet Number!) | Leerjaar — bijv. "Groep 5", "3 VWO" |
+| `{$registration_date}` | Text | Datum aanmelding |
+| `{$referred_by}` | Text | Via welk kanaal verwezen |
+| `{$trial_lesson_outcome}` | Text | Resultaat proefles |
+| `{$total_matchings}` | Text | Totaal aantal matchings |
+| `{$is_pro}` | Text | Pro aanmelding (true/false) |
+| `{$is_active_client}` | Text | Actieve klant (true/false) |
+| `{$has_trial_lesson}` | Text | Heeft proefles gehad (true/false) |
+| `{$name}` | Text | Standaard veld — voornaam |
+| `{$last_name}` | Text | Standaard veld — achternaam |
+| `{$phone}` | Text | Standaard veld — telefoon |
+
+> ⚠️ **Merge tag format:** Gebruik **altijd** `{$veldnaam}` (met dollarteken). `{veldnaam}` (zonder `$`) werkt niet — variabele wordt niet ingevuld in de email.
+>
+> ⚠️ **`school_year` is Text type** — als Number type ingesteld wordt "Groep 5" afgewezen. Veld type wijzigen via MailerLite → Subscribers → Fields.
 
 Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fields, automations).
 

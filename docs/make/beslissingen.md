@@ -282,6 +282,33 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 - **Reden:** `{naam}` (zonder `$`) werkt niet in MailerLite — variabelen worden dan niet ingevuld
 - **Bewijs:** Student naam en docent naam in intro tekst automations hadden geen `$` → tekst toonde letterlijk `{naam}`
 
+### B51 — Scenario 10 interval: 20 minuten
+- **Keuze:** Trigger interval gewijzigd van 7 naar 20 minuten
+- **Reden:** 7 minuten verbruikte te veel Make.com operaties/credits
+
+### B52 — MailerLite school_year veld: Text type
+- **Keuze:** `school_year` custom field in MailerLite als **Text** type instellen, niet Number
+- **Reden:** Salesforce stuurt waarden als "Groep 5" of "3 VWO" — Number validatie crasht hierop
+- **Fix:** MailerLite → Subscribers → Fields → school_year type wijzigen naar Text; daarna module opnieuw mappen in Make.com
+
+### B53 — Telefoonnummers: replace(Phone; "+"; "") voor 360dialog
+- **Keuze:** In WhatsApp modules (Scenario 13): `replace(1.Phone; "+"; "")` gebruiken voor het `to` veld
+- **Reden:** Salesforce slaat telefoonnummers op met `+` prefix (bijv. `+31630892143`). 360dialog verwacht geen `+`.
+- **Gebruik:** Alleen nodig als Phone-veld rechtstreeks uit Salesforce Watch Records komt. Bij Get a Record modules verwijdert Salesforce het `+` al in sommige gevallen.
+
+### B54 — Dagstart workflow via Claude.ai + MCP
+- **Keuze:** Elke ochtend "dagstart" intypen in Claude.ai voor dagelijks overzicht
+- **Inhoud:** Google Calendar, Salesforce overzicht per lifecycle stage, Gmail (Tally submissions + docent antwoorden)
+- **Status:** Gepland — Salesforce MCP verbinding nog te testen
+
+### B55 — Gmail profiel update campagne: handmatig verwerkt via Claude
+- **Keuze:** Template-email stuurt docenten een formulier om profiel aan te vullen. Antwoorden worden handmatig via "check inbox docenten antwoorden" door Claude verwerkt in Salesforce.
+- **Reden:** Gmail MCP heeft geen send capability — versturen via andere weg
+
+### B56 — Level_Details__c verwijderen
+- **Keuze:** Oud Text(255) veld `Level_Details__c` verwijderen na datamigratate naar `Teaching_Level_Details__c`
+- **Status:** Data overgezet — veld nog aanwezig in Salesforce
+
 ### B50 — Scenario 11 tijdzone: dynamisch na zomertijd
 - **Keuze (tijdelijk):** `+01:00` hardcoded (wintertijd CET) in Scenario 11 SOQL
 - **Fix (toekomst):** `{{formatDate(addMinutes(now; -60); "YYYY-MM-DDTHH:mm:ssZ"; "Europe/Amsterdam")}}` testen na zomertijd overgang
@@ -293,8 +320,11 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 
 | Actie | Prioriteit | Details |
 |-------|-----------|---------|
-| DocuSeal beslissing bevestigen | Hoog | Bevestig DocuSeal EU plan vóór live gaan (Scenario 13) |
-| Scenario 11 tijdzone fix | Hoog | `+01:00` vervangen door dynamische tijdzone na zomertijd overgang |
+| Scenario 10 debuggen en heractiveren | Hoog | A: URL fix module 4 (vakvertaling URL vervangen); B: ifempty fallback module 6 WhatsApp; daarna heractiveren |
+| Scenario 11 tijdzone fix | Hoog | `+01:00` vervangen door dynamische tijdzone (zomertijd bug actief) |
+| Level_Details__c verwijderen | Medium | Oud veld opruimen na controle dat alle data in Teaching_Level_Details__c staat |
+| teachers@brightpanda.nl alias aanmaken | Medium | Email alias aanmaken voor Scenario 12 bevestigingsmail docenten |
+| DocuSeal beslissing bevestigen | Medium | Bevestig DocuSeal EU plan vóór live gaan (Scenario 13) |
 | trial_lesson_confirmation_parent template | Medium | V4 pending — wacht op Meta goedkeuring als Utility zonder button |
 | availability_conflict templates opnieuw indienen | Medium | Beide templates opnieuw indienen bij 360dialog met voorbeeldwaarden |
 | Claude Desktop MCP testen | Medium | Salesforce MCP verbinding testen in Claude Desktop voor morning briefing |
