@@ -87,6 +87,27 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 
 ---
 
+### B16 — Webhook module 3 in Scenario 3b (niet 1)
+- **Keuze:** Scenario 3b gebruikt `{{3.data.fields[...]}}` voor alle webhook referenties
+- **Reden:** Scenario 3b is later aangemaakt — de webhook module heeft automatisch nummer 3 gekregen in dit scenario
+- **Risico:** Fout modulenummer geeft "references non-existing module" waarschuwing in Make.com
+
+### B17 — Aanhalingstekens om datumchips in JSON body
+- **Keuze:** Tally datumvelden in JSON body altijd omringen met aanhalingstekens: `"3": "{{1.data.fields[3].value}}"`
+- **Reden:** Tally `INPUT_DATE` velden arriveren als date objects in Make.com. Geen enkele Make.com functie (`toString`, `formatDate`, `&`) kan ze concateneren. Aanhalingstekens forceren JSON serialisatie als string.
+- **Bewijs:** Meer dan 3 uur debuggen, alle Make.com opties geprobeerd. Google Apps Script heeft dit probleem niet.
+
+### B18 — if() wrapper voor checkbox waarden in JSON
+- **Keuze:** Alle checkbox velden wrappen: `{{if(1.data.fields[5].value; true; false)}}`
+- **Reden:** Make.com checkbox velden zijn een intern boolean type dat niet als geldig JSON boolean geserialiseerd wordt. `if()` garandeert altijd de literale waarden `true` of `false`.
+
+### B19 — Lange Make.com formules vermijden
+- **Keuze:** Formules met meer dan ~13 geneste `if`-statements niet gebruiken in Make.com
+- **Reden:** Lange formules raken corrupt bij opslaan — tokens lijken correct gekleurd maar geven lege output. Root causes: slimme aanhalingstekens bij paste, verlies van `{{ }}` wrappers, afkappen bij veel module referenties.
+- **Alternatief:** Google Apps Script voor alle complexe logica
+
+---
+
 ## Werkwijze Afspraken
 
 | Afspraak | Detail |
@@ -95,4 +116,19 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 | Stappenbeschrijving | Als bulletpoints, niet als lange lappen tekst |
 | Meerdere stappen tegelijk | Niet steeds 1 regel, maar meerdere stappen per keer |
 | Webhook logs | Via linkermenu → Webhooks → Logs (niet via scenario History tab) |
-| Formule met `"` in JSON | Stop → gebruik Set Variable module |
+| Formule met `"` in JSON | Stop → gebruik Set Variable module of Google Apps Script |
+| Webhook queue | Altijd "Wait for new data" kiezen, nooit "Use existing data" — pakt oudste uit queue |
+| Tally datum in JSON | Altijd aanhalingstekens om datumchips: `"3": "{{1.data.fields[3].value}}"` |
+| Checkbox in JSON | Altijd `if()`-wrapper: `{{if(1.data.fields[5].value; true; false)}}` |
+
+---
+
+## Openstaande Acties
+
+| Actie | Door wie | Details |
+|-------|---------|---------|
+| Template tekst ophalen | Raouf | 360dialog dashboard → Message Templates → `trial_lesson_confirmation` → volledige tekst delen |
+| Scenario 3b modules 8-10 bouwen | Raouf + Claude | Na ontvangst template tekst |
+| Einde-tot-einde test uitvoeren | Raouf | Na oplevering Scenario 3b — echt matching record gebruiken |
+| Meta display name goedkeuring afwachten | Raouf | Wachten, dan Scenario 1 Run once opnieuw |
+| Scenario 3b Pad B ontwerpen | Raouf + Claude | Wat gebeurt er als ouder "geen tijdslot past" aanvinkt? |

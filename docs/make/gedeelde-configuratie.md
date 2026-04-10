@@ -35,9 +35,7 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 |----------|--------|------------|-----------|
 | `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 4 — naam docent, naam student, vak NL, Tally link |
 | `parent_timeslot_invitation` | ✅ Goedgekeurd | Scenario 02 + 03 (route 3) | 5 — naam ouder, naam leerling, vak, tijdsloten, Form 2 link |
-| `trial_lesson_confirmation` | ✅ Goedgekeurd (vervangen) | Niet meer in gebruik | 4 — te weinig info, geen contactgegevens |
-| `trial_lesson_confirmation_parent` | ⏳ Pending bij Meta | Scenario 3b module 9 | 6 — naam ouder, leerling, datum, tijd, naam docent, tel. docent |
-| `trial_lesson_confirmation_teacher` | ⏳ Pending bij Meta | Scenario 3b module 11 | 6 — naam docent, leerling, datum, tijd, naam ouder, tel. ouder |
+| `trial_lesson_confirmation` | ✅ Goedgekeurd | Scenario 3b modules 8 + 10 | Parameters ONBEKEND — template tekst ophalen uit 360dialog dashboard |
 | Reminder template docent | 🔴 Niet aangemaakt | Scenario 03 (route 1) | — |
 | Reminder template ouder | 🔴 Niet aangemaakt | Scenario 03 (route 3) | — |
 
@@ -45,39 +43,7 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 ### Template teksten
 
-**`trial_lesson_confirmation_parent`** (6 parameters):
-```
-Hoi {{1}},
-
-De proefles is bevestigd! 🎉
-
-Leerling: {{2}}
-Datum: *{{3}}*
-Tijd: *{{4}}*
-
-Contactgegevens docent:
-Naam: {{5}}
-Telefoon: {{6}}
-
-Tot dan!
-```
-
-**`trial_lesson_confirmation_teacher`** (6 parameters):
-```
-Hoi {{1}},
-
-De proefles is bevestigd! 🎉
-
-Leerling: {{2}}
-Datum: *{{3}}*
-Tijd: *{{4}}*
-
-Contactgegevens ouder:
-Naam: {{5}}
-Telefoon: {{6}}
-
-Tot dan!
-```
+> ⚠️ **`trial_lesson_confirmation`** template tekst is ONBEKEND — Raouf opent 360dialog dashboard → Message Templates → deelt de volledige tekst. Parameters kunnen pas bepaald worden na ontvangst.
 
 **Disclaimer tekst (in alle templates):**
 > "Dit nummer is alleen voor het inplannen van proeflessen. Voor andere vragen kun je ons bereiken via WhatsApp: +31613689666 of telefoon: 071-3031901."
