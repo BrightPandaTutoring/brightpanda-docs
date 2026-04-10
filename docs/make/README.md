@@ -10,8 +10,9 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 |---|------|---------|--------|---------|
 | 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | 🟡 In ontwikkeling | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
 | 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | 🟡 In ontwikkeling | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
-| 03 | Reminders & Escalatie | Schedule (elk uur) | 🔴 Nog te bouwen | [scenario-03](scenario-03-reminders-escalatie.md) |
-| 04 | Koppelingsbevestiging | Onbekend | 🔴 Nog te bouwen | [scenario-04](scenario-04-koppelingsbevestiging.md) |
+| 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Gebouwd | [scenario-03](scenario-03-reminders-escalatie.md) |
+| 04 | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🔴 Nog te bouwen | [scenario-04](scenario-04-ouder-tijdslot-verwerking.md) |
+| 05 | Koppelingsbevestiging | Onbekend | 🔴 Backlog | [scenario-05](scenario-05-koppelingsbevestiging.md) |
 
 ---
 
@@ -26,41 +27,54 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 ---
 
-## Gedeelde Configuratie
-
-- [Gedeelde configuratie](gedeelde-configuratie.md) — 360dialog HTTP headers, Salesforce verbinding, telefoonnummer conventie, Tally webhook instructie
-
----
-
 ## Huidige Blokkades
 
-| Scenario | Blokkade |
-|----------|---------|
-| 01 + 02 | Meta goedkeuring `teacher_invitation` template (fout 131037 + 132001) |
-| 02 | SOQL query nog hardcoded op `0016` — dynamisch maken |
-| 02 | `join/map` formule tijdsloten nog niet getest |
-| 03 | WhatsApp reminder template nog niet aangemaakt bij 360dialog/Meta |
+| Scenario | Blokkade | Actie |
+|----------|---------|-------|
+| 01 | Meta propagatie na display name wijziging (fout #131037) | Wacht 24-48u → Run once opnieuw |
+| 02 | Module 8 Set Variable formule werkt alleen voor datum 1 | Uitbreiden naar datum 2-5 |
+| 02 | HTTP module 5 nog niet geconfigureerd | `parent_timeslot_invitation` call bouwen |
+| 02 | Salesforce Update module 6 nog niet geconfigureerd | Status + `Available_Timeslots__c` invullen |
 
 ---
 
-## Flow Overzicht
+## Volledige Flow
 
 ```
 [Salesforce: status → Teacher Invited]
         ↓
-  Scenario 01: WhatsApp naar docent met Tally Form 1 link
+  Scenario 01 ─── WhatsApp docent met Tally Form 1 link
         ↓
   [Docent vult beschikbaarheid in via Tally Form 1]
         ↓
-  Scenario 02: WhatsApp naar ouder met tijdsloten + Tally Form 2 link
+  Scenario 02 ─── Bouwt genummerde tijdslotenlijst
+               ─── Slaat op in Available_Timeslots__c
+               ─── WhatsApp ouder met tijdsloten + Tally Form 2 link
         ↓
-  [Ouder kiest tijdslot via Tally Form 2]
+  [Ouder kiest tijdslot getal via Tally Form 2]
         ↓
-  (Scenario 0X: verwerk keuze ouder → bevestiging naar beide partijen)
+  Scenario 04 ─── Zoekt tijdslot op in Available_Timeslots__c
+               ─── Slaat op in Trial_Lesson_Date__c
+               ─── WhatsApp bevestiging naar ouder + docent
+               ─── Status → Trial Lesson Scheduled
 
-  Scenario 03: Reminders (24u) + Escalaties (48u) voor niet-reagerende docenten/ouders
-  Scenario 04: Koppelingsbevestiging bij definitieve match (buiten proefles flow)
+  Scenario 03 ─── Draait elk kwartier
+               ─── Route 1: Reminder docent na 24u
+               ─── Route 2: Escalatie docent na 48u
+               ─── Route 3: Reminder ouder na 24u
+               ─── Route 4: Escalatie ouder na 48u
+
+  Scenario 05 ─── Koppelingsbevestiging (buiten proefles flow) [Backlog]
 ```
+
+---
+
+## Referentie Documenten
+
+| Document | Inhoud |
+|----------|--------|
+| [Gedeelde configuratie](gedeelde-configuratie.md) | 360dialog headers, API endpoint, Salesforce velden, telefoonnummer conventie, Tally webhook instructie, Meta Business Verificatie |
+| [Beslissingen](beslissingen.md) | Alle technische en functionele beslissingen met onderbouwing |
 
 ---
 
@@ -68,8 +82,8 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 - Elk scenario heeft een eigen bestand in deze map
 - Bestanden volgen de naamconventie: `scenario-[nr]-[korte-naam].md`
-- Bij errors: open het relevante scenario-bestand voor troubleshooting info
-- Gedeelde instellingen staan in `gedeelde-configuratie.md`
+- Bij errors: open het relevante scenario-bestand → sectie "Foutmeldingen & Oplossingen"
+- Bij bouwen nieuw scenario: check eerst [beslissingen.md](beslissingen.md) voor werkwijze afspraken
 
 ---
 

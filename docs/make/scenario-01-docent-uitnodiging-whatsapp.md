@@ -4,7 +4,7 @@
 **Laatste update:** 10 april 2026
 **Status:** 🟡 In ontwikkeling
 
-> **Blokkade:** Meta goedkeuring `teacher_invitation` template (fout 131037 display name + fout 132001 template review)
+> **Blokkade:** Meta propagatie vertraging na display name wijziging naar "Bright Panda Bijles" (fout #131037). 360dialog toont READY + groen bolletje. Wacht 24-48u, daarna Run once opnieuw proberen.
 
 ---
 
@@ -28,48 +28,62 @@ Detecteert automatisch wanneer een nieuwe matching de status **"Teacher Invited"
 
 ---
 
-## Modules / Stappen
+## Module Volgorde
 
 ```
 [1] Salesforce → Watch Records
         ↓
-    FILTER: Trial_Lesson_Status__c = "Teacher Invited"
+[2] Filter: Trial_Lesson_Status__c = "Teacher Invited"
         ↓
 [3] Salesforce → Get a Record (Teacher Account)
         ↓
 [6] Salesforce → Get a Record (Student Account)
+        ↓
+[8] Tools → Set Variable (matching_number_clean)
         ↓
 [5] HTTP → POST 360dialog WhatsApp API
         ↓
 [7] Salesforce → Update a Record (Matching)
 ```
 
-> ⚠️ Module nummering volgt toevoegvolgorde in Make.com, niet de visuele positie in de flow. Module 6 staat visueel vóór Module 5 omdat hij later is toegevoegd.
+> ⚠️ Module nummering volgt toevoegvolgorde in Make.com, niet de visuele positie. Volgorde: 1 → 2 → 3 → 6 → 8 → 5 → 7
 
 ---
+
+## Modules Detail
 
 ### Module 1 — Salesforce Watch Records
 - **Object:** `Student_Teacher_Matching__c`
 - **Output velden:** `Id`, `Student__c`, `Teacher__c`, `Subject_s__c`, `Name`, `Trial_Lesson_Status__c`
 
-### Filter (na Module 1)
+### Module 2 — Filter
 - **Conditie:** `Trial_Lesson_Status__c` Equal to `Teacher Invited`
-- **Bij niet voldoen:** scenario stopt, geen bericht verstuurd
+- **Bij niet voldoen:** scenario stopt volledig
 
 ### Module 3 — Salesforce Get a Record (Docent)
 - **Type:** Account
 - **Record ID:** `{{1.Teacher__c}}`
-- **Output velden:** `FirstName`, `Phone`
+- **Gebruikte output:** `{{3.FirstName}}`, `{{3.Phone}}`
 
 ### Module 6 — Salesforce Get a Record (Student)
 - **Type:** Account
 - **Record ID:** `{{1.Student__c}}`
-- **Output velden:** `FirstName`, `ParentSPhone__c`
+- **Gebruikte output:** `{{6.FirstName}}`
+
+### Module 8 — Tools Set Variable ⚠️ Kritiek
+- **Variable name:** `matching_number_clean`
+- **Variable value:** `{{replace(1.Name; "Matching Number "; "")}}`
+- **Resultaat:** bijv. `"0016"` (alleen het getal, zonder prefix en spatie)
+- **Gebruik in volgende modules:** `{{8.matching_number_clean}}`
+
+> **Waarom een aparte module?** De `replace()` formule gebruikt dubbele aanhalingstekens die conflicteren met JSON string opmaak in de HTTP module. Backticks werken **niet** in `replace()` — dit geeft "Module references non-existing module NaN" error. Dubbele aanhalingstekens werken alleen in een Set Variable module buiten de JSON.
 
 ### Module 5 — HTTP Make a request (360dialog WhatsApp)
-Zie [Gedeelde 360dialog configuratie](gedeelde-configuratie.md) voor headers/auth.
+- **URL:** `https://waba.360dialog.io/v1/messages`
+- **Method:** POST
+- Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers
 
-**Body:**
+**Volledige JSON body:**
 ```json
 {
   "messaging_product": "whatsapp",
@@ -77,31 +91,42 @@ Zie [Gedeelde 360dialog configuratie](gedeelde-configuratie.md) voor headers/aut
   "type": "template",
   "template": {
     "name": "teacher_invitation",
-    "language": { "code": "nl" },
-    "components": [{
-      "type": "body",
-      "parameters": [
-        {"type": "text", "text": "{{3.FirstName}}"},
-        {"type": "text", "text": "{{6.FirstName}}"},
-        {"type": "text", "text": "{{switch(1.Subject_s__c; \"Mathematics A\"; \"Wiskunde A\"; \"Mathematics B\"; \"Wiskunde B\"; \"Mathematics C\"; \"Wiskunde C\"; \"Mathematics D\"; \"Wiskunde D\"; \"Physics\"; \"Natuurkunde\"; \"Chemistry\"; \"Scheikunde\"; \"Biology\"; \"Biologie\"; \"Dutch\"; \"Nederlands\"; \"English\"; \"Engels\"; \"French\"; \"Frans\"; \"German\"; \"Duits\"; \"Spanish\"; \"Spaans\"; \"Latin\"; \"Latijn\"; \"Greek\"; \"Grieks\"; \"Arabic\"; \"Arabisch\"; \"Chinese\"; \"Chinees\"; \"Italian\"; \"Italiaans\"; \"Russian\"; \"Russisch\"; \"Turkish\"; \"Turks\"; \"Computer Science\"; \"Informatica\"; \"Geography\"; \"Aardrijkskunde\"; \"History\"; \"Geschiedenis\"; \"Economics\"; \"Economie\"; \"Business Economics\"; \"Bedrijfseconomie\"; \"Philosophy\"; \"Filosofie\"; \"Social Studies\"; \"Maatschappijleer\"; \"Music\"; \"Muziek\"; \"Art\"; \"Kunst\"; \"Cultural & Artistic Education (CKV)\"; \"Culturele en Kunstzinnige Vorming (CKV)\"; \"Cito Test\"; \"Cito Test\"; \"Coding\"; \"Coderen\"; \"Calculations\"; \"Rekenen\"; 1.Subject_s__c)}}"},
-        {"type": "text", "text": "https://tally.so/r/2Ekaq9?matching_number={{replace(1.Name; \"Matching Number \"; \"\")}}&student_name={{6.FirstName}}"}
-      ]
-    }]
+    "language": {"code": "nl"},
+    "components": [
+      {
+        "type": "body",
+        "parameters": [
+          {"type": "text", "text": "{{3.FirstName}}"},
+          {"type": "text", "text": "{{6.FirstName}}"},
+          {"type": "text", "text": "{{switch(1.Subject_s__c; `Mathematics A`; `Wiskunde A`; `Mathematics B`; `Wiskunde B`; `Mathematics C`; `Wiskunde C`; `Mathematics D`; `Wiskunde D`; `Physics`; `Natuurkunde`; `Chemistry`; `Scheikunde`; `Biology`; `Biologie`; `Dutch`; `Nederlands`; `English`; `Engels`; `French`; `Frans`; `German`; `Duits`; `Spanish`; `Spaans`; `Latin`; `Latijn`; `Greek`; `Grieks`; `Arabic`; `Arabisch`; `Chinese`; `Chinees`; `Italian`; `Italiaans`; `Russian`; `Russisch`; `Turkish`; `Turks`; `Computer Science`; `Informatica`; `Geography`; `Aardrijkskunde`; `History`; `Geschiedenis`; `Economics`; `Economie`; `Business Economics`; `Bedrijfseconomie`; `Philosophy`; `Filosofie`; `Social Studies`; `Maatschappijleer`; `Music`; `Muziek`; `Art`; `Kunst`; `Cito Test`; `Cito Test`; `Coding`; `Coderen`; `Calculations`; `Rekenen`; 1.Subject_s__c)}}"},
+          {"type": "text", "text": "https://tally.so/r/2Ekaq9?matching_number={{8.matching_number_clean}}&student_name={{6.FirstName}}"}
+        ]
+      }
+    ]
   }
 }
 ```
 
-> `switch()` heeft een fallback: als het vak niet in de lijst staat wordt de Engelse naam getoond.
+> **Backtick regel:** Backticks werken in `switch()` binnen JSON strings om conflict met JSON aanhalingstekens te vermijden. Ze werken **niet** in `replace()`.
+
+**Template parameters:**
+| Parameter | Variabele | Inhoud |
+|-----------|-----------|--------|
+| `{{1}}` | `{{3.FirstName}}` | Voornaam docent |
+| `{{2}}` | `{{6.FirstName}}` | Voornaam student |
+| `{{3}}` | `switch(...)` | Vak vertaald naar Nederlands |
+| `{{4}}` | URL | Tally Form 1 link met matching_number en student_name |
 
 ### Module 7 — Salesforce Update a Record
 - **Type:** `Student_Teacher_Matching__c`
 - **Record ID:** `{{1.Id}}`
-- **Velden:**
 
 | Veld | Waarde |
 |------|--------|
 | `Tally_Link_Teacher__c` | `https://tally.so/r/2Ekaq9?matching_number={{replace(1.Name; "Matching Number "; "")}}&student_name={{6.FirstName}}` |
 | `Trial_Lesson_Status__c` | `Availability Received` |
+
+> `BundleValidationError: Missing value of required parameter 'record'` bij lege tests is **normaal gedrag** — treedt op als er geen records zijn met status "Teacher Invited".
 
 ---
 
@@ -109,26 +134,15 @@ Zie [Gedeelde 360dialog configuratie](gedeelde-configuratie.md) voor headers/aut
 
 | Variabele | Module | Beschrijving |
 |-----------|--------|-------------|
-| `{{1.Id}}` | Module 1 | ID van het matching record |
-| `{{1.Teacher__c}}` | Module 1 | Salesforce ID van docent |
-| `{{1.Student__c}}` | Module 1 | Salesforce ID van student |
-| `{{1.Subject_s__c}}` | Module 1 | Vak (Engelse waarde uit picklist) |
-| `{{1.Name}}` | Module 1 | Matching record naam (bijv. "Matching Number 0016") |
-| `{{3.FirstName}}` | Module 3 | Voornaam docent |
-| `{{3.Phone}}` | Module 3 | WhatsApp nummer docent (internationaal formaat) |
-| `{{6.FirstName}}` | Module 6 | Voornaam student |
-| `{{6.ParentSPhone__c}}` | Module 6 | Telefoonnummer ouder (niet gebruikt in dit scenario) |
-| `replace(1.Name; "Matching Number "; "")` | Berekend | Alleen het nummer, bijv. "0016" |
-
----
-
-## Gekoppelde Apps & Services
-
-| Service | Gebruik |
-|---------|---------|
-| **Salesforce** | Watch matching records + ophalen docent/student + updaten record |
-| **360dialog** | WhatsApp Business API voor berichtenverzending |
-| **Tally.so** | Formulier voor beschikbaarheid (extern, geen Make module) |
+| `{{1.Id}}` | 1 | ID van het matching record |
+| `{{1.Teacher__c}}` | 1 | Salesforce ID van docent |
+| `{{1.Student__c}}` | 1 | Salesforce ID van student |
+| `{{1.Subject_s__c}}` | 1 | Vak (Engelse picklist waarde) |
+| `{{1.Name}}` | 1 | Matching naam: "Matching Number 0016" |
+| `{{3.FirstName}}` | 3 | Voornaam docent |
+| `{{3.Phone}}` | 3 | WhatsApp nummer docent (internationaal: `31XXXXXXXXX`) |
+| `{{6.FirstName}}` | 6 | Voornaam student |
+| `{{8.matching_number_clean}}` | 8 | Alleen het getal uit de matching naam, bijv. `"0016"` |
 
 ---
 
@@ -136,22 +150,26 @@ Zie [Gedeelde 360dialog configuratie](gedeelde-configuratie.md) voor headers/aut
 
 | Fout | Oorzaak | Oplossing |
 |------|---------|-----------|
-| `[403] Forbidden resource` | 360Messenger for WhatsApp module | Vervangen door **HTTP Make a request** met directe 360dialog API |
-| HTTP fout 100 "The parameter to is required" | `{{3.PersonMobilePhone}}` bestaat niet op Person Account | Gewijzigd naar `{{3.Phone}}` |
-| HTTP fout 100 "Invalid parameter" | Nummer opgeslagen als `0630892143` (lokaal formaat) | Nummer in Salesforce gewijzigd naar `31630892143` |
-| HTTP fout 132001 "Template does not exist in nl" | Template stond bij Meta op Pending | Gewacht op Meta goedkeuring |
-| HTTP fout 131037 "Display name needs approval" | Display name gewijzigd in 360dialog | Gewacht op Meta hergoedkeuring |
-| URL gebroken in WhatsApp (spatie in matching_number) | `{{1.Name}}` geeft "Matching Number 0016" terug | `replace(1.Name; "Matching Number "; "")` gebruikt |
-| Vakken verschenen in het Engels | `Subject_s__c` opgeslagen in het Engels | `switch()` vertaaltabel ingebouwd in HTTP parameter 3 |
-| "Bad Request" bij eerste test | JSON had 6 parameters, template accepteert er 4 | JSON teruggebracht naar 4 parameters |
+| `[403] Forbidden resource` | 360Messenger for WhatsApp module | Vervangen door HTTP Make a request module |
+| HTTP 100 "The parameter to is required" | `PersonMobilePhone` bestaat niet op Person Account | Gewijzigd naar `{{3.Phone}}` |
+| HTTP 100 "Invalid parameter" | Nummer als `0630892143` (lokaal) | Gewijzigd naar `31630892143` (internationaal) |
+| HTTP 132001 "Template does not exist in nl" | Template nog Pending bij Meta | Gewacht op Meta goedkeuring |
+| HTTP 131037 "Display name needs approval" | Display name gewijzigd in 360dialog | Wachten 24-48u op Meta propagatie |
+| URL afgebroken in WhatsApp | `{{1.Name}}` bevat "Matching Number 0016" met spaties | Set Variable module (module 8) toegevoegd met `replace()` |
+| `InvalidConfigurationError: Bad control character in string` | `replace()` met aanhalingstekens in JSON body | `replace()` verplaatst naar Set Variable module buiten JSON |
+| `Module references non-existing module 'NaN'` | Backticks gebruikt in `replace()` formule | Backticks werken alleen in `switch()`, niet in `replace()` |
+| `BundleValidationError: Missing value of required parameter 'record'` | Geen records met "Teacher Invited" bij test | Normaal gedrag, geen fix nodig |
+| Vakken in het Engels in WhatsApp | `Subject_s__c` opgeslagen in Engels | `switch()` vertaaltabel met backticks in JSON |
+| JSON "Bad Request" | JSON had 6 parameters, template accepteert er 4 | JSON teruggebracht naar 4 parameters |
 
 ---
 
 ## Speciale Opmerkingen
 
-- ⚠️ Template `teacher_invitation` opnieuw ingediend bij Meta op 8 maart na tekstwijzigingen — stond daarna in review
-- 📱 Telefoonnummers **altijd** in Salesforce opslaan als `31XXXXXXXXX` (zonder `+`, met landcode)
-- 🔢 Module nummering volgt toevoegvolgorde, niet visuele positie in de flow
+- 📱 Telefoonnummers **altijd** opslaan als `31XXXXXXXXX` (zonder `+`, met landcode)
+- 🔢 Backticks in `switch()` binnen JSON = OK. Backticks in `replace()` = FOUT
+- ✅ Template `teacher_invitation` goedgekeurd door Meta
+- ⚠️ Disclaimer in template: "Dit nummer is alleen voor het inplannen van proeflessen. Voor andere vragen: WhatsApp +31613689666 of telefoon: 071-3031901"
 
 ---
 
@@ -159,5 +177,5 @@ Zie [Gedeelde 360dialog configuratie](gedeelde-configuratie.md) voor headers/aut
 
 | Scenario | Beschrijving |
 |----------|-------------|
-| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | Ontvangt Tally response van docent → stuurt tijdsloten naar ouder |
+| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | Ontvangt Tally Form 1 response van docent → stuurt tijdsloten naar ouder |
 | [Scenario 03](scenario-03-reminders-escalatie.md) | Reminders + escalatie bij niet-reageren |

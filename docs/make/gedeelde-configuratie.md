@@ -4,19 +4,46 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 ---
 
-## 360dialog HTTP Configuratie
+## 360dialog Configuratie
 
-Gebruik deze instellingen in elke HTTP module die naar de 360dialog WhatsApp API stuurt.
-
+### HTTP Module Instellingen
 | Instelling | Waarde |
 |-----------|--------|
-| **URL** | `https://waba-v2.360dialog.io/messages` |
+| **API Endpoint** | `https://waba.360dialog.io/v1/messages` |
 | **Method** | POST |
 | **Authentication** | No authentication (in Make.com) |
-| **Header 1** | `D360-API-KEY: xl6Aj3Gs66I40LQl7C6GbjlxAK` |
-| **Header 2** | `Content-Type: application/json` |
+| **Header: D360-API-KEY** | `xl6Aj3Gs66I40LQl7C6GbjlxAK` |
+| **Header: Content-Type** | `application/json` |
 | **Body content type** | `application/json` |
 | **Body input method** | JSON string |
+
+### 360dialog Account Status
+| Eigenschap | Waarde |
+|-----------|--------|
+| **Plan** | Starter EUR 49/maand |
+| **Display name** | Bright Panda Bijles |
+| **Status** | READY (groen bolletje) |
+| **Quality Rating** | High |
+| **Business Messaging Limit** | 250 unieke gebruikers per 24 uur |
+| **WhatsApp Business nummer** | +1 555-759-0811 (API formaat: `15557590811`) |
+
+---
+
+## WhatsApp Templates
+
+| Template | Status | Gebruikt in | Parameters |
+|----------|--------|------------|-----------|
+| `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 4 (naam docent, naam student, vak NL, Tally link) |
+| `parent_timeslot_invitation` | ✅ Goedgekeurd | Scenario 02 + 03 (route 3) | TBD (genummerde tijdsloten) |
+| `trial_lesson_confirmation` | ✅ Goedgekeurd | Scenario 04 | TBD (bevestiging details) |
+| Reminder template docent | 🔴 Niet aangemaakt | Scenario 03 (route 1) | — |
+| Reminder template ouder | 🔴 Niet aangemaakt | Scenario 03 (route 3) | — |
+
+> ⚠️ **Pas templates alleen aan na volledig testen.** Elke wijziging vereist opnieuw Meta goedkeuring (wachttijd: 2-7 werkdagen).
+> Disclaimer toevoegen aan `trial_lesson_confirmation` als **allerlaatste stap**.
+
+**Disclaimer tekst (in alle templates):**
+> "Dit nummer is alleen voor het inplannen van proeflessen. Voor andere vragen kun je ons bereiken via WhatsApp: +31613689666 of telefoon: 071-3031901."
 
 ---
 
@@ -29,61 +56,105 @@ Gebruik deze instellingen in elke HTTP module die naar de 360dialog WhatsApp API
 
 ---
 
+## Make.com Omgeving
+
+| Instelling | Waarde |
+|-----------|--------|
+| **Regio** | eu1 (Europa) |
+| **URL** | eu1.make.com |
+| **Organisatie ID** | 1179486 |
+
+---
+
+## Contactgegevens
+
+| Contact | Waarde | Gebruik |
+|---------|--------|---------|
+| WhatsApp Business (Bright Panda) | `15557590811` | Verzendend nummer |
+| Intern escalatie WhatsApp | `31613689666` | Escalaties Scenario 03 + 04 |
+| Intern telefoon | 071-3031901 | Vermeld in template disclaimer |
+| Intern WhatsApp (zichtbaar) | +31613689666 | Vermeld in template disclaimer |
+
+---
+
+## Tally Formulieren
+
+| Formulier | URL | Webhook URL | Doel |
+|-----------|-----|-------------|------|
+| Form 1 (docent) | `https://tally.so/r/2Ekaq9` | `https://hook.eu1.make.com/8mum1e8efh41uf7gdb91gvyrwsz0mexg` | Docent vult beschikbaarheid in |
+| Form 2 (ouder) | `https://tally.so/r/WOozov` | Nog te koppelen | Ouder kiest tijdslot |
+
+---
+
 ## Dataconventie Telefoonnummers
 
-> ⚠️ **Kritiek** — verkeerde opslag leidt tot HTTP fout 100 "Invalid parameter" bij 360dialog
+> ⚠️ **Kritiek** — verkeerd formaat leidt tot HTTP 100 "Invalid parameter" bij 360dialog
 
-- Alle nummers opslaan **zonder `+`** en **met landcode**: `31XXXXXXXXX`
-- **Nooit** lokaal formaat gebruiken: `0XXXXXXXXX`
-- Geldt voor alle velden: `Phone`, `PersonMobilePhone`, `ParentSPhone__c`, etc.
+| ✅ Correct | ❌ Incorrect |
+|-----------|------------|
+| `31630892143` | `0630892143` (lokaal) |
+| `31630892143` | `+31630892143` (met +) |
+| `15557590811` | `+1 555-759-0811` (met spaties/+) |
 
-**Voorbeeld:**
-```
-✅ Correct:   31630892143
-❌ Incorrect: 0630892143
-❌ Incorrect: +31630892143
-```
+**Geldt voor alle velden:** `Phone`, `PersonMobilePhone`, `ParentSPhone__c`
 
 ---
 
 ## Tally Webhook Instructie
 
-> ⚠️ Timing is kritiek — verkeerde volgorde leidt tot mislukte webhook ontvangst
+> ⚠️ Verkeerde volgorde leidt tot mislukte webhook ontvangst
 
-**Altijd in deze volgorde:**
 1. Open het scenario in Make.com
 2. Klik **Run once**
-3. Wacht op de melding **"Waiting for data"**
+3. Wacht op **"Waiting for data"** melding
 4. Vul dan pas het Tally formulier in
-5. Nooit andersom
+
+**Webhook logs bekijken:**
+- Ga **uit** het scenario (sluit het scenario)
+- Klik links in het menu op **Webhooks**
+- Klik op **Logs** bij de naam van de webhook
+- ❌ Niet via de scenario **History tab**
 
 ---
 
-## WhatsApp Templates (360dialog / Meta)
+## Make.com Formule Regels
 
-| Template | Status | Gebruik |
-|----------|--------|---------|
-| `teacher_invitation` | ⏳ In review bij Meta (opnieuw ingediend 8 maart) | Scenario 01 |
-| `parent_timeslot_invitation` | ❓ Status onbekend | Scenario 02 |
-| Reminder template docent | 🔴 Nog niet aangemaakt | Scenario 03 |
-| Reminder template ouder | 🔴 Nog niet aangemaakt | Scenario 03 |
+| Regel | Detail |
+|-------|--------|
+| `replace()` in JSON | ❌ Conflicteert met JSON aanhalingstekens → gebruik Set Variable module |
+| `switch()` in JSON | ✅ Gebruik backticks voor string literals: `` `Mathematics A` `` |
+| Backticks in `replace()` | ❌ Geeft "Module references non-existing module NaN" error |
+| Formules met `"` in JSON | Altijd vooraf berekenen in Tools → Set Variable module |
 
-> Templates moeten eerst goedgekeurd zijn door Meta voordat ze live gebruikt kunnen worden.
-> Zolang 360dialog "under review" staat: max **5 berichten per 24 uur**.
-
----
-
-## Interne Contactgegevens
-
-| Contact | Nummer / Adres | Gebruik |
-|---------|---------------|---------|
-| Bright Panda intern | `31613689666` | Escalatiemeldingen Scenario 03 |
-| Testrecord Raouf Student | `31613689666` | Testen Scenario 02 |
+**Stelregel:** Als een formule dubbele aanhalingstekens nodig heeft → Set Variable module gebruiken, resultaat als `{{X.variabelenaam}}` in JSON plaatsen.
 
 ---
 
-## Make.com Omgeving
+## Meta Business Verificatie (To-do)
 
-- **Regio:** eu1 (Europa)
-- **URL:** eu1.make.com
-- **Organisatie:** Bright Panda
+**Doel:** "Bright Panda Bijles" als naam zichtbaar bij ontvanger (in plaats van +1 nummer)
+**Status:** Nog te doen — lage urgentie
+
+| Stap | Detail |
+|------|--------|
+| Locatie | Meta Business Manager → Settings → Security center → Start verification |
+| KvK nummer | 84707577 |
+| Kosten | Gratis |
+| Doorlooptijd | 2-7 werkdagen |
+| Resultaat | Naam zichtbaar, geen groen vinkje (dat is alleen voor grote merken) |
+
+---
+
+## Salesforce Custom Velden op Student_Teacher_Matching__c
+
+| API Naam | Type | Beschrijving |
+|----------|------|-------------|
+| `Trial_Lesson_Date__c` | Date | Definitieve datum + tijd proefles |
+| `Trial_Lesson_Status__c` | Picklist | Teacher Invited → Availability Received → Parent Invited → Trial Lesson Scheduled → Trial Lesson Completed → No Show |
+| `Tally_Link_Teacher__c` | Text | Volledige Tally Form 1 URL verstuurd naar docent |
+| `Available_Timeslots__c` | Long Text Area (10.000) | Genummerde tijdslotenlijst: `1=datum tijd\|2=datum tijd` |
+| `Teacher_Reminder_Sent__c` | Checkbox | true na versturen 24u reminder docent |
+| `Teacher_Escalation_Sent__c` | Checkbox | true na versturen 48u escalatie docent |
+| `Parent_Reminder_Sent__c` | Checkbox | true na versturen 24u reminder ouder |
+| `Parent_Escalation_Sent__c` | Checkbox | true na versturen 48u escalatie ouder |
+| `Reminder_Sent__c` | Checkbox | Legacy algemene reminder vlag |
