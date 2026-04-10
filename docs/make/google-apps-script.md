@@ -1,15 +1,118 @@
 # Google Apps Script
 
-**Script URL (actief):**
+Twee aparte scripts voor de Bright Panda automatisering.
+
+---
+
+## Script 1 — Vakvertaling (Scenario 01)
+
+**URL:**
+`https://script.google.com/macros/s/AKfycbyfkKuHurbErhMZkl_GAAtDImsd9SzLyc9qi3-qYdm3kuf7m1kylo5joO_DfbijH1M-0Q/exec`
+
+**Type:** GET request
+**Parse response:** NO (uitgeschakeld in Make.com)
+**Output:** `{{10.body}}` — plain text Nederlandse vaknaam
+
+**Hoe aanroepen in Make.com (Scenario 01 module 10):**
+```
+GET https://script.google.com/macros/s/AKfycbyfkKuHurbErhMZkl_GAAtDImsd9SzLyc9qi3-qYdm3kuf7m1kylo5joO_DfbijH1M-0Q/exec?subject={{encodeURL(1.Subject_s__c)}}
+```
+
+> ⚠️ **Parse response: NO** — het script retourneert plain text. Als je Parse response aanzet, geeft Make.com een JSON parse error. Gebruik de `.body` chip voor de output.
+
+### Vertaaltabel
+
+| Engels (Salesforce) | Nederlands (WhatsApp) |
+|--------------------|-----------------------|
+| Mathematics A | Wiskunde A |
+| Mathematics B | Wiskunde B |
+| Mathematics C | Wiskunde C |
+| Mathematics D | Wiskunde D |
+| Physics | Natuurkunde |
+| Chemistry | Scheikunde |
+| Biology | Biologie |
+| Economics | Economie |
+| Business Economics | Bedrijfseconomie |
+| Accounting | Bedrijfseconomie |
+| Geography | Aardrijkskunde |
+| History | Geschiedenis |
+| Dutch | Nederlands |
+| English | Engels |
+| French | Frans |
+| German | Duits |
+| Spanish | Spaans |
+| Latin | Latijn |
+| Greek | Grieks |
+| Computer Science | Informatica |
+| General Science | Natuur- en Scheikunde 1 |
+| Nature & Technology | Natuur & Technologie |
+| Philosophy | Filosofie |
+| Art | Tekenen/CKV |
+| Social Studies | Maatschappijleer |
+| Economics & Society | Maatschappijwetenschappen |
+| Physical Education | Lichamelijke opvoeding |
+| Music | Muziek |
+| Drama | Drama |
+| Management & Organization | M&O |
+| Care & Welfare | Zorg & Welzijn |
+
+> Onbekend vak: script retourneert de originele Engelstalige naam ongewijzigd.
+
+### Script Code (Script 1)
+
+```javascript
+function doGet(e) {
+  const subject = e.parameter.subject || "";
+  const translations = {
+    "Mathematics A": "Wiskunde A",
+    "Mathematics B": "Wiskunde B",
+    "Mathematics C": "Wiskunde C",
+    "Mathematics D": "Wiskunde D",
+    "Physics": "Natuurkunde",
+    "Chemistry": "Scheikunde",
+    "Biology": "Biologie",
+    "Economics": "Economie",
+    "Business Economics": "Bedrijfseconomie",
+    "Accounting": "Bedrijfseconomie",
+    "Geography": "Aardrijkskunde",
+    "History": "Geschiedenis",
+    "Dutch": "Nederlands",
+    "English": "Engels",
+    "French": "Frans",
+    "German": "Duits",
+    "Spanish": "Spaans",
+    "Latin": "Latijn",
+    "Greek": "Grieks",
+    "Computer Science": "Informatica",
+    "General Science": "Natuur- en Scheikunde 1",
+    "Nature & Technology": "Natuur & Technologie",
+    "Philosophy": "Filosofie",
+    "Art": "Tekenen/CKV",
+    "Social Studies": "Maatschappijleer",
+    "Economics & Society": "Maatschappijwetenschappen",
+    "Physical Education": "Lichamelijke opvoeding",
+    "Music": "Muziek",
+    "Drama": "Drama",
+    "Management & Organization": "M&O",
+    "Care & Welfare": "Zorg & Welzijn"
+  };
+  const result = translations[subject] || subject;
+  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.TEXT);
+}
+```
+
+---
+
+## Script 2 — Tijdslotverwerking (Scenario 02 + 3b)
+
+**URL:**
 `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec`
 
 **Versie:** 2
 **Beheer:** [script.google.com](https://script.google.com)
 **Laatste update:** 10 april 2026
 
----
-
-## Waarom Google Apps Script?
+### Waarom Google Apps Script?
 
 Na 3+ uur debuggen bleek dat Tally `INPUT_DATE` velden in Make.com worden omgezet naar **date objects**. Geen enkele Make.com functie kon de datum als string concateneren:
 
@@ -21,15 +124,13 @@ Na 3+ uur debuggen bleek dat Tally `INPUT_DATE` velden in Make.com worden omgeze
 | `formatDate(1.data.fields[3].value; "YYYY-MM-DD")` | leeg |
 | `parseDate(1.data.fields[3].value; "YYYY-MM-DD")` | leeg |
 
-**Root cause:** Make.com's `&` concatenatie operator werkt niet op date objects. Bewijs: `{{1.data.fields[3].value}}` puur weergeven gaf `"2026-03-10"` correct, maar in een expressie met `&` was de waarde altijd leeg.
+**Root cause:** Make.com's `&` concatenatie operator werkt niet op date objects. Bewijs: `{{1.data.fields[2].value}}` puur weergeven gaf `"2026-03-10"` correct, maar in een expressie met `&` was de waarde altijd leeg.
 
-**Oplossing:** Datum als JSON string sturen naar Google Apps Script via aanhalingstekens om de chip: `"3": "{{1.data.fields[3].value}}"` — de aanhalingstekens forceren JSON serialisatie als string.
+**Oplossing:** Datum als JSON string sturen naar Google Apps Script via aanhalingstekens om de chip: `"2": "{{1.data.fields[2].value}}"` — de aanhalingstekens forceren JSON serialisatie als string.
 
 > Naast datum-problemen zijn ook lange Make.com formules (>13 geneste if-statements) onbetrouwbaar — tokens lijken correct maar geven lege output bij opslaan. Alle complexe logica staat daarom in dit script.
 
----
-
-## Deploy Instellingen
+### Deploy Instellingen
 
 | Instelling | Waarde |
 |-----------|--------|
@@ -48,9 +149,7 @@ Na 3+ uur debuggen bleek dat Tally `INPUT_DATE` velden in Make.com worden omgeze
 
 > ⚠️ Bij een **nieuwe** deployment (niet versie update) verandert de URL. Dan moet de URL bijgewerkt worden in Make.com Scenario 02 module 31 en Scenario 3b module 5.
 
----
-
-## Architectuur
+### Architectuur
 
 ```
 POST request binnenkomt
@@ -61,52 +160,36 @@ POST request binnenkomt
                 └── YES → Functie B (Scenario 3b: vertaal keuzenummer)
 ```
 
----
+### Functie A — Bouw Tijdsloten String (Scenario 02)
 
-## Functie A — Bouw Tijdsloten String (Scenario 02)
-
-### Input
+#### Input
 ```json
 {
   "fields": {
-    "3": "2026-03-10",
-    "18": "2026-03-12",
-    "33": "",
-    "48": "",
-    "63": "",
+    "2": "2026-03-10",
+    "17": "2026-03-12",
+    "32": "",
+    "47": "",
+    "62": "",
+    "4": false,
     "5": false,
-    "6": false,
+    "6": true,
     "7": true,
-    "8": true,
-    "9": false,
-    "10": false,
-    "11": false,
-    "12": false,
-    "13": false,
-    "14": false,
-    "15": false,
-    "16": false,
-    "17": false,
-    "20": false,
-    "21": false,
-    "22": false,
-    "23": false,
-    "24": false,
-    "25": true,
+    "8": false,
     ...
   }
 }
 ```
 
-### Datum- en Checkbox Mapping
+#### Datum- en Checkbox Mapping (0-based Tally indexering)
 
 | Datum veld | Checkbox range | Tijdsloten |
 |-----------|---------------|-----------|
-| `fields[3]` (Datum 1) | `fields[5]` t/m `fields[17]` | 08:00-09:00 t/m 20:00-21:00 |
-| `fields[18]` (Datum 2) | `fields[20]` t/m `fields[32]` | 08:00-09:00 t/m 20:00-21:00 |
-| `fields[33]` (Datum 3) | `fields[35]` t/m `fields[47]` | 08:00-09:00 t/m 20:00-21:00 |
-| `fields[48]` (Datum 4) | `fields[50]` t/m `fields[62]` | 08:00-09:00 t/m 20:00-21:00 |
-| `fields[63]` (Datum 5) | `fields[65]` t/m `fields[77]` | 08:00-09:00 t/m 20:00-21:00 |
+| `fields[2]` (Datum 1) | `fields[4]` t/m `fields[16]` | 08:00-09:00 t/m 20:00-21:00 |
+| `fields[17]` (Datum 2) | `fields[19]` t/m `fields[31]` | 08:00-09:00 t/m 20:00-21:00 |
+| `fields[32]` (Datum 3) | `fields[34]` t/m `fields[46]` | 08:00-09:00 t/m 20:00-21:00 |
+| `fields[47]` (Datum 4) | `fields[49]` t/m `fields[61]` | 08:00-09:00 t/m 20:00-21:00 |
+| `fields[62]` (Datum 5) | `fields[64]` t/m `fields[76]` | 08:00-09:00 t/m 20:00-21:00 |
 
 **Tijdsloten array (index 0-12):**
 ```
@@ -115,7 +198,7 @@ POST request binnenkomt
 18:00-19:00 | 19:00-20:00 | 20:00-21:00
 ```
 
-### Output
+#### Output
 ```json
 {"timeslots": "2026-03-10 - 10:00-11:00|2026-03-10 - 11:00-12:00|2026-03-12 - 17:00-18:00"}
 ```
@@ -124,9 +207,9 @@ POST request binnenkomt
 
 ---
 
-## Functie B — Vertaal Keuzenummer naar Datetime (Scenario 3b)
+### Functie B — Vertaal Keuzenummer naar Datetime (Scenario 3b)
 
-### Input
+#### Input
 ```json
 {
   "timeslots": "2026-03-10 - 10:00-11:00|2026-03-10 - 14:00-15:00|2026-03-12 - 09:00-10:00",
@@ -134,14 +217,14 @@ POST request binnenkomt
 }
 ```
 
-### Logica
+#### Logica
 1. Split `timeslots` op `|` → array
 2. Pak index `chosen - 1` (1-based → 0-based) → `"2026-03-10 - 14:00-15:00"`
 3. Split op `" - "` → datum `"2026-03-10"`, tijdslot `"14:00-15:00"`
 4. Split tijdslot op `"-"` → starttijd `"14:00"`
 5. Bouw ISO datetime: `"2026-03-10T14:00:00.000Z"`
 
-### Output
+#### Output
 ```json
 {
   "timeslot": "2026-03-10 - 14:00-15:00",
@@ -157,7 +240,7 @@ POST request binnenkomt
 
 ---
 
-## Volledige Script Code (Versie 2)
+## Volledige Script Code (Script 2 — Versie 2)
 
 ```javascript
 function doPost(e) {
@@ -171,8 +254,8 @@ function doPost(e) {
       "12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00",
       "16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00","20:00-21:00"
     ];
-    const dateFields = [3, 18, 33, 48, 63];
-    const slotStarts = [5, 20, 35, 50, 65];
+    const dateFields = [2, 17, 32, 47, 62];
+    const slotStarts = [4, 19, 34, 49, 64];
     let result = [];
 
     for (let d = 0; d < 5; d++) {
@@ -218,7 +301,8 @@ function doPost(e) {
 
 ## Gebruik per Scenario
 
-| Scenario | Module | Functie | Trigger in input | Output gebruikt |
-|----------|--------|---------|-----------------|----------------|
-| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | 31 | A | `data.fields` aanwezig | `{{31.data.timeslots}}` |
-| [Scenario 3b](scenario-3b-ouder-tijdslot-verwerking.md) | 5 | B | `data.timeslots` + `data.chosen` | `{{5.data.timeslot}}`, `{{5.data.datetime}}` |
+| Scenario | Module | Script | Methode | Output gebruikt |
+|----------|--------|--------|---------|----------------|
+| [Scenario 01](scenario-01-docent-uitnodiging-whatsapp.md) | 10 | Script 1 (vakvertaling) | GET + `?subject=` | `{{10.body}}` |
+| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | 31 | Script 2 Functie A | POST + `data.fields` | `{{31.data.timeslots}}` |
+| [Scenario 3b](scenario-3b-ouder-tijdslot-verwerking.md) | 5 | Script 2 Functie B | POST + `data.timeslots` + `data.chosen` | `{{5.data.timeslot}}`, `{{5.data.datetime}}` |

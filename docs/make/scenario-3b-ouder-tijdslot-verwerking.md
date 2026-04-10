@@ -3,9 +3,7 @@
 **Make naam:** Scenario 3b
 **Make Scenario ID:** 4783259 (eu1.make.com)
 **Laatste update:** 10 april 2026
-**Status:** 🟡 In aanbouw — modules 3-6 ✅ werkend, modules 7-10 nog te bouwen
-
-> **Huidige blokkade:** Template `trial_lesson_confirmation` parameters onbekend — Raouf moet de volledige template tekst ophalen uit het 360dialog dashboard. Modules 8 en 10 kunnen pas gebouwd worden daarna.
+**Status:** 🟡 In aanbouw — modules 3-6 ✅ werkend, modules 7-13 nog te bouwen/testen
 
 ---
 
@@ -29,24 +27,28 @@ Verwerkt de tijdslot keuze van een ouder via **Tally Form 2**. Vertaalt het geko
 ## Module Volgorde
 
 ```
-[3]  Webhooks → Custom Webhook (Tally Form 2)      ✅ Werkend
+[3]  Webhooks → Custom Webhook (Tally Form 2)         ✅ Werkend
         ↓
-[4]  Salesforce → Search Records (SOQL)            ✅ Werkend
+[4]  Salesforce → Search Records (SOQL)               ✅ Werkend
         ↓
-[5]  HTTP → Google Apps Script (keuze → datetime)  ✅ Getest en werkend
+[5]  HTTP → Google Apps Script (keuze → datetime)     ✅ Getest en werkend
         ↓
-[6]  Salesforce → Update a Record                  ✅ Werkend
+[6]  Salesforce → Update a Record                     ✅ Werkend
         ↓
-[7]  Salesforce → Get a Record (Student Account)   ← NOG TE BOUWEN
+[8]  Salesforce → Get a Record (Student Account)      ← NOG TE BOUWEN
         ↓
-[8]  HTTP → 360dialog (WhatsApp naar ouder)         ← NOG TE BOUWEN (wacht op template tekst)
+[13] Salesforce → Search Records SOQL (Ouder Contact) ← NOG TE BOUWEN
         ↓
-[9]  Salesforce → Get a Record (Teacher Account)   ← NOG TE BOUWEN
+[7]  HTTP → 360dialog (WhatsApp naar ouder)           ← NOG TE BOUWEN
         ↓
-[10] HTTP → 360dialog (WhatsApp naar docent)        ← NOG TE BOUWEN (wacht op template tekst)
+[9]  Salesforce → Get a Record (Teacher Account)      ← NOG TE BOUWEN
+        ↓
+[12] HTTP → 360dialog (WhatsApp naar docent)          ← NOG TE BOUWEN
 ```
 
 > ⚠️ **Kritiek:** De webhook is module **3** in dit scenario (niet 1 zoals in Scenario 02). Gebruik **altijd** `{{3.data.fields[...]}}` — nooit `{{1.data.fields[...]}}`. Fout modulenummer geeft "references non-existing module" waarschuwing.
+
+> ⚠️ **Wacht op template goedkeuring:** `trial_lesson_confirmed_teacher` is ingediend bij Meta als Utility, goedkeuring afwachten. `trial_lesson_confirmation_parent` is al goedgekeurd.
 
 ---
 
@@ -61,10 +63,12 @@ Verwerkt de tijdslot keuze van een ouder via **Tally Form 2**. Vertaalt het geko
 ```sql
 SELECT Id, Teacher__c, Student__c, Available_Timeslots__c, Name
 FROM Student_Teacher_Matching__c
-WHERE Name = 'Matching Number {{3.data.fields[1].value}}'
+WHERE Name = '{{3.data.fields[1].value}}'
 ```
 
 **Gebruikte output:** `{{4.Id}}`, `{{4.Teacher__c}}`, `{{4.Student__c}}`, `{{4.Available_Timeslots__c}}`
+
+> **Opmerking:** Tally Form 2 gebruikt `matching_number` als `fields[1]` — dit bevat het matching nummer als getal (bijv. `"0016"`), niet de volledige naam. De SOQL voegt het prefix `Matching Number ` toe.
 
 ### Module 5 — HTTP → Google Apps Script ✅ Getest
 
@@ -98,31 +102,110 @@ Zie [Google Apps Script documentatie](google-apps-script.md) voor Functie B logi
 | `Trial_Lesson_Date__c` | `{{5.data.datetime}}` |
 | `Trial_Lesson_Status__c` | `Lesson Scheduled` |
 
-### Module 7 — Salesforce Get a Record (Student) *(NOG TE BOUWEN)*
+### Module 8 — Salesforce Get a Record (Student) *(NOG TE BOUWEN)*
 - **Type:** Account
 - **Record ID:** `{{4.Student__c}}`
-- **Benodigde output:** `{{7.ParentSPhone__c}}`, `{{7.FirstName}}`
+- **Benodigde output:** `{{8.FirstName}}`, `{{8.Account ID}}`
 
-### Module 8 — HTTP → 360dialog (WhatsApp naar ouder) *(NOG TE BOUWEN)*
+### Module 13 — Salesforce Search Records SOQL (Ouder Contact) *(NOG TE BOUWEN)*
 
-> ⚠️ **Actie vereist:** Raouf opent 360dialog dashboard → Message Templates → `trial_lesson_confirmation` → deelt de volledige template tekst. Parameters kunnen pas bepaald worden na ontvangst.
+```sql
+SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
+```
 
-- **Template:** `trial_lesson_confirmation`
-- **Naar:** `{{7.ParentSPhone__c}}`
-- **Parameters:** ONBEKEND — afhankelijk van template tekst
+- **Limit:** 10
+- **Output:** `{{13.FirstName}}`, `{{13.Phone}}`
+
+> Ouders zijn **Contact** records in Salesforce, gekoppeld via `AccountId` aan het student Account.
+
+### Module 7 — HTTP → 360dialog (WhatsApp naar ouder) *(NOG TE BOUWEN)*
+
+- **Template:** `trial_lesson_confirmation_parent`
+- **Status template:** ✅ Goedgekeurd
+- **Naar:** `{{13.Phone}}`
+
+**JSON body:**
+```json
+{
+  "messaging_product": "whatsapp",
+  "to": "{{13.Phone}}",
+  "type": "template",
+  "template": {
+    "name": "trial_lesson_confirmation_parent",
+    "language": {"code": "nl"},
+    "components": [{
+      "type": "body",
+      "parameters": [
+        {"type": "text", "text": "{{13.FirstName}}"},
+        {"type": "text", "text": "{{8.Name}}"},
+        {"type": "text", "text": "{{3.data.fields[2].value}}"},
+        {"type": "text", "text": "{{3.data.fields[3].value}}"},
+        {"type": "text", "text": "{{9.FirstName}}"},
+        {"type": "text", "text": "{{9.Phone}}"}
+      ]
+    }]
+  }
+}
+```
+
+**Parameter mapping:**
+
+| Parameter | Variabele | Inhoud |
+|-----------|-----------|--------|
+| `{{1}}` | `{{13.FirstName}}` | Voornaam ouder |
+| `{{2}}` | `{{8.Name}}` | Volledige naam student (Account.Name) |
+| `{{3}}` | `{{3.data.fields[2].value}}` | Leesbaar tijdslot (bijv. "2026-03-10 - 14:00-15:00") |
+| `{{4}}` | `{{3.data.fields[3].value}}` | Extra datuminfo (Form 2 veld) |
+| `{{5}}` | `{{9.FirstName}}` | Voornaam docent |
+| `{{6}}` | `{{9.Phone}}` | Telefoonnummer docent |
 
 ### Module 9 — Salesforce Get a Record (Teacher) *(NOG TE BOUWEN)*
 - **Type:** Account
 - **Record ID:** `{{4.Teacher__c}}`
 - **Benodigde output:** `{{9.Phone}}`, `{{9.FirstName}}`
 
-### Module 10 — HTTP → 360dialog (WhatsApp naar docent) *(NOG TE BOUWEN)*
+### Module 12 — HTTP → 360dialog (WhatsApp naar docent) *(NOG TE BOUWEN)*
 
-> ⚠️ Zelfde template tekst nodig als module 8 — wacht op template informatie.
-
-- **Template:** `trial_lesson_confirmation`
+- **Template:** `trial_lesson_confirmed_teacher`
+- **Status template:** 🟡 Ingediend bij Meta — wacht op goedkeuring
 - **Naar:** `{{9.Phone}}`
-- **Parameters:** ONBEKEND — afhankelijk van template tekst
+
+**JSON body:**
+```json
+{
+  "messaging_product": "whatsapp",
+  "to": "{{9.Phone}}",
+  "type": "template",
+  "template": {
+    "name": "trial_lesson_confirmed_teacher",
+    "language": {"code": "nl"},
+    "components": [{
+      "type": "body",
+      "parameters": [
+        {"type": "text", "text": "{{9.FirstName}}"},
+        {"type": "text", "text": "{{8.Name}}"},
+        {"type": "text", "text": "{{3.data.fields[2].value}}"},
+        {"type": "text", "text": "{{3.data.fields[3].value}}"},
+        {"type": "text", "text": "{{13.FirstName}}"},
+        {"type": "text", "text": "{{13.Phone}}"}
+      ]
+    }]
+  }
+}
+```
+
+**Parameter mapping:**
+
+| Parameter | Variabele | Inhoud |
+|-----------|-----------|--------|
+| `{{1}}` | `{{9.FirstName}}` | Voornaam docent |
+| `{{2}}` | `{{8.Name}}` | Volledige naam student |
+| `{{3}}` | `{{3.data.fields[2].value}}` | Leesbaar tijdslot |
+| `{{4}}` | `{{3.data.fields[3].value}}` | Extra datuminfo |
+| `{{5}}` | `{{13.FirstName}}` | Voornaam ouder |
+| `{{6}}` | `{{13.Phone}}` | Telefoonnummer ouder |
+
+> **Privacyprincipe (B09):** Docent en ouder krijgen **elkaars contactgegevens pas in de bevestiging** — niet eerder. Dit is bewuste keuze.
 
 ---
 
@@ -162,6 +245,7 @@ Zie [Google Apps Script documentatie](google-apps-script.md) voor Functie B logi
 - ⚠️ Einde-tot-einde test is **nog nooit uitgevoerd** met een echt matching record
 - 🕐 Test gedaan met handmatig gevuld `Available_Timeslots__c` en matching_number=0016
 - 📋 Verzetten/annuleren gaat handmatig — contactgegevens in WhatsApp disclaimer
+- ⚠️ Bouwen modules 7-13 wacht op goedkeuring `trial_lesson_confirmed_teacher` template
 
 ---
 

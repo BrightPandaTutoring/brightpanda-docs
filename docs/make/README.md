@@ -8,10 +8,10 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | # | Naam | Trigger | Status | Bestand |
 |---|------|---------|--------|---------|
-| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | 🟡 Compleet — wacht Meta #131037 | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
-| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | ✅ Compleet | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
+| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | ✅ Werkend — getest 12 maart 2026 | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
+| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | 🟡 Compleet — SOQL 0-based indices hertesten | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
 | 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Compleet | [scenario-03](scenario-03-reminders-escalatie.md) |
-| 3b | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🟡 In aanbouw (modules 3-6 ✅) | [scenario-3b](scenario-3b-ouder-tijdslot-verwerking.md) |
+| 3b | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🟡 In aanbouw (modules 3-6 ✅, 7-13 wacht op template) | [scenario-3b](scenario-3b-ouder-tijdslot-verwerking.md) |
 | 05 | Koppelingsbevestiging | Onbekend | 🔴 Backlog | [scenario-05](scenario-05-koppelingsbevestiging.md) |
 
 ---
@@ -31,9 +31,11 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | Scenario | Blokkade | Actie |
 |----------|---------|-------|
-| 01 | Meta #131037 — display name goedkeuring | Wacht 24-48u → Run once opnieuw |
-| 3b | Template `trial_lesson_confirmation` parameters onbekend | Raouf haalt tekst op uit 360dialog → modules 7-10 bouwen |
-| 3b | Einde-tot-einde test nog niet gedaan | Na oplevering modules 7-10 uitvoeren met echt matching record |
+| 01 | Meta display name goedkeuring (laag prioriteit) | Wacht → dan naam "Bright Panda Bijles" zichtbaar bij ontvanger |
+| 02 | SOQL module 3 gebruikte fields[1] i.p.v. fields[0] (0-based) | Gecorrigeerd in docs — hertesten met echt Tally formulier |
+| 02 | Module 4 gebruikte `ParentSPhone__c` (niet bruikbaar) | Vervangen door module 32 Contact SOQL — nog testen |
+| 3b | Template `trial_lesson_confirmed_teacher` wacht op Meta goedkeuring | Goedkeuring afwachten → dan modules 7-13 bouwen |
+| 3b | Einde-tot-einde test nog niet gedaan | Na oplevering modules 7-13 uitvoeren met echt matching record |
 
 ---
 

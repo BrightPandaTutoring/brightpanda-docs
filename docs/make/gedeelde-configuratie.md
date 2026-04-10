@@ -17,6 +17,8 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | **Body content type** | `application/json` |
 | **Body input method** | JSON string |
 
+> ⚠️ **API-key letterteken:** De sleutel bevat een hoofdletter `I` (India) en een kleine letter `l` (Lima) — ze lijken op elkaar in sommige fonts. Kopieer de sleutel altijd exact: `xl6Aj3Gs66I40LQl7C6GbjlxAK`
+
 ### 360dialog Account Status
 | Eigenschap | Waarde |
 |-----------|--------|
@@ -33,20 +35,22 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 | Template | Status | Gebruikt in | Parameters |
 |----------|--------|------------|-----------|
-| `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 4 — naam docent, naam student, vak NL, Tally link |
+| `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 6 — naam docent, naam student, vak NL, naam ouder, tel ouder, Tally link |
 | `parent_timeslot_invitation` | ✅ Goedgekeurd | Scenario 02 + 03 (route 3) | 5 — naam ouder, naam leerling, vak, tijdsloten, Form 2 link |
-| `trial_lesson_confirmation` | ✅ Goedgekeurd | Scenario 3b modules 8 + 10 | Parameters ONBEKEND — template tekst ophalen uit 360dialog dashboard |
+| `trial_lesson_confirmation_parent` | ✅ Goedgekeurd | Scenario 3b module 7 | 6 — naam ouder, naam student, tijdslot, datum, naam docent, tel docent |
+| `trial_lesson_confirmed_teacher` | 🟡 Ingediend — wacht op goedkeuring | Scenario 3b module 12 | 6 — naam docent, naam student, tijdslot, datum, naam ouder, tel ouder |
 | Reminder template docent | 🔴 Niet aangemaakt | Scenario 03 (route 1) | — |
 | Reminder template ouder | 🔴 Niet aangemaakt | Scenario 03 (route 3) | — |
 
 > ⚠️ **Pas templates alleen aan na volledig testen.** Elke wijziging vereist opnieuw Meta goedkeuring (wachttijd: 2-7 werkdagen).
+> ⚠️ **Template classificatie:** Vermijd emoji's en woorden als "proefles" in de template tekst — Meta classificeert dan als Marketing. Dien altijd in als Utility-categorie.
 
 ### Template teksten
 
-> ⚠️ **`trial_lesson_confirmation`** template tekst is ONBEKEND — Raouf opent 360dialog dashboard → Message Templates → deelt de volledige tekst. Parameters kunnen pas bepaald worden na ontvangst.
-
 **Disclaimer tekst (in alle templates):**
 > "Dit nummer is alleen voor het inplannen van proeflessen. Voor andere vragen kun je ons bereiken via WhatsApp: +31613689666 of telefoon: 071-3031901."
+
+> ⚠️ Voeg de disclaimer toe aan `trial_lesson_confirmation_parent` en `trial_lesson_confirmed_teacher` als allerlaatste stap, nádat de volledige flow getest is (elke aanpassing vereist opnieuw Meta goedkeuring).
 
 ---
 
@@ -57,16 +61,38 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | **Verbindingsnaam in Make.com** | Bright Panda Salesforce |
 | **Make.com omgeving** | eu1.make.com |
 
+### Salesforce Record Structuur
+
+| Entiteit | Object type | Opmerking |
+|----------|-------------|-----------|
+| Docenten | **Account** | Telefoon = `Phone` veld op Account (zichtbaar in Make.com als "Business Phone") |
+| Studenten | **Account** | Voornaam = `FirstName`, volledige naam = `Name` |
+| Ouders | **Contact** | Gekoppeld via `AccountId` aan student Account |
+
+**Ouder ophalen via SOQL:**
+```sql
+SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{account_id}}'
+```
+
+> ⚠️ `ParentSPhone__c` is **niet bruikbaar** voor ouder contactgegevens — ouders zijn Contact records. Dit gold ook voor `PersonMobilePhone` of andere Account velden. Gebruik altijd de Contact SOQL.
+
 ---
 
 ## Google Apps Script
 
-| Instelling | Waarde |
-|-----------|--------|
-| **Script URL** | `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec` |
-| **Versie** | 2 |
-| **Functie A** | Bouw tijdsloten string (Scenario 02, module 31) |
-| **Functie B** | Vertaal keuzenummer naar datetime (Scenario 3b, module 5) |
+| Script | URL | Methode | Gebruik |
+|--------|-----|---------|---------|
+| **Script 1 — Vakvertaling** | `https://script.google.com/macros/s/AKfycbyfkKuHurbErhMZkl_GAAtDImsd9SzLyc9qi3-qYdm3kuf7m1kylo5joO_DfbijH1M-0Q/exec` | GET | Scenario 01 module 10 — vertaal Engelse vaknaam naar Nederlands |
+| **Script 2 — Tijdslotverwerking** | `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec` | POST | Scenario 02 module 31 (Functie A) + Scenario 3b module 5 (Functie B) |
+
+**Script 1 aanroep:** `GET [URL]?subject={{encodeURL(1.Subject_s__c)}}`
+→ Parse response: **NO** — output via `{{10.body}}` chip
+
+**Script 2 Functie A aanroep:** POST met `{"fields": {...}}`
+→ Output: `{{31.data.timeslots}}`
+
+**Script 2 Functie B aanroep:** POST met `{"timeslots": "...", "chosen": N}`
+→ Output: `{{5.data.timeslot}}`, `{{5.data.datetime}}`
 
 Zie [google-apps-script.md](google-apps-script.md) voor volledige documentatie.
 
@@ -100,6 +126,8 @@ Zie [google-apps-script.md](google-apps-script.md) voor volledige documentatie.
 | Form 1 (docent) | `https://tally.so/r/2Ekaq9` | `https://hook.eu1.make.com/8mum1e8efh41uf7gdb91gvyrwsz0mexg` | Docent vult beschikbaarheid in |
 | Form 2 (ouder) | `https://tally.so/r/WOozov` | Nog te koppelen | Ouder kiest tijdslot |
 
+> ⚠️ **Tally field indexering is 0-based** — `fields[0]` is het eerste veld. Bevestigd via daadwerkelijke webhook data. Tally Form 1: `fields[0]` = matching_number (bevat volledige naam "Matching Number 0016").
+
 ---
 
 ## Dataconventie Telefoonnummers
@@ -112,7 +140,7 @@ Zie [google-apps-script.md](google-apps-script.md) voor volledige documentatie.
 | `31630892143` | `+31630892143` (met +) |
 | `15557590811` | `+1 555-759-0811` (met spaties/+) |
 
-**Geldt voor alle velden:** `Phone`, `PersonMobilePhone`, `ParentSPhone__c`
+**Geldt voor alle velden:** `Phone` (op Account en Contact)
 
 ---
 
@@ -141,6 +169,8 @@ Zie [google-apps-script.md](google-apps-script.md) voor volledige documentatie.
 | `switch()` in JSON | ✅ Gebruik backticks voor string literals: `` `Mathematics A` `` |
 | Backticks in `replace()` | ❌ Geeft "Module references non-existing module NaN" error |
 | Formules met `"` in JSON | Altijd vooraf berekenen in Tools → Set Variable module |
+| `encodeURL()` in URL strings | ✅ Gebruik voor matching_number in Tally links (spaties → %20) |
+| `and()` functie | ❌ Bestaat niet in Make.com → gebruik `if(x; if(y; ...))` |
 
 **Stelregel:** Als een formule dubbele aanhalingstekens nodig heeft → Set Variable module gebruiken, resultaat als `{{X.variabelenaam}}` in JSON plaatsen.
 
