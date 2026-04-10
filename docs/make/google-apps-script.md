@@ -10,7 +10,7 @@ Drie scripts voor de Bright Panda automatisering.
 |--------|------|-----|---------|------------|
 | Script 1 | Vakvertaling | `AKfycbyfkKu...` | GET | Scenario 01 module 10 |
 | Script 2 | Tijdslotverwerking | `AKfycbxJDpq...` | POST | Scenario 02 module 31 |
-| Script 3 | Tijdslot Picker v10 | `AKfycbyrP2j...` | GET (HTML pagina) + POST (webhook) | Scenario 02 → ouder → Scenario 3b |
+| Script 3 | Tijdslot Picker v11 | `AKfycbyrP2j...` | GET (HTML pagina) + POST (webhook) | Scenario 02 → ouder → Scenario 3b |
 
 ---
 
@@ -240,14 +240,14 @@ function doPost(e) {
 
 ---
 
-## Script 3 — Tijdslot Picker v10 (Scenario 02 → Scenario 3b)
+## Script 3 — Tijdslot Picker v11 (Scenario 02 → Scenario 3b)
 
 **Volledige URL:**
 `https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec`
 
-**Bestandsnaam:** `BrightPanda_TimeslotPicker_v10.gs`
+**Bestandsnaam:** `BrightPanda_TimeslotPicker_v11.gs`
 **Type:** Web App — geeft HTML pagina terug
-**Versie:** 10
+**Versie:** 11
 
 ### Doel
 
@@ -291,6 +291,10 @@ Bij klik op "Geen tijdslot past" (Pad B):
   "status": "no_match"
 }
 ```
+
+> ✅ **v11 wijziging:** De "geen tijdslot past" knop toont nu **geen Tally Form 2 link meer**. De ouder ziet alleen een bevestigingstekst:
+> *"Geen probleem! De docent van [leerlingnaam] neemt zo snel mogelijk contact met je op om samen een tijdslot af te spreken."*
+> Daarna belt de docent de ouder en vult het afgesproken tijdslot in via Tally Form 3.
 
 ### Architect beslissingen
 

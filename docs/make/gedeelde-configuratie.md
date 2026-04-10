@@ -108,16 +108,36 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 | Instelling | Waarde |
 |-----------|--------|
+| **Plan** | Pro ($13/maand, 250 links/maand) |
 | **API Endpoint** | `https://api.tinyurl.com/create` |
 | **API Token** | `azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji` |
 | **Branded domain** | `go.brightpanda.nl` |
+| **CNAME waarde** | `hrj2vlx.customer.tinyurl.com` |
+| **DNS beheer** | Squarespace (brightpanda.nl domein) |
+| **DNS status** | ⏳ Propagatie in behandeling — check TinyURL dashboard → "Check Now" |
+
+**JSON body voor Make.com:**
+```json
+{
+  "url": "https://...",
+  "domain": "go.brightpanda.nl"
+}
+```
+
+> ⚠️ `"domain": "go.brightpanda.nl"` alleen toevoegen nadat DNS propagatie bevestigd is. Tot die tijd weglaten — TinyURL geeft dan een `tinyurl.com` link terug.
+
+**Output in Make.com:** `{{MODULE.data.data.tiny_url}}` — let op: **dubbel `.data.data`**
 
 **Gebruik in Make.com:** HTTP POST naar TinyURL endpoint vóór het versturen van de WhatsApp — de verkorte URL wordt meegestuurd in het bericht.
 
-**Gebruikt in:**
-- Scenario 2 module 35 (picker link naar ouder)
-- Scenario 3 Pad B module 30 (Tally Form 3 link naar docent)
-- Scenario 5 module 5 (Tally Form 3 reminder)
+**Geïntegreerd:**
+- ✅ Scenario 2 module 35 (picker link naar ouder)
+
+**Nog te integreren (TO DO):**
+- ⚠️ Scenario 3b Pad B module 29 (Tally Form 3 link naar docent)
+- ⚠️ Scenario 5 module 4 (Tally Form 3 reminder link)
+- ⚠️ Scenario 6 modules 4 + 7 (Tally Form 1 link in reminders)
+- ⚠️ Scenario 03 Routes 1 + 2 (picker link in ouder reminders)
 
 ---
 
@@ -141,7 +161,7 @@ Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fi
 |--------|-----|---------|------------|
 | **Script 1 — Vakvertaling** | `https://script.google.com/macros/s/AKfycbyfkKuHurbErhMZkl_GAAtDImsd9SzLyc9qi3-qYdm3kuf7m1kylo5joO_DfbijH1M-0Q/exec` | GET | Scenario 01 module 10 |
 | **Script 2 — Tijdslotverwerking** | `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec` | POST | Scenario 02 module 31 |
-| **Script 3 — Picker v10** | `https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec` | GET (HTML) | Scenario 02 → ouder klikt → POST naar Scenario 3b |
+| **Script 3 — Picker v11** | `https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec` | GET (HTML) | Scenario 02 → ouder klikt → POST naar Scenario 3b |
 
 ---
 
@@ -171,9 +191,10 @@ Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fi
 | Formulier | URL | Webhook URL | Doel |
 |-----------|-----|-------------|------|
 | Form 1 (docent beschikbaarheid) | `https://tally.so/r/2Ekaq9` | `https://hook.eu1.make.com/8mum1e8efh41uf7gdb91gvyrwsz0mexg` | Docent vult beschikbaarheid in |
-| Form 2 (fallback ouder) | `https://tally.so/r/WOozov` | — | Niet meer primair gebruikt — fallback bij no_match knop op picker pagina |
+| Form 2 (fallback ouder) | `https://tally.so/r/WOozov` | — | ⛔ Niet meer gebruikt — vervangen door GAS picker (v11 toont Form 2 link niet meer) |
+| Form 3 (docent tijdslot na conflict) | `https://tally.so/r/q4PDV9` | `https://hook.eu1.make.com/1aa2q2bnkvxodps6errjs6pxs3j4v4d9` | Docent vult afgesproken tijdslot in na Availability Conflict |
 
-> Tally Form 2 is **vervangen** door de Google Apps Script picker pagina (Script 3). Betere UX: ouder klikt op tijdslot in plaats van getal typen.
+> Tally Form 2 is **vervangen** door de Google Apps Script picker pagina (Script 3 v11). De no_match knop toont nu geen Tally Form 2 link meer — de docent belt de ouder en vult het tijdslot in via Tally Form 3.
 
 ### Tally Form 1 Webhook Data (Scenario 02)
 
@@ -194,6 +215,7 @@ Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fi
 |----------|-------------|
 | Scenario 02 (Tally Form 1) | `https://hook.eu1.make.com/8mum1e8efh41uf7gdb91gvyrwsz0mexg` |
 | Scenario 3b (GAS Picker) | `https://hook.eu1.make.com/jgrnq4k8yob8txh5x0jn2ojxx94awnwr` |
+| Scenario 4 (Tally Form 3) | `https://hook.eu1.make.com/1aa2q2bnkvxodps6errjs6pxs3j4v4d9` |
 
 ---
 

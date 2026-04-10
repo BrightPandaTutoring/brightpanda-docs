@@ -205,19 +205,55 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 - **Reden:** `LastModifiedDate` is onbetrouwbaar voor timing (record kan om andere redenen gewijzigd zijn)
 - **Gebruik:** Scenarios 6, 7, 9 berekenen tijdsverschil op basis van deze velden
 
+### B36 — Checkbox velden in router: Text operators, niet Boolean
+- **Keuze:** In Make.com router filters voor checkbox velden: operator **Text — Equal to** gebruiken met waarde `"false"` of `"true"` als tekst
+- **Reden:** Boolean operators werken niet correct voor Salesforce checkbox velden in Make.com routers — de vergelijking geeft onverwachte resultaten
+- **Bewijs:** `Trial_Class_Reminder_48h_Sent__c` filter werkte niet met Boolean → opgelost met Text operator
+- **Geldt voor:** Alle checkbox velden in alle router filters (Scenarios 6, 8, enz.)
+
+### B37 — SOQL tijdsfilter via formatDate(addHours()) patroon
+- **Keuze:** Tijdsgebaseerde filters in SOQL WHERE clause: `{{formatDate(addHours(now; -X); "YYYY-MM-DDTHH:mm:ss")}}Z`
+- **Reden:** Tijdsfiltering in Make.com router is onbetrouwbaar voor DateTime vergelijkingen — SOQL WHERE clause is nauwkeuriger en eenvoudiger
+- **Patroon:** `AND Veld__c < {{formatDate(addHours(now; -24); "YYYY-MM-DDTHH:mm:ss")}}Z` voor "ouder dan 24 uur"
+- **Gebruik:** Scenarios 6, 7, 8, 03 (Reminders & Escalatie)
+
+### B38 — TinyURL Pro plan
+- **Keuze:** TinyURL Pro plan ($13/maand, 250 links/maand) met branded domain `go.brightpanda.nl`
+- **Reden:** Professionele verkorte URL's voor ouders en docenten; branded domain versterkt vertrouwen
+- **DNS:** CNAME `go → hrj2vlx.customer.tinyurl.com` in Squarespace (brightpanda.nl DNS)
+- **Status:** DNS propagatie in behandeling — tot activatie: geen `"domain"` parameter in JSON
+
+### B39 — Squarespace beheert brightpanda.nl DNS
+- **Keuze:** DNS records voor `brightpanda.nl` worden beheerd via Squarespace
+- **Gevolg:** TinyURL CNAME (`go → hrj2vlx.customer.tinyurl.com`) toevoegen in Squarespace DNS panel
+- **Propagatietijd:** Tot 4 uur — daarna "Check Now" klikken in TinyURL dashboard
+
+### B40 — No Show + Stopped na parent_timeslot_final
+- **Keuze:** Na versturen van `parent_timeslot_final` (72u zonder reactie): `Trial_Lesson_Status__c = No Show` en `Status__c = Stopped`
+- **Reden:** Matching is definitief beëindigd — geen verdere automatisering actief
+- **Toekomst:** Re-engagement flow na 30 dagen (WhatsApp + MailerLite) — nog te bouwen
+
+### B41 — Picker v11: geen Tally Form 2 link bij no_match
+- **Keuze:** De "geen tijdslot past" knop op de picker pagina toont in v11 geen Tally Form 2 link meer
+- **Reden:** Tally Form 2 was verwarrend — ouder hoefde niets in te vullen. De docent neemt contact op en vult het tijdslot zelf in via Tally Form 3
+- **Nieuwe tekst:** "Geen probleem! De docent van [leerlingnaam] neemt zo snel mogelijk contact met je op om samen een tijdslot af te spreken."
+- **Gevolg:** Scenario 3b Pad B stuurt de docent automatisch alle benodigde info (ouder contactgegevens + Tally Form 3 link)
+
 ---
 
 ## Openstaande Acties (To-do)
 
 | Actie | Prioriteit | Details |
 |-------|-----------|---------|
-| Scenario 3b Pad B afbouwen | Hoog | SOQL + Get Student/Teacher + Update `Availability Conflict` + WhatsApp docent |
-| Template maken: Availability Conflict docent | Hoog | Instructie om ouder te bellen + contactgegevens — indienen bij Meta als Utility |
-| Nieuw polling scenario bouwen | Medium | Elke 15 min — check `Availability Conflict` + `Trial_Lesson_Date__c` leeg → reminder docent elke 3 uur |
-| Nieuw scenario: docent vult tijdslot in | Medium | Form → Salesforce update `Trial_Lesson_Date__c` + `Trial Lesson Scheduled` + bevestiging WhatsApp |
-| Filter dubbele submissions Scenario 3b | Medium | Voorkomt dat dezelfde submission twee keer verwerkt wordt |
-| Reminders 24u en 1u voor proefles | Laag | Herinnering aan ouder en docent vlak voor de proefles |
-| Einde-tot-einde test | Hoog | Na Pad B — volledig testen met echt matching record |
+| TinyURL activeren na DNS propagatie | Hoog | Check TinyURL dashboard → "Check Now" — voeg daarna `"domain": "go.brightpanda.nl"` toe in JSON bodies |
+| TinyURL integreren in Scenario 3b Pad B | Hoog | TinyURL module toevoegen vóór module 29 voor Tally Form 3 link |
+| TinyURL integreren in Scenario 5 | Hoog | TinyURL module toevoegen vóór module 4 voor Tally Form 3 link |
+| TinyURL integreren in Scenario 6 | Hoog | TinyURL module toevoegen vóór modules 4 + 7 voor Tally Form 1 link |
+| TinyURL integreren in Scenario 03 | Medium | TinyURL module toevoegen in Routes 1 + 2 voor picker link |
+| parent_timeslot_final video vs afbeelding | Medium | Video speelt niet automatisch af in WhatsApp — overweging: vervangen door afbeelding |
+| Post-proefles flow bouwen | Medium | Na `Trial Lesson Completed`: WhatsApp evaluatie + MailerLite update (Scenarios 11+) |
+| Re-engagement flow bouwen | Laag | Na `No Show` + `Stopped`: WhatsApp + MailerLite na 30 dagen |
+| Intern WhatsApp alert nieuwe aanmelding | Laag | Extra module in Scenario 10 bij nieuwe student |
 | Picker hosten op brightpanda.nl | Laag | Webflow redirect — professionelere URL voor ouders |
 | Meta Business Verificatie | Laag | KvK 84707577 — naam zichtbaar bij ontvanger |
-| Help tekst bij Trial_Lesson_Status__c | Laag | Tooltip in Salesforce met uitleg wat elke status triggert |
+| Claude API matching feature | Laag | Automatisch matchen van student en docent via AI |
