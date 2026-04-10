@@ -169,6 +169,20 @@ WHERE Name = '{{3.matching_number}}'
 - **Record ID:** `{{25.Id}}`
 - `Trial_Lesson_Status__c` = `Availability Conflict`
 
+### Module 30 — HTTP POST → TinyURL (Tally Form 3 link verkorten)
+
+**JSON body:**
+```json
+{
+  "url": "https://tally.so/r/q4PDV9?matching_number={{encodeURL(25.Name)}}",
+  "domain": "go.brightpanda.nl"
+}
+```
+
+- **API Endpoint:** `https://api.tinyurl.com/create`
+- **Header:** `Authorization: Bearer azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji`
+- **Output:** `{{30.data.data.tiny_url}}`
+
 ### Module 29 — HTTP POST → 360dialog (WhatsApp naar docent)
 
 ```json
@@ -186,14 +200,12 @@ WHERE Name = '{{3.matching_number}}'
         {"type": "text", "text": "{{26.FirstName}}"},
         {"type": "text", "text": "{{26.ParentsName__c}}"},
         {"type": "text", "text": "{{26.ParentSPhone__c}}"},
-        {"type": "text", "text": "https://tally.so/r/q4PDV9?matching_number={{encodeURL(25.Name)}}"}
+        {"type": "text", "text": "{{30.data.data.tiny_url}}"}
       ]
     }]
   }
 }
 ```
-
-> ⚠️ **TO DO:** TinyURL module toevoegen vóór module 29 voor de Tally Form 3 link. Zodra `go.brightpanda.nl` actief is: gebruik `TINYURL_MODULE.data.data.tiny_url` als param `{{5}}`.
 
 ---
 

@@ -99,8 +99,19 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | `Parent Invited` | Scenario 02 — na versturen picker URL naar ouder |
 | `Trial Lesson Scheduled` | Scenario 3b Pad A — na bevestiging tijdslot |
 | `Availability Conflict` | Scenario 3b Pad B — geen tijdslot past |
-| `Trial Lesson Completed` | Handmatig |
-| `No Show` | Handmatig |
+| `Trial Lesson Completed` | Scenario 11 — automatisch 60-75 min na lesstart |
+| `No Show` | Scenario 9 Route 3 — na 72u geen tijdslot gekozen |
+
+### Status__c Picklist Waarden
+
+| Waarde | Gebruik |
+|--------|---------|
+| `Trial Class` | Default bij aanmaken matching |
+| `Active` | Na succesvolle proefles — actieve bijles |
+| `Paused` | Tijdelijk gepauzeerd |
+| `Stopped - Never Converted` | Gestopt na Scenario 9 Route 3 (nooit proefles gehad) |
+| `Stopped - Existing Client` | Gestopt na actieve bijles |
+| `Wrong Match` | Mismatch docent-leerling |
 
 ---
 
@@ -114,7 +125,7 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | **Branded domain** | `go.brightpanda.nl` |
 | **CNAME waarde** | `hrj2vlx.customer.tinyurl.com` |
 | **DNS beheer** | Squarespace (brightpanda.nl domein) |
-| **DNS status** | ⏳ Propagatie in behandeling — check TinyURL dashboard → "Check Now" |
+| **DNS status** | ✅ ACTIEF |
 
 **JSON body voor Make.com:**
 ```json
@@ -138,6 +149,39 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 - ⚠️ Scenario 5 module 4 (Tally Form 3 reminder link)
 - ⚠️ Scenario 6 modules 4 + 7 (Tally Form 1 link in reminders)
 - ⚠️ Scenario 03 Routes 1 + 2 (picker link in ouder reminders)
+
+---
+
+## Anthropic API Configuratie
+
+| Instelling | Waarde |
+|-----------|--------|
+| **API Key naam** | `Bright Panda Make.com` |
+| **Endpoint** | `https://api.anthropic.com/v1/messages` |
+| **Model** | `claude-opus-4-6` |
+| **Header** | `x-api-key: [API key]` |
+| **Header** | `anthropic-version: 2023-06-01` |
+| **Gebruikt in** | Scenario 12 module 3 (docent analyse) |
+
+**Output pad in Make.com:** `{{MODULE.data.content[].text}}`
+
+---
+
+## DocuSeal Configuratie
+
+| Instelling | Waarde |
+|-----------|--------|
+| **Plan** | EU |
+| **API Endpoint** | `https://api.docuseal.eu/submissions` |
+| **API Key** | `kF6DXM8V8AEJcRhXshwE1RxdvarDx9NHwuYjd9FnZz3` |
+| **Template ID** | `485548` |
+| **Prijs** | $0.20 per contract (via Make.com) |
+| **Gebruikt in** | Scenario 13 Route 2 (contract versturen bij Contracting) |
+| **Webhook** | Scenario 14 (bij contract getekend) |
+
+**Template velden (exact lowercase):** `name`, `street`, `city`, `start_date`, `hourly_rate`, `signing_date`, `signature`
+
+> ⚠️ Veldnamen zijn case-sensitive en exact lowercase. `Name` geeft error — moet `name` zijn.
 
 ---
 
@@ -180,7 +224,9 @@ Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fi
 | Contact | Waarde | Gebruik |
 |---------|--------|---------|
 | WhatsApp Business (Bright Panda) | `15557590811` | Verzendend nummer |
-| Intern escalatie WhatsApp | `31613689666` | Escalaties Scenario 03 |
+| Zakelijk WhatsApp (intern) | `31613689666` | Escalaties, intern alerts |
+| Raouf | `31630892143` | Intern alert Scenario 11 |
+| Yasin | `31623325599` | Intern alert Scenario 11 |
 | Intern telefoon | 071-3031901 | Vermeld in template disclaimer |
 | Intern WhatsApp (zichtbaar) | +31613689666 | Vermeld in template disclaimer |
 

@@ -17,6 +17,7 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
 | Eigenschap | Waarde |
 |-----------|--------|
 | Type | Custom Webhook |
+| Activering | **Immediately** (niet elke minuut — webhook scenarios hebben geen interval nodig) |
 | Webhook naam | Tally Docent Beschikbaarheid |
 | Webhook URL | `https://hook.eu1.make.com/8mum1e8efh41uf7gdb91gvyrwsz0mexg` |
 | Ingesteld in | Tally Form 1 → Settings → Integrations → Webhooks |

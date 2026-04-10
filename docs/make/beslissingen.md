@@ -234,6 +234,7 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 - **Toekomst:** Re-engagement flow na 30 dagen (WhatsApp + MailerLite) — nog te bouwen
 
 ### B41 — Picker v11: geen Tally Form 2 link bij no_match
+
 - **Keuze:** De "geen tijdslot past" knop op de picker pagina toont in v11 geen Tally Form 2 link meer
 - **Reden:** Tally Form 2 was verwarrend — ouder hoefde niets in te vullen. De docent neemt contact op en vult het tijdslot zelf in via Tally Form 3
 - **Nieuwe tekst:** "Geen probleem! De docent van [leerlingnaam] neemt zo snel mogelijk contact met je op om samen een tijdslot af te spreken."
@@ -241,19 +242,67 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 
 ---
 
+### B42 — Scenario 2 trigger: Immediately (niet elke minuut)
+- **Keuze:** Webhook scenarios activeren op "Immediately" — geen polling interval nodig
+- **Reden:** Webhook scenarios reageren op inkomende data — een polling interval voegt latency toe en is overbodig
+- **Bewijs:** Scenario 2 stond op "Every 1 minute" → gewijzigd naar "Immediately" → snellere verwerking
+
+### B43 — Default matching status: --None-- (niet Trial Class)
+- **Keuze:** Nieuwe matchings aanmaken met `Status__c = --None--` of leeg, niet `Trial Class`
+- **Reden:** `Trial Class` als standaardwaarde triggert Scenario 1 op historische/test-data. Scenario 1 filtert op `Trial_Lesson_Status__c = 'Trial Class' AND Teacher_Invited_At__c = NULL`
+
+### B44 — Docent lifecycle via Make.com (Scenario 13) — geen Salesforce Flow
+- **Keuze:** Lifecycle updates (MailerLite, DocuSeal, Offboarded_Date__c) via Make.com Watch Records
+- **Reden:** Make.com is de centrale orchestratieplek — Salesforce Flows voegen complexiteit toe zonder voordeel
+- **Gevolg:** `Offboarded_Date__c` wordt ingevuld via Scenario 13 Route 4
+
+### B45 — DocuSeal voor contracten ($0.20/contract)
+- **Keuze:** DocuSeal EU plan voor e-signatures
+- **Reden:** Goedkoop ($0.20/contract via Make.com), EU-server, eenvoudige template-gebaseerde workflow
+- **Template ID:** `485548`, **Endpoint:** `https://api.docuseal.eu/submissions`
+- **Status:** Beslissing nog niet definitief — bevestig voor live gaan
+
+### B46 — Contract verlenging: handmatige beoordeling
+- **Keuze:** Geen automatische contractverlenging — Salesforce Flow triggert `Contract Expiring Soon` na 335 dagen (30 dagen voor einde), daarna handmatig beslissen
+- **Reden:** Verlenging vereist beoordeling van prestaties docent
+
+### B47 — IBAN in Tally formulier (AVG-compliant)
+- **Keuze:** Docent vult IBAN in via Tally profielformulier met verplichte AVG toestemmingscheckbox
+- **Reden:** Tally is acceptabel voor opslaan bankgegevens mits expliciete toestemming via checkbox
+- **Gevolg:** Tally antwoorden via Make.com naar `IBAN__c` veld op Teacher Account
+
+### B48 — Morning briefing via Claude.ai (Salesforce MCP)
+- **Keuze:** Dagelijkse briefing voor Bright Panda team via Claude.ai met Salesforce MCP verbinding
+- **Reden:** Centrale plek voor AI-analyses (Scenario 12 aanbevelingen) en overzicht nieuwe aanmeldingen
+- **Status:** Salesforce MCP config aangemaakt (`~/.config/claude/claude_desktop_config.json`) — verbinding nog te testen
+- **Geen aparte WhatsApp/email** voor interne briefings
+
+### B49 — MailerLite merge tags: `{$field_name}` (niet `{field_name}`)
+- **Keuze:** Merge tags in MailerLite e-mails schrijven als `{$naam}` met dollarteken
+- **Reden:** `{naam}` (zonder `$`) werkt niet in MailerLite — variabelen worden dan niet ingevuld
+- **Bewijs:** Student naam en docent naam in intro tekst automations hadden geen `$` → tekst toonde letterlijk `{naam}`
+
+### B50 — Scenario 11 tijdzone: dynamisch na zomertijd
+- **Keuze (tijdelijk):** `+01:00` hardcoded (wintertijd CET) in Scenario 11 SOQL
+- **Fix (toekomst):** `{{formatDate(addMinutes(now; -60); "YYYY-MM-DDTHH:mm:ssZ"; "Europe/Amsterdam")}}` testen na zomertijd overgang
+- **Impact:** In zomertijd (CEST, +02:00) wordt de les 1 uur te laat gedetecteerd
+
+---
+
 ## Openstaande Acties (To-do)
 
 | Actie | Prioriteit | Details |
 |-------|-----------|---------|
-| TinyURL activeren na DNS propagatie | Hoog | Check TinyURL dashboard → "Check Now" — voeg daarna `"domain": "go.brightpanda.nl"` toe in JSON bodies |
-| TinyURL integreren in Scenario 3b Pad B | Hoog | TinyURL module toevoegen vóór module 29 voor Tally Form 3 link |
-| TinyURL integreren in Scenario 5 | Hoog | TinyURL module toevoegen vóór module 4 voor Tally Form 3 link |
-| TinyURL integreren in Scenario 6 | Hoog | TinyURL module toevoegen vóór modules 4 + 7 voor Tally Form 1 link |
-| TinyURL integreren in Scenario 03 | Medium | TinyURL module toevoegen in Routes 1 + 2 voor picker link |
+| DocuSeal beslissing bevestigen | Hoog | Bevestig DocuSeal EU plan vóór live gaan (Scenario 13) |
+| Scenario 11 tijdzone fix | Hoog | `+01:00` vervangen door dynamische tijdzone na zomertijd overgang |
+| trial_lesson_confirmation_parent template | Medium | V4 pending — wacht op Meta goedkeuring als Utility zonder button |
+| availability_conflict templates opnieuw indienen | Medium | Beide templates opnieuw indienen bij 360dialog met voorbeeldwaarden |
+| Claude Desktop MCP testen | Medium | Salesforce MCP verbinding testen in Claude Desktop voor morning briefing |
+| Scenario 12: bevestigingsmail docent bouwen | Medium | Automatische ontvangstbevestiging bij nieuwe docent aanmelding |
+| Docent profielformulier bouwen | Medium | Tally form: adres, vakken+niveau, IBAN, AVG checkbox, optioneel paspoort |
 | parent_timeslot_final video vs afbeelding | Medium | Video speelt niet automatisch af in WhatsApp — overweging: vervangen door afbeelding |
-| Post-proefles flow bouwen | Medium | Na `Trial Lesson Completed`: WhatsApp evaluatie + MailerLite update (Scenarios 11+) |
-| Re-engagement flow bouwen | Laag | Na `No Show` + `Stopped`: WhatsApp + MailerLite na 30 dagen |
-| Intern WhatsApp alert nieuwe aanmelding | Laag | Extra module in Scenario 10 bij nieuwe student |
+| Re-engagement flow bouwen | Laag | Na `No Show` + `Stopped - Never Converted`: WhatsApp + MailerLite na 30 dagen |
+| Contract_Start_Date__c veld aanmaken | Laag | Date veld op Teacher Account — nodig voor Scenario 13 Route 2 |
 | Picker hosten op brightpanda.nl | Laag | Webflow redirect — professionelere URL voor ouders |
 | Meta Business Verificatie | Laag | KvK 84707577 — naam zichtbaar bij ontvanger |
-| Claude API matching feature | Laag | Automatisch matchen van student en docent via AI |
+| Morning briefing format uitwerken | Laag | Dagelijks overzicht via Claude.ai met Salesforce MCP |

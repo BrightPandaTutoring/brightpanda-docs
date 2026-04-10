@@ -11,24 +11,28 @@ Alle templates zijn ingediend bij 360dialog en door Meta goedgekeurd.
 
 | Template naam | Status | Params | Naar | Gebruikt in |
 |--------------|--------|--------|------|------------|
-| `teacher_invitation` | ✅ APPROVED | 6 | Docent | Scenario 1 |
+| `teacher_invitation` | ✅ APPROVED (hernieuwd) | 6 | Docent | Scenario 1 |
 | `parent_timeslot_invitation` | ✅ APPROVED | 4 | Ouder | Scenario 2 |
-| `trial_lesson_confirmation_parent` | ✅ APPROVED | 6 | Ouder | Scenario 3b Route 1 + Scenario 4 |
+| `trial_lesson_confirmation_parent` | ⏳ PENDING (v4, utility zonder button) | 6 | Ouder | Scenario 3b Route 1 + Scenario 4 |
 | `trial_lesson_confirmed_teacher` | ✅ APPROVED | 6 | Docent | Scenario 3b Route 1 + Scenario 4 |
-| `availability_conflict_teacher` | ✅ APPROVED | 5 | Docent | Scenario 3b Pad B |
-| `availability_conflict_teacher_reminder` | ✅ APPROVED | 5 | Docent | Scenario 5 |
+| `availability_conflict_teacher` | ⚠️ Opnieuw indienen met voorbeeldwaarden | 5 | Docent | Scenario 3b Pad B |
+| `availability_conflict_teacher_reminder` | ⚠️ Opnieuw indienen met voorbeeldwaarden | 5 | Docent | Scenario 5 |
 | `teacher_availability_reminder` | ✅ APPROVED | 3 | Docent | Scenario 6 Route 1 |
 | `teacher_availability_reminder_repeat` | ✅ APPROVED | 3 | Docent | Scenario 6 Route 2 |
-| `parent_timeslot_reminder` | ✅ APPROVED | 4 | Ouder | Reminders & Escalatie Route 1 |
-| `parent_timeslot_escalation` | ✅ APPROVED | 4 | Ouder | Reminders & Escalatie Route 2 |
-| `parent_timeslot_final` | ✅ APPROVED | 3 | Ouder | Reminders & Escalatie Route 3 (+ video header) |
+| `parent_timeslot_reminder` | ✅ APPROVED | 4 | Ouder | Scenario 9 Route 1 |
+| `parent_timeslot_escalation` | ✅ APPROVED | 4 | Ouder | Scenario 9 Route 2 |
+| `parent_timeslot_final` | ✅ APPROVED | 3 | Ouder | Scenario 9 Route 3 (+ video header) |
 | `internal_alert_teacher_no_availability` | ✅ APPROVED | 5 | Intern | Scenario 7 |
 | `internal_alert_teacher_no_conflict_resolution` | ✅ APPROVED | 5 | Intern | Scenario 5 (escalatie) |
-| `internal_alert_parent_no_timeslot` | ✅ APPROVED | 6 | Intern | Reminders & Escalatie Route 2 |
+| `internal_alert_parent_no_timeslot` | ✅ APPROVED | 6 | Intern | Scenario 9 Route 2 |
 | `lesson_reminder_48h_teacher` | ✅ APPROVED | 4 | Docent | Scenario 8 Route 1 |
 | `lesson_reminder_24h_parent` | ✅ APPROVED | 5 | Ouder | Scenario 8 Route 2 |
 | `lesson_reminder_2h_teacher` | ✅ APPROVED | 6 | Docent | Scenario 8 Route 3 |
 | `lesson_reminder_2h_parent` | ✅ APPROVED | 5 | Ouder | Scenario 8 Route 4 |
+| `trial_lesson_completed_parent` | ✅ APPROVED | 3 | Ouder | Scenario 11 |
+| `trial_lesson_completed_teacher` | ✅ APPROVED | 2 | Docent | Scenario 11 (+ phone button) |
+| `internal_alert_new_registration` | ✅ APPROVED | 9 | Intern | Scenario 10 |
+| `internal_alert_trial_lesson_completed` | ✅ APPROVED | 5 | Intern | Scenario 11 |
 
 > ⚠️ Elke template aanpassing vereist opnieuw Meta goedkeuring (wachttijd: 2-7 werkdagen). Pas templates alleen aan na volledig testen. Dien altijd in als **Utility** categorie zonder emoji's in de tekst.
 
@@ -416,4 +420,77 @@ Hoi {{1}}, over 2 uur begint de proefles van {{2}} met docent {{3}}. Bij Bright 
 Na de proefles nemen we contact met je op om te horen hoe het ging.
 
 Neem bij vragen contact op via WhatsApp +31613689666 of bel 071-3031901.
+```
+
+---
+
+### `trial_lesson_completed_parent`
+**Params:** `{{1}}`=ouder naam, `{{2}}`=leerling naam, `{{3}}`=docent naam
+**Gebruikt in:** Scenario 11 module 5
+
+```
+Hoi {{1}},
+
+De proefles van {{2}} met docent {{3}} is zojuist afgerond!
+
+Bright Panda neemt binnenkort contact met je op om te horen hoe het ging.
+
+Tot snel!
+```
+
+---
+
+### `trial_lesson_completed_teacher`
+**Params:** `{{1}}`=docent naam, `{{2}}`=leerling naam
+**Header:** Phone button
+**Gebruikt in:** Scenario 11 module 15
+
+```
+Hoi {{1}},
+
+Bedankt voor het geven van de proefles aan leerling {{2}}!
+
+Bright Panda neemt binnenkort contact met je op.
+
+Bedankt!
+```
+
+---
+
+### `internal_alert_new_registration`
+**Params:** `{{1}}`=leerling naam, `{{2}}`=vakken, `{{3}}`=niveau, `{{4}}`=leerjaar, `{{5}}`=ouder naam, `{{6}}`=ouder telefoon, `{{7}}`=ouder email, `{{8}}`=stad, `{{9}}`=postcode
+**Naar:** `31613689666` (intern)
+**Gebruikt in:** Scenario 10
+
+```
+Nieuwe proefles aanmelding!
+
+Leerling: {{1}}
+Vakken: {{2}}
+Niveau: {{3}}
+Leerjaar: {{4}}
+
+Ouder: {{5}}
+Telefoon: {{6}}
+Email: {{7}}
+Stad: {{8}}
+Postcode: {{9}}
+```
+
+---
+
+### `internal_alert_trial_lesson_completed`
+**Params:** `{{1}}`=leerling naam, `{{2}}`=docent naam, `{{3}}`=matching number, `{{4}}`=datum, `{{5}}`=tijd
+**Naar:** `31630892143` (Raouf), `31623325599` (Yasin), `31613689666` (zakelijk)
+**Gebruikt in:** Scenario 11 modules 10, 11, 12
+
+```
+Proefles afgerond!
+
+Leerling: {{1}}
+Docent: {{2}}
+Matching: {{3}}
+
+Datum: {{4}}
+Tijd: {{5}}
 ```

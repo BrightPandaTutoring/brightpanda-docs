@@ -25,13 +25,15 @@ Stuurt elke 4 uur een herinnerings-WhatsApp naar een docent zolang de matching s
 ```
 [1]  Salesforce → Search Records SOQL
         ↓
-[2]  Salesforce → Get a Record (Teacher Account)
+[2]  Salesforce → Get a Record (Teacher Account) [Ignore error handler]
         ↓
 [3]  Salesforce → Get a Record (Student Account)
         ↓
+[5]  HTTP POST → TinyURL (Tally Form 3 link verkorten)
+        ↓
 [4]  HTTP POST → 360dialog (availability_conflict_teacher_reminder)
         ↓
-[5]  Salesforce → Update Record (Teacher_Escalation_Sent__c = true)
+[6]  Salesforce → Update Record (Teacher_Escalation_Sent__c = true)
 ```
 
 ---
@@ -53,6 +55,20 @@ AND Trial_Lesson_Date__c = NULL
 - **Record ID:** `{{1.Student__c}}`
 - **Output:** `{{3.FirstName}}`, `{{3.ParentsName__c}}`, `{{3.ParentSPhone__c}}`
 
+## Module 5 — HTTP POST → TinyURL
+
+**JSON body:**
+```json
+{
+  "url": "https://tally.so/r/q4PDV9?matching_number={{encodeURL(1.Name)}}",
+  "domain": "go.brightpanda.nl"
+}
+```
+
+- **API Endpoint:** `https://api.tinyurl.com/create`
+- **Header:** `Authorization: Bearer azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji`
+- **Output:** `{{5.data.data.tiny_url}}`
+
 ## Module 4 — HTTP POST → 360dialog
 
 ```json
@@ -70,14 +86,12 @@ AND Trial_Lesson_Date__c = NULL
         {"type": "text", "text": "{{3.FirstName}}"},
         {"type": "text", "text": "{{3.ParentsName__c}}"},
         {"type": "text", "text": "{{3.ParentSPhone__c}}"},
-        {"type": "text", "text": "{{1.Tally_Link_Teacher__c}}"}
+        {"type": "text", "text": "{{5.data.data.tiny_url}}"}
       ]
     }]
   }
 }
 ```
-
-> ⚠️ **TO DO:** TinyURL module toevoegen vóór module 4 voor de Tally link. Zodra `go.brightpanda.nl` actief: gebruik `TINYURL_MODULE.data.data.tiny_url` als param `{{5}}`.
 
 ## Module 5 — Salesforce Update
 - **Record ID:** `{{1.Id}}`

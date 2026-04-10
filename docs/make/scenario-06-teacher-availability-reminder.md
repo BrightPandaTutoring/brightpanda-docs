@@ -25,16 +25,18 @@ Stuurt automatisch een herinnerings-WhatsApp naar een docent die na 12 uur nog g
 ```
 [1]  Salesforce → Search Records SOQL
         ↓
-[2]  Salesforce → Get a Record (Teacher Account)
+[2]  Salesforce → Get a Record (Teacher Account) [Ignore error handler]
         ↓
 [3]  Salesforce → Get a Record (Student Account)
         ↓
 [Router]
     ├── Route 1 (First Reminder): Teacher_Reminder_Sent__c = false
+    │   [8]  HTTP POST → TinyURL (Tally Form 1 link verkorten)
     │   [4]  HTTP POST 360dialog → teacher_availability_reminder
     │   Update: Teacher_Reminder_Sent__c = true
     │
     └── Route 2 (Repeat Reminder): Teacher_Reminder_Sent__c = true
+        [9]  HTTP POST → TinyURL (Tally Form 1 link verkorten)
         [7]  HTTP POST 360dialog → teacher_availability_reminder_repeat
 ```
 
@@ -71,6 +73,19 @@ AND Teacher_Invited_At__c < {{formatDate(addHours(now; -12); "YYYY-MM-DDTHH:mm:s
 
 ---
 
+## Module 8 — Route 1: TinyURL (Tally Form 1 link)
+
+```json
+{
+  "url": "{{1.Tally_Link_Teacher__c}}",
+  "domain": "go.brightpanda.nl"
+}
+```
+
+- **API Endpoint:** `https://api.tinyurl.com/create`
+- **Header:** `Authorization: Bearer azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji`
+- **Output:** `{{8.data.data.tiny_url}}`
+
 ## Module 4 — Route 1: teacher_availability_reminder
 
 ```json
@@ -86,7 +101,7 @@ AND Teacher_Invited_At__c < {{formatDate(addHours(now; -12); "YYYY-MM-DDTHH:mm:s
       "parameters": [
         {"type": "text", "text": "{{2.FirstName}}"},
         {"type": "text", "text": "{{3.FirstName}}"},
-        {"type": "text", "text": "{{1.Tally_Link_Teacher__c}}"}
+        {"type": "text", "text": "{{8.data.data.tiny_url}}"}
       ]
     }]
   }
@@ -95,9 +110,18 @@ AND Teacher_Invited_At__c < {{formatDate(addHours(now; -12); "YYYY-MM-DDTHH:mm:s
 
 **Update na Route 1:** `Teacher_Reminder_Sent__c = true`, Record ID: `{{1.Record ID}}`
 
-> ⚠️ **TO DO:** TinyURL module toevoegen voor de Tally link (param `{{3}}`).
-
 ---
+
+## Module 9 — Route 2: TinyURL (Tally Form 1 link)
+
+```json
+{
+  "url": "{{1.Tally_Link_Teacher__c}}",
+  "domain": "go.brightpanda.nl"
+}
+```
+
+- **Output:** `{{9.data.data.tiny_url}}`
 
 ## Module 7 — Route 2: teacher_availability_reminder_repeat
 
@@ -114,14 +138,12 @@ AND Teacher_Invited_At__c < {{formatDate(addHours(now; -12); "YYYY-MM-DDTHH:mm:s
       "parameters": [
         {"type": "text", "text": "{{2.FirstName}}"},
         {"type": "text", "text": "{{3.FirstName}}"},
-        {"type": "text", "text": "{{1.Tally_Link_Teacher__c}}"}
+        {"type": "text", "text": "{{9.data.data.tiny_url}}"}
       ]
     }]
   }
 }
 ```
-
-> ⚠️ **TO DO:** TinyURL module toevoegen voor de Tally link (param `{{3}}`).
 
 ---
 
