@@ -9,7 +9,7 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 ### HTTP Module Instellingen
 | Instelling | Waarde |
 |-----------|--------|
-| **API Endpoint** | `https://waba.360dialog.io/v1/messages` |
+| **API Endpoint** | `https://waba-v2.360dialog.io/messages` |
 | **Method** | POST |
 | **Authentication** | No authentication (in Make.com) |
 | **Header: D360-API-KEY** | `xl6Aj3Gs66I40LQl7C6GbjlxAK` |
@@ -33,14 +33,51 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 | Template | Status | Gebruikt in | Parameters |
 |----------|--------|------------|-----------|
-| `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 4 (naam docent, naam student, vak NL, Tally link) |
-| `parent_timeslot_invitation` | ✅ Goedgekeurd | Scenario 02 + 03 (route 3) | TBD (genummerde tijdsloten) |
-| `trial_lesson_confirmation` | ✅ Goedgekeurd | Scenario 04 | TBD (bevestiging details) |
+| `teacher_invitation` | ✅ Goedgekeurd | Scenario 01 + 03 (route 1) | 4 — naam docent, naam student, vak NL, Tally link |
+| `parent_timeslot_invitation` | ✅ Goedgekeurd | Scenario 02 + 03 (route 3) | 5 — naam ouder, naam leerling, vak, tijdsloten, Form 2 link |
+| `trial_lesson_confirmation` | ✅ Goedgekeurd (vervangen) | Niet meer in gebruik | 4 — te weinig info, geen contactgegevens |
+| `trial_lesson_confirmation_parent` | ⏳ Pending bij Meta | Scenario 3b module 9 | 6 — naam ouder, leerling, datum, tijd, naam docent, tel. docent |
+| `trial_lesson_confirmation_teacher` | ⏳ Pending bij Meta | Scenario 3b module 11 | 6 — naam docent, leerling, datum, tijd, naam ouder, tel. ouder |
 | Reminder template docent | 🔴 Niet aangemaakt | Scenario 03 (route 1) | — |
 | Reminder template ouder | 🔴 Niet aangemaakt | Scenario 03 (route 3) | — |
 
 > ⚠️ **Pas templates alleen aan na volledig testen.** Elke wijziging vereist opnieuw Meta goedkeuring (wachttijd: 2-7 werkdagen).
-> Disclaimer toevoegen aan `trial_lesson_confirmation` als **allerlaatste stap**.
+
+### Template teksten
+
+**`trial_lesson_confirmation_parent`** (6 parameters):
+```
+Hoi {{1}},
+
+De proefles is bevestigd! 🎉
+
+Leerling: {{2}}
+Datum: *{{3}}*
+Tijd: *{{4}}*
+
+Contactgegevens docent:
+Naam: {{5}}
+Telefoon: {{6}}
+
+Tot dan!
+```
+
+**`trial_lesson_confirmation_teacher`** (6 parameters):
+```
+Hoi {{1}},
+
+De proefles is bevestigd! 🎉
+
+Leerling: {{2}}
+Datum: *{{3}}*
+Tijd: *{{4}}*
+
+Contactgegevens ouder:
+Naam: {{5}}
+Telefoon: {{6}}
+
+Tot dan!
+```
 
 **Disclaimer tekst (in alle templates):**
 > "Dit nummer is alleen voor het inplannen van proeflessen. Voor andere vragen kun je ons bereiken via WhatsApp: +31613689666 of telefoon: 071-3031901."
@@ -53,6 +90,19 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 |-----------|--------|
 | **Verbindingsnaam in Make.com** | Bright Panda Salesforce |
 | **Make.com omgeving** | eu1.make.com |
+
+---
+
+## Google Apps Script
+
+| Instelling | Waarde |
+|-----------|--------|
+| **Script URL** | `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec` |
+| **Versie** | 2 |
+| **Functie A** | Bouw tijdsloten string (Scenario 02, module 31) |
+| **Functie B** | Vertaal keuzenummer naar datetime (Scenario 3b, module 5) |
+
+Zie [google-apps-script.md](google-apps-script.md) voor volledige documentatie.
 
 ---
 

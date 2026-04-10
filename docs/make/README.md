@@ -8,10 +8,10 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | # | Naam | Trigger | Status | Bestand |
 |---|------|---------|--------|---------|
-| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | 🟡 In ontwikkeling | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
-| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | 🟡 In ontwikkeling | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
-| 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Gebouwd | [scenario-03](scenario-03-reminders-escalatie.md) |
-| 04 | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🔴 Nog te bouwen | [scenario-04](scenario-04-ouder-tijdslot-verwerking.md) |
+| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | 🟡 Compleet — wacht Meta #131037 | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
+| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | ✅ Compleet | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
+| 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Compleet | [scenario-03](scenario-03-reminders-escalatie.md) |
+| 3b | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🟡 In aanbouw (module 6 ✅) | [scenario-3b](scenario-3b-ouder-tijdslot-verwerking.md) |
 | 05 | Koppelingsbevestiging | Onbekend | 🔴 Backlog | [scenario-05](scenario-05-koppelingsbevestiging.md) |
 
 ---
@@ -31,10 +31,9 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | Scenario | Blokkade | Actie |
 |----------|---------|-------|
-| 01 | Meta propagatie na display name wijziging (fout #131037) | Wacht 24-48u → Run once opnieuw |
-| 02 | Module 8 Set Variable formule werkt alleen voor datum 1 | Uitbreiden naar datum 2-5 |
-| 02 | HTTP module 5 nog niet geconfigureerd | `parent_timeslot_invitation` call bouwen |
-| 02 | Salesforce Update module 6 nog niet geconfigureerd | Status + `Available_Timeslots__c` invullen |
+| 01 | Meta #131037 — display name goedkeuring | Wacht 24-48u → Run once opnieuw |
+| 3b | Module 7 inhoud onbekend | Openklikken in Make.com en controleren |
+| 3b | Templates `confirmation_parent` + `confirmation_teacher` Pending bij Meta | Wachten op goedkeuring → modules 8-11 bouwen |
 
 ---
 
@@ -73,7 +72,8 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | Document | Inhoud |
 |----------|--------|
-| [Gedeelde configuratie](gedeelde-configuratie.md) | 360dialog headers, API endpoint, Salesforce velden, telefoonnummer conventie, Tally webhook instructie, Meta Business Verificatie |
+| [Gedeelde configuratie](gedeelde-configuratie.md) | 360dialog headers, API endpoint, Google Apps Script URL, templates overzicht, Salesforce velden, telefoonnummer conventie |
+| [Google Apps Script](google-apps-script.md) | Functie A (tijdsloten string) + Functie B (keuzenummer → datetime), deploy instructies |
 | [Beslissingen](beslissingen.md) | Alle technische en functionele beslissingen met onderbouwing |
 
 ---
