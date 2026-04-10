@@ -6,7 +6,9 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | # | Naam | Trigger | Status | Bestand |
 |---|------|---------|--------|---------|
-| — | *Wordt aangevuld per scenario* | — | — | — |
+| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | 🟡 In ontwikkeling | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
+| 02 | Tally Webhook → Ouder Planning | Custom Webhook | 🔴 Nog te bouwen | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
+| 03 | Reminders & Follow-up | Schedule (dagelijks 08:00) | 🔴 Nog te bouwen | [scenario-03](scenario-03-reminders-followup.md) |
 
 ---
 
