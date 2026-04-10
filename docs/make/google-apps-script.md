@@ -23,12 +23,14 @@ Drie scripts voor de Bright Panda automatisering.
 **Parse response in Make.com:** NO (uitgeschakeld)
 **Output chip:** `{{10.data}}`
 
-**Aanroep in Make.com (Scenario 01 module 10):**
+**Aanroep in Make.com:**
 ```
 GET [URL]?subject={{encodeURL(1.Subject_s__c)}}
 ```
 
 > ⚠️ **Parse response: NO** — het script retourneert plain text. Als je Parse response aanzet, geeft Make.com een parse error.
+
+> **Meerdere vakken:** `Subject_s__c` kan puntkomma-gescheiden vakken bevatten (bijv. `"Mathematics A;Biology"`). Het script splitst automatisch op `;`, vertaalt elk vak apart, en retourneert een kommagescheiden Nederlandse string (bijv. `"Wiskunde A, Biologie"`). Output chip: `{{MODULE_NUMMER.data}}`.
 
 ### Vertaaltabel (31 vakken)
 
@@ -68,11 +70,12 @@ GET [URL]?subject={{encodeURL(1.Subject_s__c)}}
 
 > Onbekend vak: script retourneert de originele naam ongewijzigd.
 
-### Script Code (Script 1)
+### Script Code (Script 1 — met meerdere vakken ondersteuning)
 
 ```javascript
 function doGet(e) {
   const subject = e.parameter.subject || "";
+  const subjects = subject.split(";").map(s => s.trim());
   const translations = {
     "Mathematics A": "Wiskunde A",
     "Mathematics B": "Wiskunde B",
@@ -106,8 +109,8 @@ function doGet(e) {
     "Management & Organization": "M&O",
     "Care & Welfare": "Zorg & Welzijn"
   };
-  const result = translations[subject] || subject;
-  return ContentService.createTextOutput(result).setMimeType(ContentService.MimeType.TEXT);
+  const results = subjects.map(s => translations[s] || s);
+  return ContentService.createTextOutput(results.join(", ")).setMimeType(ContentService.MimeType.TEXT);
 }
 ```
 

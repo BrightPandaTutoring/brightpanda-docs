@@ -12,7 +12,7 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | **API Endpoint** | `https://waba-v2.360dialog.io/messages` |
 | **Method** | POST |
 | **Authentication** | No authentication (in Make.com) |
-| **Header: D360-API-KEY** | `xl6Aj3Gs66I40LQI7C6GbjIxAK` |
+| **Header: D360-API-KEY** | `xl6Aj3Gs66I40LQl7C6GbjlxAK` |
 | **Header: Content-Type** | `application/json` |
 | **Body content type** | `application/json` |
 | **Body input method** | JSON string |
@@ -58,13 +58,14 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 
 ### Salesforce Record Structuur
 
-| Entiteit | Object type | Relevante velden |
-|----------|-------------|-----------------|
-| Docenten | **Account** | `Phone` (= Business Phone in Make.com), `FirstName` |
-| Studenten | **Account** | `FirstName`, `Name`, `ParentsName__c`, `ParentSPhone__c` |
-| Ouders | Custom velden op Student Account | `ParentsName__c`, `ParentSPhone__c` |
+| Entiteit | Object type | Record Type | Relevante velden |
+|----------|-------------|-------------|-----------------|
+| Docenten | **Account (Person Account)** | Teacher (ID: `012KB000000ojZLYAY`) | `Phone`, `FirstName` |
+| Studenten/Ouders | **Account (Person Account)** | Student | `FirstName`, `Name`, `Parent_s_Name__c`, `Parent_s_Phone__c`, `Parent_s_Email__c` |
 
-> **Ouder contactgegevens** zitten als custom velden op het **Student Account** (niet als Contact record). Gebruik `{{X.ParentsName__c}}` en `{{X.ParentSPhone__c}}` direct na een Get a Record op het Student Account.
+> **Ouder contactgegevens** zitten als custom velden op het **Student Account** (niet als Contact record). Gebruik `{{X.Parent_s_Name__c}}` en `{{X.Parent_s_Phone__c}}` direct na een Get a Record op het Student Account.
+>
+> ⚠️ **Veldnaam variatie:** In sommige scenarios worden `ParentsName__c` / `ParentSPhone__c` gebruikt (oudere naamgeving). De officiële API namen zijn `Parent_s_Name__c` / `Parent_s_Phone__c`. Gebruik de API namen die Make.com toont in de module output.
 
 ### Salesforce Custom Object: Student_Teacher_Matching__c
 
@@ -79,10 +80,15 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | `Tally_Link_Teacher__c` | Text | Tally Form 1 URL verstuurd naar docent |
 | `Trial_Lesson_Date__c` | DateTime | Definitieve datum + tijd proefles (zonder Z suffix) |
 | `Subject_s__c` | Text | Vak (Engelse naam vanuit Salesforce) |
-| `Teacher_Reminder_Sent__c` | Checkbox | true na versturen 24u reminder docent |
-| `Teacher_Escalation_Sent__c` | Checkbox | true na versturen 48u escalatie docent |
-| `Parent_Reminder_Sent__c` | Checkbox | true na versturen 24u reminder ouder |
-| `Parent_Escalation_Sent__c` | Checkbox | true na versturen 48u escalatie ouder |
+| `Teacher_Reminder_Sent__c` | Checkbox | true na versturen reminder docent (Scenario 6) |
+| `Teacher_Escalation_Sent__c` | Checkbox | true na versturen intern alert (Scenario 7) + conflict reminder (Scenario 5) |
+| `Parent_Reminder_Sent__c` | Checkbox | true na versturen 24u reminder ouder (Scenario 9) |
+| `Parent_Escalation_Sent__c` | Checkbox | true na versturen 48u escalatie ouder (Scenario 9) |
+| `Teacher_Invited_At__c` | DateTime | Timestamp wanneer docent uitgenodigd is (ingevuld door Scenario 1) |
+| `Parent_Invited_At__c` | DateTime | Timestamp wanneer ouder uitgenodigd is (ingevuld door Scenario 2) |
+| `Trial_Class_Reminder_48h_Sent__c` | Checkbox | true na 48u reminder (Scenario 8) |
+| `Trial_Class_Reminder_24h_Sent__c` | Checkbox | true na 24u reminder (Scenario 8) |
+| `Trial_Class_Reminder_2h_Sent__c` | Checkbox | true na 2u reminder (Scenario 8) |
 
 ### Trial_Lesson_Status__c Picklist Waarden
 
@@ -95,6 +101,37 @@ Configuratie die van toepassing is op **alle** Bright Panda Make.com scenarios.
 | `Availability Conflict` | Scenario 3b Pad B — geen tijdslot past |
 | `Trial Lesson Completed` | Handmatig |
 | `No Show` | Handmatig |
+
+---
+
+## TinyURL Configuratie
+
+| Instelling | Waarde |
+|-----------|--------|
+| **API Endpoint** | `https://api.tinyurl.com/create` |
+| **API Token** | `azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji` |
+| **Branded domain** | `go.brightpanda.nl` |
+
+**Gebruik in Make.com:** HTTP POST naar TinyURL endpoint vóór het versturen van de WhatsApp — de verkorte URL wordt meegestuurd in het bericht.
+
+**Gebruikt in:**
+- Scenario 2 module 35 (picker link naar ouder)
+- Scenario 3 Pad B module 30 (Tally Form 3 link naar docent)
+- Scenario 5 module 5 (Tally Form 3 reminder)
+
+---
+
+## MailerLite Configuratie
+
+| Instelling | Waarde |
+|-----------|--------|
+| **URL** | app.mailerlite.com |
+| **Account** | Bright Panda Bijles |
+| **Plan** | Growing Business |
+| **Connectienaam in Make.com** | MailerLite Bright Panda |
+| **API Token** | Opgeslagen door gebruiker (niet gedocumenteerd) |
+
+Zie [mailerlite.md](mailerlite.md) voor volledige inrichting (groepen, custom fields, automations).
 
 ---
 

@@ -177,6 +177,36 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 
 ---
 
+### B30 — MailerLite is geen CRM
+- **Keuze:** Salesforce blijft bron van waarheid. MailerLite alleen voor emailcommunicatie.
+- **Gevolg:** Docent-specifieke info (naam, matchingdetails) niet opgeslagen in MailerLite — wordt per email meegegeven via Make.com op het moment van versturen.
+
+### B31 — Scenario 10 filter op RecordTypeId voor docenten
+- **Keuze:** Filter `RecordTypeId ≠ 012KB000000ojZLYAY` om docenten uit te sluiten van MailerLite
+- **Reden:** Docenten zijn ook Person Accounts — zonder filter worden zij als subscriber aangemaakt
+- **Aanvulling:** Filter `IsPersonAccount = true` voor alle Company Accounts
+
+### B32 — Vakvertaling splitst op puntkomma
+- **Keuze:** Script 1 splitst `Subject_s__c` op `;`, vertaalt elk vak apart, geeft kommagescheiden NL string terug
+- **Reden:** Leerling kan meerdere vakken hebben. Eerdere versie behandelde de hele string als één sleutel → geen match.
+- **Impact:** Output in MailerLite `subjects` field: `"Wiskunde A, Biologie"` i.p.v. `"Mathematics A;Biology"`
+
+### B33 — TinyURL voor alle externe links in WhatsApp
+- **Keuze:** Alle externe URLs (picker, Tally Form 3) eerst verkorten via TinyURL branded domain `go.brightpanda.nl`
+- **Reden:** Lange GAS URLs zijn onprofessioneel; branded domain versterkt vertrouwen bij ouders/docenten
+- **API token:** `azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji`
+
+### B34 — Geen double opt-in voor MailerLite
+- **Keuze:** Ouder wordt direct als Active subscriber aangemaakt — geen bevestigingsmail
+- **Reden:** Ouder meldt zich aan via Salesforce web-to-lead (actieve opt-in handeling) — extra bevestiging is niet nodig
+
+### B35 — Teacher_Invited_At__c en Parent_Invited_At__c als timestamp
+- **Keuze:** Aparte DateTime velden voor wanneer uitnodiging verstuurd is
+- **Reden:** `LastModifiedDate` is onbetrouwbaar voor timing (record kan om andere redenen gewijzigd zijn)
+- **Gebruik:** Scenarios 6, 7, 9 berekenen tijdsverschil op basis van deze velden
+
+---
+
 ## Openstaande Acties (To-do)
 
 | Actie | Prioriteit | Details |

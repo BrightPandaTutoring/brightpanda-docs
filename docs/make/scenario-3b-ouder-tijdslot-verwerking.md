@@ -1,9 +1,9 @@
 # Scenario 3b — Ouder Tijdslot Verwerking
 
-**Make naam:** Scenario 3b
+**Make naam:** Scenario 3b (intern genummerd als Scenario 3)
 **Make Scenario ID:** 4783259 (eu1.make.com)
 **Laatste update:** 10 april 2026
-**Status:** 🟡 Pad A werkend ✅ — Pad B nog te bouwen
+**Status:** ✅ Werkend — Pad A én Pad B werkend
 
 ---
 
@@ -199,18 +199,27 @@ WHERE Name = '{{3.matching_number}}'
 
 ---
 
-## Pad B — Geen Tijdslot Past *(NOG TE BOUWEN)*
+## Pad B — Geen Tijdslot Past ✅ WERKEND
 
 **Trigger:** Router Route 2 — `{{3.status}}` = `"no_match"`
 
-**Geplande stappen:**
-1. Salesforce SOQL: matching ophalen (`WHERE Name = '{{3.matching_number}}'`)
-2. Salesforce Get a Record: Student Account → `ParentSPhone__c`, `ParentsName__c`
-3. Salesforce Get a Record: Teacher Account → `Phone`, `FirstName`
-4. Salesforce Update: `Trial_Lesson_Status__c = Availability Conflict`
-5. HTTP POST 360dialog: WhatsApp naar docent met ouder contactgegevens + instructie om te bellen
+**Stappen:**
 
-**Template nodig:** Availability Conflict template voor docent — nog te maken en in te dienen bij Meta.
+| Module | Actie |
+|--------|-------|
+| Module 30 | HTTP → TinyURL (korte URL van Tally Form 3) |
+| Module 29 | HTTP → 360dialog (WhatsApp `availability_conflict_teacher` naar docent) |
+| Salesforce Update | `Trial_Lesson_Status__c = Availability Conflict` |
+
+**Inhoud WhatsApp naar docent:**
+- Instructie om de ouder te bellen
+- Contactgegevens ouder (naam + telefoon)
+- Link naar Tally Form 3 om het afgesproken tijdslot in te vullen (via TinyURL → `go.brightpanda.nl`)
+
+**Wat daarna:**
+- Docent belt ouder en spreekt tijdslot af
+- Docent vult het tijdslot in via Tally Form 3
+- Scenario 4 verwerkt de Tally Form 3 submission → bevestiging naar ouder en docent
 
 **Inhoud WhatsApp naar docent (concept):**
 - Naam docent, naam student
@@ -239,6 +248,10 @@ Telefoon: {{6}}
 
 Tot dan!
 ```
+
+### `availability_conflict_teacher`
+**Status:** ✅ Approved | **Categorie:** Utility
+**Gebruik:** Pad B — instructie aan docent om ouder te bellen + link Tally Form 3
 
 ### `trial_lesson_confirmed_teacher`
 **Status:** ✅ Approved | **Categorie:** Utility | **Parameters:** 6
