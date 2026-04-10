@@ -40,6 +40,9 @@ Welkom bij de officiële documentatie van **Bright Panda** — het bijlesplatfor
 - [Financieel overzicht](docs/administratie/financieel.md)
 - [Rapportages](docs/administratie/rapportages.md)
 
+### Make.com Automatisering
+- [Scenario overzicht](docs/make/README.md)
+
 ### Technisch
 - [Architectuur](docs/technisch/architectuur.md)
 - [API Documentatie](docs/technisch/api.md)
