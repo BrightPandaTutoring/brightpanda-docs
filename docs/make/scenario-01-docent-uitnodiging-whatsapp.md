@@ -1,14 +1,14 @@
 # Scenario 01 — Docent Uitnodiging via WhatsApp
 
-**Make naam:** Integration Salesforce, HTTP
-**Laatste update:** 12 maart 2026
-**Status:** ✅ Werkend — getest 12 maart 2026, WhatsApp ontvangen op docent
+**Make naam:** Scenario 1 Integration Salesforce HTTP
+**Laatste update:** 10 april 2026
+**Status:** ✅ Werkend — getest en in productie
 
 ---
 
 ## Doel
 
-Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt in Salesforce (en nog geen `Trial_Lesson_Status__c` heeft), haalt docent-, student- en oudergegevens op, vertaalt het vak naar Nederlands via Google Apps Script, en stuurt een **WhatsApp naar de docent** met alle benodigde info inclusief contactgegevens van de ouder en de Tally Form 1 link.
+Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt in Salesforce (en nog geen `Trial_Lesson_Status__c` heeft), haalt docent- en studentgegevens op, vertaalt het vak naar Nederlands via Google Apps Script, en stuurt een **WhatsApp naar de docent** met alle benodigde info inclusief contactgegevens van de ouder en de Tally Form 1 link.
 
 **Probleem dat het oplost:** Bright Panda moest handmatig docenten benaderen voor proeflesplanning.
 
@@ -24,9 +24,9 @@ Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt i
 | Interval | Elke 15 minuten |
 | Limit | 10 records per run |
 
-**Filter:**
-- `Trial_Lesson_Status__c` gelijk aan **leeg** (voorkomt herhaling — veld wordt na versturen gevuld)
+**Filter na module 1:**
 - `Status__c` gelijk aan `Trial Class`
+- `Trial_Lesson_Status__c` gelijk aan **leeg** (voorkomt herhaling — veld wordt na versturen gevuld)
 
 ---
 
@@ -35,13 +35,11 @@ Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt i
 ```
 [1]  Salesforce → Watch Records
          ↓
-     Filter: Trial_Lesson_Status__c = leeg EN Status__c = "Trial Class"
+     Filter: Status__c = "Trial Class" EN Trial_Lesson_Status__c = leeg
          ↓
 [3]  Salesforce → Get a Record (Teacher Account)
          ↓
 [6]  Salesforce → Get a Record (Student Account)
-         ↓
-[9]  Salesforce → Search Records SOQL (Parent Contact)
          ↓
 [10] HTTP GET → Google Apps Script (vakvertaling NL)
          ↓
@@ -50,7 +48,9 @@ Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt i
 [7]  Salesforce → Update a Record (status + Tally link)
 ```
 
-> Volgorde: 1 → 3 → 6 → 9 → 10 → 5 → 7
+> Volgorde: 1 → 3 → 6 → 10 → 5 → 7
+
+> **Module 9 (Contact SOQL) is niet meer actief.** Ouder naam en telefoonnummer worden direct van het Student Account opgehaald via custom velden `ParentsName__c` en `ParentSPhone__c`.
 
 ---
 
@@ -70,25 +70,16 @@ Detecteert automatisch wanneer een matching de status **"Trial Class"** krijgt i
 ### Module 6 — Salesforce Get a Record (Student)
 - **Type:** Account
 - **Record ID:** `{{1.Student__c}}` (blauwe chip)
-- **Output:** `{{6.FirstName}}`, `{{6.Name}}`, `{{6.Account ID}}`
+- **Output:** `{{6.FirstName}}`, `{{6.ParentsName__c}}`, `{{6.ParentSPhone__c}}`
 
-### Module 9 — Salesforce Search Records SOQL (Ouder Contact)
-
-```sql
-SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{6.Account ID}}'
-```
-
-- **Limit:** 10
-- **Output:** `{{9.FirstName}}`, `{{9.Phone}}`
-
-> Ouders zijn **Contact** records in Salesforce, gekoppeld via `AccountId` aan het student Account. Niet via `ParentSPhone__c`.
+> Ouder naam en telefoonnummer zitten als custom velden op het **Student Account**: `ParentsName__c` en `ParentSPhone__c`. Geen aparte Contact SOQL nodig.
 
 ### Module 10 — HTTP GET → Google Apps Script (Vakvertaling)
 
 - **URL:** `https://script.google.com/macros/s/AKfycbyfkKuHurbErhMZkl_GAAtDImsd9SzLyc9qi3-qYdm3kuf7m1kylo5joO_DfbijH1M-0Q/exec?subject={{encodeURL(1.Subject_s__c)}}`
 - **Method:** GET
 - **Parse response:** NO (uitgeschakeld)
-- **Output:** `{{10.body}}` — plain text Nederlandse vaknaam, bijv. `"Wiskunde B"`
+- **Output:** `{{10.data}}` — plain text Nederlandse vaknaam, bijv. `"Wiskunde B"`
 
 > Zie [Google Apps Script — Script 1 Vakvertaling](google-apps-script.md#script-1--vakvertaling) voor de volledige vertaaltabel.
 
@@ -112,9 +103,9 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers.
       "parameters": [
         {"type": "text", "text": "{{3.FirstName}}"},
         {"type": "text", "text": "{{6.FirstName}}"},
-        {"type": "text", "text": "{{10.body}}"},
-        {"type": "text", "text": "{{9.FirstName}}"},
-        {"type": "text", "text": "{{9.Phone}}"},
+        {"type": "text", "text": "{{10.data}}"},
+        {"type": "text", "text": "{{6.ParentsName__c}}"},
+        {"type": "text", "text": "{{6.ParentSPhone__c}}"},
         {"type": "text", "text": "https://tally.so/r/2Ekaq9?matching_number={{encodeURL(1.Name)}}&student_name={{6.FirstName}}"}
       ]
     }]
@@ -128,9 +119,9 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers.
 |-----------|-----------|--------|
 | `{{1}}` | `{{3.FirstName}}` | Voornaam docent |
 | `{{2}}` | `{{6.FirstName}}` | Voornaam student |
-| `{{3}}` | `{{10.body}}` | Vak in het Nederlands |
-| `{{4}}` | `{{9.FirstName}}` | Voornaam ouder |
-| `{{5}}` | `{{9.Phone}}` | Telefoonnummer ouder |
+| `{{3}}` | `{{10.data}}` | Vak in het Nederlands |
+| `{{4}}` | `{{6.ParentsName__c}}` | Naam ouder (custom veld op Student Account) |
+| `{{5}}` | `{{6.ParentSPhone__c}}` | Telefoonnummer ouder (custom veld op Student Account) |
 | `{{6}}` | Tally URL | `https://tally.so/r/2Ekaq9?matching_number={{encodeURL(1.Name)}}&student_name={{6.FirstName}}` |
 
 > `encodeURL(1.Name)` converteert "Matching Number 0016" naar "Matching%20Number%200016" zodat de URL niet breekt in WhatsApp.
@@ -190,8 +181,8 @@ Bedankt!
 | Tally URL afgekapt na spatie | "Matching Number 0016" bevat spaties | `encodeURL(1.Name)` gebruikt |
 | `Missing value of required parameter 'record'` | Record ID als platte tekst ingevoerd | Vervangen door blauwe chip `1.Record ID` |
 | `switch()` brak JSON | Aanhalingstekens conflicteerden | Aparte HTTP module met Google Apps Script |
-| Template had 4 params maar ouder contactgegevens ontbraken | Template te beperkt | Uitgebreid naar 6 params + module 9 SOQL toegevoegd |
 | Template door Meta als Marketing geclassificeerd | Emoji + woord "proefles" triggerde classificatie | Opnieuw aangemaakt zonder emoji, categorie Utility |
+| Scenario stuurde elke 15 min bericht | Geen filter op Trial_Lesson_Status__c | Filter toegevoegd: Trial_Lesson_Status__c = leeg |
 
 ---
 

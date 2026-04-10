@@ -8,10 +8,10 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | # | Naam | Trigger | Status | Bestand |
 |---|------|---------|--------|---------|
-| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | ✅ Werkend — getest 12 maart 2026 | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
-| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | 🟡 Compleet — SOQL 0-based indices hertesten | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
-| 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Compleet | [scenario-03](scenario-03-reminders-escalatie.md) |
-| 3b | Ouder Tijdslot Verwerking | Custom Webhook (Tally Form 2) | 🟡 In aanbouw (modules 3-6 ✅, 7-13 wacht op template) | [scenario-3b](scenario-3b-ouder-tijdslot-verwerking.md) |
+| 01 | Docent Uitnodiging via WhatsApp | Salesforce Watch (15 min) | ✅ Werkend | [scenario-01](scenario-01-docent-uitnodiging-whatsapp.md) |
+| 02 | Tally Webhook → Ouder Planning | Custom Webhook (Tally Form 1) | ✅ Werkend | [scenario-02](scenario-02-tally-webhook-ouder-planning.md) |
+| 03 | Reminders & Escalatie | Schedule (elke 15 min) | ✅ Werkend | [scenario-03](scenario-03-reminders-escalatie.md) |
+| 3b | Ouder Tijdslot Verwerking | Custom Webhook (GAS Picker) | 🟡 Pad A ✅ werkend — Pad B nog te bouwen | [scenario-3b](scenario-3b-ouder-tijdslot-verwerking.md) |
 | 05 | Koppelingsbevestiging | Onbekend | 🔴 Backlog | [scenario-05](scenario-05-koppelingsbevestiging.md) |
 
 ---
@@ -21,51 +21,65 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 | Icoon | Betekenis |
 |-------|-----------|
 | ✅ | Actief en werkend |
-| 🟡 | In ontwikkeling / geblokkeerd |
+| 🟡 | In ontwikkeling / gedeeltelijk werkend |
 | 🔴 | Nog te bouwen |
 | ⚫ | Inactief / gearchiveerd |
 
 ---
 
-## Huidige Blokkades
+## Huidige Blokkades & Openstaande Werk
 
-| Scenario | Blokkade | Actie |
-|----------|---------|-------|
-| 01 | Meta display name goedkeuring (laag prioriteit) | Wacht → dan naam "Bright Panda Bijles" zichtbaar bij ontvanger |
-| 02 | SOQL module 3 gebruikte fields[1] i.p.v. fields[0] (0-based) | Gecorrigeerd in docs — hertesten met echt Tally formulier |
-| 02 | Module 4 gebruikte `ParentSPhone__c` (niet bruikbaar) | Vervangen door module 32 Contact SOQL — nog testen |
-| 3b | Template `trial_lesson_confirmed_teacher` wacht op Meta goedkeuring | Goedkeuring afwachten → dan modules 7-13 bouwen |
-| 3b | Einde-tot-einde test nog niet gedaan | Na oplevering modules 7-13 uitvoeren met echt matching record |
+| Scenario | Item | Status |
+|----------|------|--------|
+| 3b | Pad B bouwen (no_match route) | 🔴 Nog te bouwen |
+| 3b | Availability Conflict WhatsApp template | 🔴 Template nog te maken + Meta indienen |
+| Nieuw | Polling scenario (reminder docent bij Availability Conflict) | 🔴 Nog te bouwen |
+| Nieuw | Scenario: docent vult afgesproken tijdslot in | 🔴 Nog te bouwen |
+| Alle | Einde-tot-einde test met echt matching record | ⏳ Na Pad B |
+| Alle | Disclaimer toevoegen aan templates | ⏳ Na volledig testen |
+| Laag | Picker hosten op brightpanda.nl (Webflow) | 🔴 Toekomstig |
+| Laag | Meta Business Verificatie (KvK 84707577) | 🔴 Toekomstig |
 
 ---
 
 ## Volledige Flow
 
 ```
-[Salesforce: status → Teacher Invited]
+[Salesforce: Status__c → Trial Class]
         ↓
   Scenario 01 ─── WhatsApp docent met Tally Form 1 link
+                   Status: Teacher Invited
         ↓
   [Docent vult beschikbaarheid in via Tally Form 1]
         ↓
-  Scenario 02 ─── Bouwt genummerde tijdslotenlijst
-               ─── Slaat op in Available_Timeslots__c
-               ─── WhatsApp ouder met tijdsloten + Tally Form 2 link
+  Scenario 02 ─── Verwerkt tijdsloten via GAS Script 2
+               ─── Slaat timeslotsRaw op in Available_Timeslots__c
+               ─── WhatsApp ouder met GAS Picker URL
+                   Status: Parent Invited
         ↓
-  [Ouder kiest tijdslot getal via Tally Form 2]
+  [Ouder klikt tijdslot op GAS Picker pagina]
         ↓
-  Scenario 04 ─── Zoekt tijdslot op in Available_Timeslots__c
-               ─── Slaat op in Trial_Lesson_Date__c
-               ─── WhatsApp bevestiging naar ouder + docent
-               ─── Status → Trial Lesson Scheduled
+  Scenario 3b ─── Ontvangt keuze van GAS Picker via webhook
+     Pad A:    ─── Slaat Trial_Lesson_Date__c op (geen Z suffix)
+               ─── WhatsApp bevestiging naar ouder + docent (met elkaars contactgegevens)
+                   Status: Trial Lesson Scheduled
+     Pad B:    ─── [NOG TE BOUWEN] Update Availability Conflict
+               ─── WhatsApp docent: bel de ouder
+                   Status: Availability Conflict
 
   Scenario 03 ─── Draait elk kwartier
-               ─── Route 1: Reminder docent na 24u
+               ─── Route 1: Reminder docent na 24u (Teacher Invited)
                ─── Route 2: Escalatie docent na 48u
-               ─── Route 3: Reminder ouder na 24u
+               ─── Route 3: Reminder ouder na 24u (Parent Invited)
                ─── Route 4: Escalatie ouder na 48u
 
-  Scenario 05 ─── Koppelingsbevestiging (buiten proefles flow) [Backlog]
+  Nieuw polling scenario ─── [NOG TE BOUWEN]
+               ─── Check Availability Conflict + Trial_Lesson_Date__c leeg
+               ─── Reminder docent elke 3 uur
+
+  Nieuw scenario ─── [NOG TE BOUWEN]
+               ─── Docent vult afgesproken tijdslot in via form
+               ─── Salesforce update + bevestiging WhatsApp
 ```
 
 ---
@@ -74,8 +88,8 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 
 | Document | Inhoud |
 |----------|--------|
-| [Gedeelde configuratie](gedeelde-configuratie.md) | 360dialog headers, API endpoint, Google Apps Script URL, templates overzicht, Salesforce velden, telefoonnummer conventie |
-| [Google Apps Script](google-apps-script.md) | Functie A (tijdsloten string) + Functie B (keuzenummer → datetime), deploy instructies |
+| [Gedeelde configuratie](gedeelde-configuratie.md) | 360dialog headers, API key, GAS URLs, templates overzicht, Salesforce velden, webhook URLs |
+| [Google Apps Script](google-apps-script.md) | Script 1 (vakvertaling), Script 2 (tijdslotverwerking), Script 3 (picker v10) |
 | [Beslissingen](beslissingen.md) | Alle technische en functionele beslissingen met onderbouwing |
 
 ---
@@ -86,6 +100,7 @@ Overzicht van alle Make.com automatiserings-scenarios voor Bright Panda.
 - Bestanden volgen de naamconventie: `scenario-[nr]-[korte-naam].md`
 - Bij errors: open het relevante scenario-bestand → sectie "Foutmeldingen & Oplossingen"
 - Bij bouwen nieuw scenario: check eerst [beslissingen.md](beslissingen.md) voor werkwijze afspraken
+- JSON bodies altijd volledig kopiëren — nooit partial aanpassen
 
 ---
 

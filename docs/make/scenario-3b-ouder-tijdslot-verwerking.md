@@ -3,13 +3,15 @@
 **Make naam:** Scenario 3b
 **Make Scenario ID:** 4783259 (eu1.make.com)
 **Laatste update:** 10 april 2026
-**Status:** 🟡 In aanbouw — modules 3-6 ✅ werkend, modules 7-13 nog te bouwen/testen
+**Status:** 🟡 Pad A werkend ✅ — Pad B nog te bouwen
 
 ---
 
 ## Doel
 
-Verwerkt de tijdslot keuze van een ouder via **Tally Form 2**. Vertaalt het gekozen getal naar een concreet tijdslot via Google Apps Script, slaat de definitieve datum op in Salesforce, en stuurt een bevestiging naar zowel ouder als docent met elkaars contactgegevens.
+Ontvangt de tijdslot keuze van een ouder via de **Google Apps Script picker pagina**. Slaat de definitieve datum op in Salesforce, en stuurt een bevestiging naar zowel ouder als docent met elkaars contactgegevens.
+
+Bij **Pad B** (geen tijdslot past): stuurt WhatsApp naar docent met instructie om de ouder te bellen, update status naar `Availability Conflict`.
 
 ---
 
@@ -19,116 +21,111 @@ Verwerkt de tijdslot keuze van een ouder via **Tally Form 2**. Vertaalt het geko
 |-----------|--------|
 | Type | Custom Webhook |
 | Webhook naam | Tally Ouder Tijdslot |
-| Formulier | Tally Form 2 (`https://tally.so/r/WOozov`) |
-| Webhook | Geconfigureerd in Make.com Scenario 3b |
+| Webhook URL | `https://hook.eu1.make.com/jgrnq4k8yob8txh5x0jn2ojxx94awnwr` |
+| Afzender | Google Apps Script picker pagina (POST na klik op tijdslot of "geen tijdslot" knop) |
+
+> ⚠️ **Webhook is module 3** in dit scenario. Gebruik **altijd** `{{3.data.fields[...]}}` of `{{3.variabelenaam}}` — nooit module 1.
+
+---
+
+## Webhook Input — Velden van GAS Picker
+
+| Veld | Inhoud | Voorbeeld |
+|------|--------|-----------|
+| `{{3.matching_number}}` | Volledige matching naam | `"Matching Number 0016"` |
+| `{{3.student_name}}` | Voornaam student | `"Emma"` |
+| `{{3.chosen}}` | Keuzenummer (alleen bij Pad A) | `2` |
+| `{{3.chosen_date}}` | Leesbare datum | `"15 mrt"` |
+| `{{3.chosen_date_iso}}` | ISO datum | `"2026-03-15"` |
+| `{{3.chosen_time}}` | Tijdslot string | `"10:00-11:00"` |
+| `{{3.chosen_start_time}}` | Begintijd alleen | `"10:00"` |
+| `{{3.status}}` | `"chosen"` of `"no_match"` | `"chosen"` |
 
 ---
 
 ## Module Volgorde
 
 ```
-[3]  Webhooks → Custom Webhook (Tally Form 2)         ✅ Werkend
+[3]  Webhooks → Custom Webhook (GAS Picker)       ✅ Werkend
         ↓
-[4]  Salesforce → Search Records (SOQL)               ✅ Werkend
-        ↓
-[5]  HTTP → Google Apps Script (keuze → datetime)     ✅ Getest en werkend
-        ↓
-[6]  Salesforce → Update a Record                     ✅ Werkend
-        ↓
-[8]  Salesforce → Get a Record (Student Account)      ← NOG TE BOUWEN
-        ↓
-[13] Salesforce → Search Records SOQL (Ouder Contact) ← NOG TE BOUWEN
-        ↓
-[7]  HTTP → 360dialog (WhatsApp naar ouder)           ← NOG TE BOUWEN
-        ↓
-[9]  Salesforce → Get a Record (Teacher Account)      ← NOG TE BOUWEN
-        ↓
-[12] HTTP → 360dialog (WhatsApp naar docent)          ← NOG TE BOUWEN
+[23] Router → splitst op basis van 3.status
+        │
+        ├── Route 1: status = "chosen"  (Pad A — tijdslot gekozen)
+        │       ↓
+        │   [4]  Salesforce → Search Records SOQL (matching)      ✅
+        │       ↓
+        │   [6]  Salesforce → Update a Record (datum + status)     ✅
+        │       ↓
+        │   [8]  Salesforce → Get a Record (Student Account)       ✅
+        │       ↓
+        │   [9]  Salesforce → Get a Record (Teacher Account)       ✅
+        │       ↓
+        │   [7]  HTTP → 360dialog (WhatsApp naar ouder)            ✅
+        │       ↓
+        │   [12] HTTP → 360dialog (WhatsApp naar docent)           ✅
+        │
+        └── Route 2: status = "no_match"  (Pad B — geen tijdslot past)
+                ← NOG TE BOUWEN
 ```
-
-> ⚠️ **Kritiek:** De webhook is module **3** in dit scenario (niet 1 zoals in Scenario 02). Gebruik **altijd** `{{3.data.fields[...]}}` — nooit `{{1.data.fields[...]}}`. Fout modulenummer geeft "references non-existing module" waarschuwing.
-
-> ⚠️ **Wacht op template goedkeuring:** `trial_lesson_confirmed_teacher` is ingediend bij Meta als Utility, goedkeuring afwachten. `trial_lesson_confirmation_parent` is al goedgekeurd.
 
 ---
 
-## Modules Detail
+## Modules Detail — Pad A
 
 ### Module 3 — Custom Webhook ✅
 - **Naam:** Tally Ouder Tijdslot
-- **Output:** Tally Form 2 data
+- **Ontvangt:** JSON POST van Google Apps Script picker pagina
+
+### Module 23 — Router
+- **Route 1 filter:** `{{3.status}}` equal to `chosen`
+- **Route 2 filter:** `{{3.status}}` equal to `no_match`
 
 ### Module 4 — Salesforce Search Records (SOQL) ✅
 
 ```sql
 SELECT Id, Teacher__c, Student__c, Available_Timeslots__c, Name
 FROM Student_Teacher_Matching__c
-WHERE Name = '{{3.data.fields[1].value}}'
+WHERE Name = '{{3.matching_number}}'
 ```
 
-**Gebruikte output:** `{{4.Id}}`, `{{4.Teacher__c}}`, `{{4.Student__c}}`, `{{4.Available_Timeslots__c}}`
+> `{{3.matching_number}}` bevat de **volledige** matching naam "Matching Number 0016" — direct gebruiken als chip, geen prefix toevoegen.
 
-> **Opmerking:** Tally Form 2 gebruikt `matching_number` als `fields[1]` — dit bevat het matching nummer als getal (bijv. `"0016"`), niet de volledige naam. De SOQL voegt het prefix `Matching Number ` toe.
+**Output:** `{{4.Id}}`, `{{4.Teacher__c}}`, `{{4.Student__c}}`
 
-### Module 5 — HTTP → Google Apps Script ✅ Getest
-
-**Getest met:** matching_number=0016 en handmatig gevulde `Available_Timeslots__c`
-
-- **URL:** `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec`
-- **Method:** POST
-- **Body type:** Raw
-- **Content type:** application/json
-
-**JSON body:**
-```json
-{"timeslots":"{{4.Available_Timeslots__c}}","chosen":{{3.data.fields[4].value}}}
-```
-
-**Output:**
-
-| Variabele | Inhoud | Voorbeeld |
-|-----------|--------|-----------|
-| `{{5.data.timeslot}}` | Leesbaar tijdslot | `"2026-03-10 - 14:00-15:00"` |
-| `{{5.data.datetime}}` | ISO datetime | `"2026-03-10T14:00:00.000Z"` |
-
-Zie [Google Apps Script documentatie](google-apps-script.md) voor Functie B logica.
-
-### Module 6 — Salesforce Update a Record ✅ Werkend
+### Module 6 — Salesforce Update a Record ✅
 
 - **Record ID:** `{{4.Id}}`
 
 | Veld | Waarde |
 |------|--------|
-| `Trial_Lesson_Date__c` | `{{5.data.datetime}}` |
-| `Trial_Lesson_Status__c` | `Lesson Scheduled` |
+| `Trial_Lesson_Date__c` | `{{3.chosen_date_iso}}T{{3.chosen_start_time}}:00.000` |
+| `Trial_Lesson_Status__c` | `Trial Lesson Scheduled` |
 
-### Module 8 — Salesforce Get a Record (Student) *(NOG TE BOUWEN)*
+> ⚠️ **Geen `Z` suffix** — datum opslaan als `2026-03-15T10:00:00.000` (zonder Z). Met Z gebruikt Salesforce UTC, waardoor de tijd 1 uur later lijkt in Europe/Amsterdam tijdzone.
+>
+> ⚠️ **`chosen_start_time` gebruiken, niet `chosen_time`** — `chosen_time` bevat het volledige bereik "10:00-11:00". `chosen_start_time` bevat alleen "10:00" (begintijd, gesplitst via `selectedTime.split("-")[0]` in de picker).
+
+### Module 8 — Salesforce Get a Record (Student) ✅
 - **Type:** Account
 - **Record ID:** `{{4.Student__c}}`
-- **Benodigde output:** `{{8.FirstName}}`, `{{8.Account ID}}`
+- **Output:** `{{8.ParentsName__c}}`, `{{8.ParentSPhone__c}}`, `{{8.FirstName}}`
 
-### Module 13 — Salesforce Search Records SOQL (Ouder Contact) *(NOG TE BOUWEN)*
+### Module 9 — Salesforce Get a Record (Teacher) ✅
+- **Type:** Account
+- **Record ID:** `{{4.Teacher__c}}`
+- **Output:** `{{9.FirstName}}`, `{{9.AccountPhone}}`
 
-```sql
-SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
-```
+> Docenten zijn Account records. Telefoonnummer = `AccountPhone` veld in Make.com module output.
 
-- **Limit:** 10
-- **Output:** `{{13.FirstName}}`, `{{13.Phone}}`
+### Module 7 — HTTP POST → 360dialog (WhatsApp naar ouder) ✅
 
-> Ouders zijn **Contact** records in Salesforce, gekoppeld via `AccountId` aan het student Account.
-
-### Module 7 — HTTP → 360dialog (WhatsApp naar ouder) *(NOG TE BOUWEN)*
-
-- **Template:** `trial_lesson_confirmation_parent`
-- **Status template:** ✅ Goedgekeurd
-- **Naar:** `{{13.Phone}}`
+**Template:** `trial_lesson_confirmation_parent` (6 parameters)
 
 **JSON body:**
 ```json
 {
   "messaging_product": "whatsapp",
-  "to": "{{13.Phone}}",
+  "to": "{{8.ParentSPhone__c}}",
   "type": "template",
   "template": {
     "name": "trial_lesson_confirmation_parent",
@@ -136,12 +133,12 @@ SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
     "components": [{
       "type": "body",
       "parameters": [
-        {"type": "text", "text": "{{13.FirstName}}"},
-        {"type": "text", "text": "{{8.Name}}"},
-        {"type": "text", "text": "{{3.data.fields[2].value}}"},
-        {"type": "text", "text": "{{3.data.fields[3].value}}"},
+        {"type": "text", "text": "{{8.ParentsName__c}}"},
+        {"type": "text", "text": "{{8.FirstName}}"},
+        {"type": "text", "text": "{{3.chosen_date}}"},
+        {"type": "text", "text": "{{3.chosen_time}}"},
         {"type": "text", "text": "{{9.FirstName}}"},
-        {"type": "text", "text": "{{9.Phone}}"}
+        {"type": "text", "text": "{{9.AccountPhone}}"}
       ]
     }]
   }
@@ -152,29 +149,22 @@ SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
 
 | Parameter | Variabele | Inhoud |
 |-----------|-----------|--------|
-| `{{1}}` | `{{13.FirstName}}` | Voornaam ouder |
-| `{{2}}` | `{{8.Name}}` | Volledige naam student (Account.Name) |
-| `{{3}}` | `{{3.data.fields[2].value}}` | Leesbaar tijdslot (bijv. "2026-03-10 - 14:00-15:00") |
-| `{{4}}` | `{{3.data.fields[3].value}}` | Extra datuminfo (Form 2 veld) |
+| `{{1}}` | `{{8.ParentsName__c}}` | Naam ouder |
+| `{{2}}` | `{{8.FirstName}}` | Voornaam student |
+| `{{3}}` | `{{3.chosen_date}}` | Leesbare datum, bijv. "15 mrt" |
+| `{{4}}` | `{{3.chosen_time}}` | Tijdslot, bijv. "10:00-11:00" |
 | `{{5}}` | `{{9.FirstName}}` | Voornaam docent |
-| `{{6}}` | `{{9.Phone}}` | Telefoonnummer docent |
+| `{{6}}` | `{{9.AccountPhone}}` | Telefoonnummer docent |
 
-### Module 9 — Salesforce Get a Record (Teacher) *(NOG TE BOUWEN)*
-- **Type:** Account
-- **Record ID:** `{{4.Teacher__c}}`
-- **Benodigde output:** `{{9.Phone}}`, `{{9.FirstName}}`
+### Module 12 — HTTP POST → 360dialog (WhatsApp naar docent) ✅
 
-### Module 12 — HTTP → 360dialog (WhatsApp naar docent) *(NOG TE BOUWEN)*
-
-- **Template:** `trial_lesson_confirmed_teacher`
-- **Status template:** 🟡 Ingediend bij Meta — wacht op goedkeuring
-- **Naar:** `{{9.Phone}}`
+**Template:** `trial_lesson_confirmed_teacher` (6 parameters)
 
 **JSON body:**
 ```json
 {
   "messaging_product": "whatsapp",
-  "to": "{{9.Phone}}",
+  "to": "{{9.AccountPhone}}",
   "type": "template",
   "template": {
     "name": "trial_lesson_confirmed_teacher",
@@ -183,11 +173,11 @@ SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
       "type": "body",
       "parameters": [
         {"type": "text", "text": "{{9.FirstName}}"},
-        {"type": "text", "text": "{{8.Name}}"},
-        {"type": "text", "text": "{{3.data.fields[2].value}}"},
-        {"type": "text", "text": "{{3.data.fields[3].value}}"},
-        {"type": "text", "text": "{{13.FirstName}}"},
-        {"type": "text", "text": "{{13.Phone}}"}
+        {"type": "text", "text": "{{8.FirstName}}"},
+        {"type": "text", "text": "{{3.chosen_date}}"},
+        {"type": "text", "text": "{{3.chosen_time}}"},
+        {"type": "text", "text": "{{8.ParentsName__c}}"},
+        {"type": "text", "text": "{{8.ParentSPhone__c}}"}
       ]
     }]
   }
@@ -199,53 +189,95 @@ SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
 | Parameter | Variabele | Inhoud |
 |-----------|-----------|--------|
 | `{{1}}` | `{{9.FirstName}}` | Voornaam docent |
-| `{{2}}` | `{{8.Name}}` | Volledige naam student |
-| `{{3}}` | `{{3.data.fields[2].value}}` | Leesbaar tijdslot |
-| `{{4}}` | `{{3.data.fields[3].value}}` | Extra datuminfo |
-| `{{5}}` | `{{13.FirstName}}` | Voornaam ouder |
-| `{{6}}` | `{{13.Phone}}` | Telefoonnummer ouder |
+| `{{2}}` | `{{8.FirstName}}` | Voornaam student |
+| `{{3}}` | `{{3.chosen_date}}` | Leesbare datum |
+| `{{4}}` | `{{3.chosen_time}}` | Tijdslot |
+| `{{5}}` | `{{8.ParentsName__c}}` | Naam ouder |
+| `{{6}}` | `{{8.ParentSPhone__c}}` | Telefoonnummer ouder |
 
-> **Privacyprincipe (B09):** Docent en ouder krijgen **elkaars contactgegevens pas in de bevestiging** — niet eerder. Dit is bewuste keuze.
-
----
-
-## Tally Form 2 — Datastructuur
-
-**URL:** `https://tally.so/r/WOozov`
-**Link formaat:** `https://tally.so/r/WOozov?matching_number=0016&student_name=Emma+de+Vries`
-
-| Index | Type | Inhoud |
-|-------|------|--------|
-| `fields[1]` | HIDDEN | matching_number (bijv. `"0016"`) |
-| `fields[2]` | HIDDEN | student_name |
-| `fields[3]` | HIDDEN | timeslots_all (backup, niet gebruikt in huidige opzet) |
-| `fields[4]` | INPUT_NUMBER | Keuzenummer van de ouder |
-| `fields[5]` | CHECKBOXES | "Past geen van de tijdsloten?" → Pad B |
-| `fields[7]` | INPUT_DATE | Datum 1 (alternatieve beschikbaarheid) |
-| `fields[8]` | MULTI_SELECT | Tijdsloten datum 1 (alternatief) |
-| `fields[9]` | INPUT_DATE | Datum 2 (alternatief) |
-| `fields[10]` | MULTI_SELECT | Tijdsloten datum 2 (alternatief) |
-| ... | ... | Datum 3, 4, 5 (alternatief) |
+> **Privacyprincipe:** Docent en ouder krijgen **elkaars contactgegevens pas in de bevestiging** — niet eerder.
 
 ---
 
-## Pad B — Geen Tijdslot Past *(NOG TE ONTWERPEN)*
+## Pad B — Geen Tijdslot Past *(NOG TE BOUWEN)*
 
-**Trigger:** `fields[5]` = aangevinkt (ouder vinkt "Past geen van de tijdsloten?" aan)
+**Trigger:** Router Route 2 — `{{3.status}}` = `"no_match"`
 
-**Geplande acties:**
-- Status update → bijv. `"No Match"` (statuswaarde nog te bepalen)
-- WhatsApp naar intern team `+31613689666` voor handmatige opvolging
+**Geplande stappen:**
+1. Salesforce SOQL: matching ophalen (`WHERE Name = '{{3.matching_number}}'`)
+2. Salesforce Get a Record: Student Account → `ParentSPhone__c`, `ParentsName__c`
+3. Salesforce Get a Record: Teacher Account → `Phone`, `FirstName`
+4. Salesforce Update: `Trial_Lesson_Status__c = Availability Conflict`
+5. HTTP POST 360dialog: WhatsApp naar docent met ouder contactgegevens + instructie om te bellen
+
+**Template nodig:** Availability Conflict template voor docent — nog te maken en in te dienen bij Meta.
+
+**Inhoud WhatsApp naar docent (concept):**
+- Naam docent, naam student
+- Contactgegevens ouder (naam + telefoon)
+- Instructie: "Geen tijdslot paste voor de ouder. Neem contact op om een datum te plannen."
+
+---
+
+## WhatsApp Templates
+
+### `trial_lesson_confirmation_parent`
+**Status:** ✅ Approved | **Categorie:** Utility | **Parameters:** 6
+
+```
+Hoi {{1}},
+
+De proefles is bevestigd!
+
+Leerling: {{2}}
+Datum: {{3}}
+Tijd: {{4}}
+
+Contactgegevens docent:
+Naam: {{5}}
+Telefoon: {{6}}
+
+Tot dan!
+```
+
+### `trial_lesson_confirmed_teacher`
+**Status:** ✅ Approved | **Categorie:** Utility | **Parameters:** 6
+
+```
+Hoi {{1}},
+
+De proefles is bevestigd.
+
+Leerling: {{2}}
+Datum: {{3}}
+Tijd: {{4}}
+
+Contactgegevens ouder:
+Naam: {{5}}
+Telefoon: {{6}}
+
+Tot dan!
+```
+
+---
+
+## Foutmeldingen & Oplossingen
+
+| Fout | Oorzaak | Oplossing |
+|------|---------|-----------|
+| Trial_Lesson_Date__c toonde 1 uur te laat | Z suffix → Salesforce gebruikte UTC → 1 uur verschil NL | Zonder Z opslaan: `{{3.chosen_date_iso}}T{{3.chosen_start_time}}:00.000` |
+| `chosen_start_time` pakte eindtijd | `chosen_time` bevat "10:00-11:00", niet "10:00" | Picker stuurt `chosen_start_time` apart via `selectedTime.split("-")[0]` |
+| Invalid API token module 12 | Typefout in API key (kleine l vs hoofdletter I) | API key kopiëren van werkende module 7 |
+| SOQL 0 resultaten | Variabele als plain text ingevoerd | Chip selecteren vanuit variabele picker (blauwe chip) |
+| `Trial Lesson Scheduled` bad value | Exacte picklist waarde verkeerd gespeld | Exacte waarde: `Trial Lesson Scheduled` (met spaties) |
 
 ---
 
 ## Speciale Opmerkingen
 
-- 📱 Docent en ouder krijgen **elkaars contactgegevens pas in de bevestiging** (privacy)
-- ⚠️ Einde-tot-einde test is **nog nooit uitgevoerd** met een echt matching record
-- 🕐 Test gedaan met handmatig gevuld `Available_Timeslots__c` en matching_number=0016
-- 📋 Verzetten/annuleren gaat handmatig — contactgegevens in WhatsApp disclaimer
-- ⚠️ Bouwen modules 7-13 wacht op goedkeuring `trial_lesson_confirmed_teacher` template
+- ⚠️ Einde-tot-einde test is **nog nooit volledig uitgevoerd** met een echt matching record
+- 📋 Verzetten/annuleren gaat handmatig — contactgegevens staan in WhatsApp berichten
+- 🔄 Picker pagina toont "geen tijdslot" knop → POST naar webhook met `status=no_match`
 
 ---
 
@@ -253,6 +285,6 @@ SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{8.Account ID}}'
 
 | Scenario | Beschrijving |
 |----------|-------------|
-| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | Vult `Available_Timeslots__c` en stuurt Form 2 link naar ouder |
+| [Scenario 02](scenario-02-tally-webhook-ouder-planning.md) | Stuurt picker URL naar ouder |
 | [Scenario 03](scenario-03-reminders-escalatie.md) | Reminders bij niet-reagerende ouder |
-| [Google Apps Script](google-apps-script.md) | Functie B — tijdslot vertaling |
+| [Google Apps Script](google-apps-script.md) | Script 3 — Picker pagina (v10) |

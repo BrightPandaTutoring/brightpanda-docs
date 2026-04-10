@@ -10,141 +10,153 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 - **Keuze:** Formules met aanhalingstekens altijd buiten JSON berekenen in een aparte Set Variable module
 - **Reden:** Dubbele aanhalingstekens in Make.com formules conflicteren altijd met JSON string opmaak
 - **Gevolg:** Gebruik `{{X.variabelenaam}}` in JSON, nooit de formule zelf
-- **Zie ook:** [Scenario 01 module 8](scenario-01-docent-uitnodiging-whatsapp.md)
 
 ### B02 — Backticks in `switch()` binnen JSON, niet in `replace()`
 - **Keuze:** `switch()` in JSON body gebruikt backticks: `` switch(x; `A`; `B`) ``
-- **Reden:** Backticks conflicteren niet met JSON aanhalingstekens
 - **Let op:** Backticks werken **alleen** in `switch()`, **niet** in `replace()` (geeft NaN error)
 
 ### B03 — Available_Timeslots__c als persistente opslag
-- **Keuze:** Genummerde tijdslotenlijst opslaan in Salesforce veld op matching record
-- **Reden:** Make.com heeft geen geheugen tussen scenario-runs. Scenario 04 heeft de lijst nodig die Scenario 02 bouwde.
-- **Alternatief overwogen:** `timeslots_all` als URL hidden field in Form 2 (URL lengte berekend als voldoende bij max 65 opties, maar Salesforce is robuuster)
-- **Veldformat:** `1=12 maart 13:00-14:00|2=12 maart 14:00-15:00`
+- **Keuze:** `timeslotsRaw` string opslaan in Salesforce veld op matching record
+- **Reden:** Make.com heeft geen geheugen tussen scenario-runs. Scenario 3b heeft de lijst nodig die Scenario 02 bouwde.
+- **Veldformat:** `2026-03-10 - 10:00-11:00|2026-03-10 - 11:00-12:00`
 
-### B04 — Checkboxes in plaats van Multi-select in Tally Form 1
-- **Keuze:** Alle tijdsloten velden gewijzigd van Multi-select naar Checkboxes (10 maart 2026)
-- **Reden:** Betere compatibiliteit met Make.com `map()` formule
-- **Let op:** Checkboxes sturen ook UUIDs — de UUID→tekst mapping via `options` array blijft altijd nodig
+### B04 — Checkboxes in Tally Form 1
+- **Keuze:** Tijdsloten als Checkboxes (niet Multi-select)
+- **Reden:** Betere compatibiliteit met Make.com processing
 
 ### B05 — SOQL Query in plaats van Filter dropdown
 - **Keuze:** Salesforce Search Records gebruikt SOQL Query mode, niet de Filter dropdown
-- **Reden:** Filter dropdown toont veldlabels, niet het `Name` veld — `Name` was niet vindbaar via dropdown
+- **Reden:** Filter dropdown toont veldlabels, niet het `Name` veld
 
-### B06 — Ouders ophalen via Contact SOQL, niet via Account veld
-- **Keuze:** `SELECT FirstName, Phone FROM Contact WHERE AccountId = '{{account_id}}'`
-- **Reden:** Ontdekt dat ouders Contact records zijn in Salesforce, niet een veld (`ParentSPhone__c`) op het student Account
-- **Impact:** Alle scenarios die ouder contactgegevens nodig hebben, moeten een aparte SOQL module hebben (Scenario 01 module 9, Scenario 02 module 32, Scenario 3b module 13)
+### B06 — Ouder contactgegevens van Student Account (niet Contact SOQL)
+- **Keuze:** `ParentsName__c` en `ParentSPhone__c` custom velden direct van het Student Account
+- **Reden:** Ouders zijn geen Contact records in Salesforce — custom velden op Account zijn de correcte bron
+- **Impact:** Geen aparte Contact SOQL module nodig in Scenario 01, 02 en 3b
 
 ### B07 — Google Apps Script voor vakvertaling (Scenario 01)
-- **Keuze:** Aparte GET-aanroep naar Google Apps Script Script 1 voor vertaling Engelse → Nederlandse vaknaam
-- **Reden:** `switch()` formule in Make.com JSON body conflicteert met aanhalingstekens; 31 vakcombinaties is te lang voor betrouwbare Make.com formule
-- **Implementatie:** Module 10, GET request, Parse response: NO, output via `{{10.body}}`
-- **Voordeel:** Vertaaltabel eenvoudig uitbreidbaar in GAS zonder Make.com aanpassing
+- **Keuze:** Aparte GET-aanroep naar Script 1 voor vertaling Engelse → Nederlandse vaknaam
+- **Reden:** `switch()` in Make.com JSON conflicteert; 31 vakken is te lang voor betrouwbare formule
+- **Implementatie:** Module 10, GET, Parse response: NO, output via `{{10.data}}` chip
 
-### B08 — encodeURL() voor matching_number in Tally URL
-- **Keuze:** `encodeURL(1.Name)` in plaats van `replace()` voor URL-encoding
-- **Reden:** "Matching Number 0016" bevat spaties → URL breekt in WhatsApp. `encodeURL()` converteert naar `Matching%20Number%200016`
-- **Gevolg:** Geen Set Variable module nodig voor URL-encoding
+### B08 — encodeURL() voor spaties in URL parameters
+- **Keuze:** `encodeURL()` gebruiken voor alle strings met spaties in URL parameters
+- **Reden:** "Matching Number 0016" bevat spaties → URL breekt in WhatsApp
+- **Gebruik:** `encodeURL(1.Name)` in Tally links, `encodeURL(31.data.timeslotsRaw)` in picker URL
 
-### B09 — Parse response: NO voor Google Apps Script aanroepen
-- **Keuze:** Parse response uitgeschakeld voor beide GAS scripts
-- **Reden Script 1:** Script retourneert plain text — Make.com geeft JSON parse error als Parse response aan staat. Output via `.body` chip.
-- **Reden Script 2:** JSON output, maar Parse response kan instabiel zijn — gebruik `{{31.data.timeslots}}` chip direct.
+### B09 — & als literal in JSON body URL (niet %26)
+- **Keuze:** `&` gebruiken in JSON body URL parameter strings
+- **Reden:** `%26` gaf JSON coderingsproblemen; literal `&` in een JSON string-waarde werkt correct
 
-### B10 — Tally field indexering is 0-based
-- **Keuze:** Alle Tally field referenties beginnen bij 0: `fields[0]` = eerste veld
-- **Reden:** Vastgesteld via analyse van daadwerkelijke webhook data — Make.com toonde initieel misleidende preview
-- **Impact:** Scenario 01 SOQL en module 31 JSON body zijn bijgewerkt. `fields[0].value` in Tally Form 1 bevat de volledige matching naam "Matching Number 0016" (niet alleen het getal "0016")
+### B10 — Trial_Lesson_Date__c opslaan zonder Z suffix
+- **Keuze:** DateTime opslaan als `{{3.chosen_date_iso}}T{{3.chosen_start_time}}:00.000` — zonder `Z`
+- **Reden:** Met `Z` interpreteert Salesforce de tijd als UTC → toont 1 uur later in Europe/Amsterdam
+- **Bewijs:** Proefles om 10:00 werd weergegeven als 11:00 → Z verwijderd → correct
 
-### B11 — Trial_Lesson_Status__c filter voorkomt dubbele berichten (Scenario 01)
+### B11 — chosen_start_time apart meesturen vanuit picker
+- **Keuze:** Picker stuurt `chosen_start_time` als apart veld via `selectedTime.split("-")[0]`
+- **Reden:** `chosen_time` bevat "10:00-11:00" — voor DateTime opslag is alleen "10:00" nodig
+- **Zonder dit:** `Trial_Lesson_Date__c` bevatte "11:00" (eindtijd) in plaats van "10:00"
+
+### B12 — Tally Form 2 vervangen door Google Apps Script picker
+- **Keuze:** Picker pagina (Script 3) in plaats van Tally Form 2 voor ouder tijdslot keuze
+- **Reden:** Betere UX — ouder klikt op tijdslot knop in plaats van getal typen; geen Tally Pro plan nodig
+- **Gevolg:** Scenario 3b ontvangt nu van GAS picker via webhook, niet meer van Tally Form 2
+- **Tally Form 2 URL:** Blijft beschikbaar als fallback bij no_match knop op picker pagina
+
+### B13 — Trial_Lesson_Status__c filter voorkomt dubbele berichten (Scenario 01)
 - **Keuze:** Filter op `Trial_Lesson_Status__c = leeg` in Scenario 01
-- **Reden:** Zonder deze filter stuurt het scenario bij elke trigger opnieuw een WhatsApp naar de docent. Het veld wordt na versturen gevuld met "Teacher Invited", waardoor herhaling geblokkeerd wordt.
+- **Reden:** Zonder filter stuurt het scenario elke 15 minuten een nieuwe WhatsApp naar de docent
+
+### B14 — API key altijd kopiëren van werkende module
+- **Keuze:** API key nooit handmatig overtypen — altijd copy-paste van bestaande werkende module
+- **Reden:** Typefout tussen `I` (hoofdletter i) en `l` (kleine letter L) is onzichtbaar in Make.com editor
+- **Bewijs:** Module 12 in Scenario 3b gaf "Invalid API token" door typefout in handmatig overgetypte key
+
+### B15 — Lange Make.com formules vermijden
+- **Keuze:** Formules met meer dan ~13 geneste `if`-statements niet gebruiken in Make.com
+- **Reden:** Lange formules raken corrupt bij opslaan — tokens lijken correct maar geven lege output
+- **Alternatief:** Google Apps Script voor alle complexe logica
+
+### B16 — timeslotsRaw vs timeslots (twee outputs van Script 2)
+- **Keuze:** Script 2 geeft twee outputs: genummerd voor WhatsApp (`timeslots`), ruw voor opslag (`timeslotsRaw`)
+- **Reden:** WhatsApp template toonde genummerde lijst "1. ma 10 mrt 10:00-11:00". Picker pagina heeft ISO datumnotatie nodig voor correcte verwerking.
+- **Salesforce opslag:** `Available_Timeslots__c` = `timeslotsRaw`
 
 ---
 
 ## Functionele Beslissingen
 
-### B12 — Ouder kiest tijdslot via getal, niet via dropdown
-- **Keuze:** Number invoerveld in Form 2 waarbij ouder een getal typt
-- **Reden:** Dropdown werkt niet dynamisch in Tally zonder betaald plan; tekstveld geeft typefouten
-- **Afgewezen:** Vrije tekstinvoer (typefouten), dropdown (niet dynamisch)
+### B17 — Ouder kiest tijdslot via klikbare knop op picker pagina
+- **Keuze:** Google Apps Script HTML pagina met klikbare tijdsloten (Script 3)
+- **Reden:** Dropdown werkt niet dynamisch in Tally zonder betaald plan; tekstveld geeft typefouten; picker is professioneler
+- **Afgewezen:** Vrije tekstinvoer, dropdown (Tally Pro), Tally Number field
 
-### B13 — Nummering per tijdslot (niet per datum)
+### B18 — Nummering per tijdslot (niet per datum)
 - **Keuze:** Elke datum+tijdslot combinatie krijgt een uniek oplopend getal
 - **Reden:** Ouder moet exact tijdslot kunnen kiezen, niet alleen een datum
-- **Afgewezen:** Nummering per datum (te vaag voor definitieve afspraak)
 
-### B14 — Alleen hele uren in tijdsloten (13 opties per datum)
+### B19 — Alleen hele uren in tijdsloten (13 opties per datum)
 - **Keuze:** 13 opties van 08:00-09:00 t/m 20:00-21:00
-- **Reden:** 26 halve uren is te lang voor de form; in de praktijk volstaat dit
 - **Uitbreidbaar** naar halve uren later
 
-### B15 — Telefoonnummers uitwisselen pas bij bevestiging
-- **Keuze:** Docent en ouder krijgen elkaars telefoonnummer pas in de `trial_lesson_confirmation`
+### B20 — Telefoonnummers uitwisselen pas bij bevestiging
+- **Keuze:** Docent en ouder krijgen elkaars telefoonnummer pas in de `trial_lesson_confirmation` berichten
 - **Reden:** Privacy — alleen relevant als proefles definitief ingepland is
 
-### B16 — Verzetten en annuleren gaat handmatig
+### B21 — Verzetten en annuleren gaat handmatig
 - **Keuze:** Geen automatisering voor verzetten of annuleren van proeflessen
-- **Reden:** Te complex, valt buiten scope. Contactgegevens staan in WhatsApp disclaimer.
+- **Reden:** Te complex, valt buiten scope. Contactgegevens staan in WhatsApp berichten.
 
-### B17 — Escalaties via WhatsApp naar intern nummer
+### B22 — Escalaties via WhatsApp naar intern nummer
 - **Keuze:** Escalatiemeldingen via WhatsApp naar `+31613689666`
 - **Reden:** Redundantie — escalaties mogen niet gemist worden
-- **Kanalen:** WhatsApp (alle scenario's), Gmail/email (Scenario 03 — ook via email voor redundantie)
 
-### B18 — Inbound WhatsApp messaging niet bouwen
-- **Keuze:** Geen automatische verwerking van inkomende WhatsApp berichten
-- **Reden:** Te complex, valt buiten scope van dit project
+### B23 — Reminder naar docent elke 3 uur bij Availability Conflict
+- **Keuze:** Polling scenario elke 15 min — bij `Availability Conflict` + `Trial_Lesson_Date__c` leeg → reminder elke 3 uur
+- **Reden:** Docent moet snel actie ondernemen door ouder te bellen
+- **Status:** Nog te bouwen
 
-### B19 — Scheduling Scenario 03 op 15 minuten
-- **Keuze:** Elke 15 minuten draaien
-- **Reden:** Make.com Free plan limiet (ideaal zou elk uur zijn)
+### B24 — Bij no_match belt docent de ouder
+- **Keuze:** Bij Pad B (geen tijdslot past) instrueert Bright Panda de docent om de ouder te bellen
+- **Reden:** Ouder geeft alternatieve beschikbaarheid op in Tally Form 2 (link staat op picker pagina) — maar afgesproken datum wordt handmatig bevestigd
+- **Docent vult daarna:** Via een nieuw form het afgesproken tijdslot in → Salesforce update
 
-### B20 — 360dialog gekozen boven Twilio
-- **Keuze:** 360dialog (EUR 49/maand) in plaats van Twilio (pay-per-message)
-- **Reden:** Break-even punt berekend op ~110 proeflessen/maand. Bij groei is 360dialog goedkoper. Simpler integratie via directe WhatsApp Business API.
-- **Break-even:** Twilio kost ~€0,045 per bericht; bij 110 proeflessen × ~10 berichten per proefles ≈ 1.100 berichten × €0,045 = €49,50
+### B25 — 360dialog gekozen boven Twilio
+- **Keuze:** 360dialog (EUR 49/maand flat) in plaats van Twilio (pay-per-message)
+- **Break-even:** ~110 proeflessen/maand bij ~10 berichten per proefles
+
+### B26 — Picker later hosten op brightpanda.nl
+- **Keuze:** Webflow redirect van brightpanda.nl naar GAS URL
+- **Reden:** GAS URL is lang en onprofessioneel voor ouders
+- **Status:** Toekomstige verbetering — lage urgentie
 
 ---
 
 ## Template Beslissingen
 
-### B21 — Templates pas aanpassen na volledig testen
-- **Keuze:** Disclaimer toevoegen als allerlaatste stap
+### B27 — Templates indienen als Utility, zonder emoji
+- **Keuze:** Geen emoji's in template tekst, handmatig categorie "Utility" selecteren bij indiening
+- **Reden:** Meta classificeert templates met emoji's als Marketing — langere wachttijd + hogere kosten
+- **Bewijs:** `teacher_invitation` → Marketing → opnieuw aangemaakt als Utility ✅
+
+### B28 — Disclaimer toevoegen als allerlaatste stap
+- **Keuze:** Disclaimer ("Dit nummer is alleen voor...") toevoegen na volledig testen
 - **Reden:** Elke template aanpassing vereist opnieuw Meta goedkeuring (wachttijd: 2-7 dagen)
 
-### B22 — Meta Business Verificatie later doen
-- **Keuze:** Op to-do lijst gezet, niet urgent
-- **Reden:** Eerst automatisering volledig werkend krijgen en testen
-- **Wat het oplevert:** Naam "Bright Panda Bijles" zichtbaar bij ontvanger in plaats van +1 nummer
-
-### B23 — Templates indienen zonder emoji, categorie Utility
-- **Keuze:** Geen emoji's in template tekst, handmatig categorie "Utility" selecteren bij indiening
-- **Reden:** Meta classificeert templates met emoji's of woorden als "proefles" automatisch als Marketing
-- **Bewijs:** `teacher_invitation` werd initieel als Marketing geclassificeerd → opnieuw aangemaakt als Utility ✅. Zelfde probleem met `trial_lesson_confirmation_teacher` → hernoemd naar `trial_lesson_confirmed_teacher`, opnieuw ingediend als Utility.
+### B29 — Meta Business Verificatie later
+- **Keuze:** Op to-do lijst, niet urgent
+- **Wat het oplevert:** "Bright Panda Bijles" naam zichtbaar bij ontvanger (KvK 84707577)
 
 ---
 
-### B24 — Webhook module 3 in Scenario 3b (niet 1)
-- **Keuze:** Scenario 3b gebruikt `{{3.data.fields[...]}}` voor alle webhook referenties
-- **Reden:** Scenario 3b is later aangemaakt — de webhook module heeft automatisch nummer 3 gekregen in dit scenario
-- **Risico:** Fout modulenummer geeft "references non-existing module" waarschuwing in Make.com
+## Webhook Module Nummering
 
-### B25 — Aanhalingstekens om datumchips in JSON body
-- **Keuze:** Tally datumvelden in JSON body altijd omringen met aanhalingstekens: `"3": "{{1.data.fields[3].value}}"`
-- **Reden:** Tally `INPUT_DATE` velden arriveren als date objects in Make.com. Geen enkele Make.com functie (`toString`, `formatDate`, `&`) kan ze concateneren. Aanhalingstekens forceren JSON serialisatie als string.
-- **Bewijs:** Meer dan 3 uur debuggen, alle Make.com opties geprobeerd. Google Apps Script heeft dit probleem niet.
+| Scenario | Webhook module | Gebruik in formules |
+|----------|---------------|---------------------|
+| Scenario 02 | Module 1 | `{{1.data.fields[...]}}` |
+| Scenario 3b | Module 3 | `{{3.variabelenaam}}` |
 
-### B26 — if() wrapper voor checkbox waarden in JSON
-- **Keuze:** Alle checkbox velden wrappen: `{{if(1.data.fields[5].value; true; false)}}`
-- **Reden:** Make.com checkbox velden zijn een intern boolean type dat niet als geldig JSON boolean geserialiseerd wordt. `if()` garandeert altijd de literale waarden `true` of `false`.
-
-### B27 — Lange Make.com formules vermijden
-- **Keuze:** Formules met meer dan ~13 geneste `if`-statements niet gebruiken in Make.com
-- **Reden:** Lange formules raken corrupt bij opslaan — tokens lijken correct gekleurd maar geven lege output. Root causes: slimme aanhalingstekens bij paste, verlies van `{{ }}` wrappers, afkappen bij veel module referenties.
-- **Alternatief:** Google Apps Script voor alle complexe logica
+> ⚠️ Fout modulenummer geeft "references non-existing module" waarschuwing in Make.com.
 
 ---
 
@@ -154,26 +166,28 @@ Overzicht van alle technische en functionele beslissingen gemaakt tijdens de bou
 |----------|--------|
 | JSON aanlevering | Altijd volledige JSON geven bij HTTP module aanpassingen, nooit partial |
 | Stappenbeschrijving | Als bulletpoints, niet als lange lappen tekst |
-| Meerdere stappen tegelijk | Niet steeds 1 regel, maar meerdere stappen per keer |
 | Webhook logs | Via linkermenu → Webhooks → Logs (niet via scenario History tab) |
 | Formule met `"` in JSON | Stop → gebruik Set Variable module of Google Apps Script |
-| Webhook queue | Altijd "Wait for new data" kiezen, nooit "Use existing data" — pakt oudste uit queue |
-| Tally datum in JSON | Altijd aanhalingstekens om datumchips: `"2": "{{1.data.fields[2].value}}"` |
-| Checkbox in JSON | Altijd `if()`-wrapper: `{{if(1.data.fields[5].value; true; false)}}` |
-| Tally indexering | 0-based — `fields[0]` is het eerste veld |
-| GAS Script 1 (vakvertaling) | Parse response: NO — output via `.body` chip |
+| Webhook queue | Altijd "Wait for new data" kiezen, nooit "Use existing data" |
+| Tally datum in JSON | Aanhalingstekens om datumchips: `"3": "{{1.data.fields[3].value}}"` |
+| Checkbox in JSON | `if()`-wrapper: `{{if(1.data.fields[5].value; true; false)}}` |
+| API key | Altijd kopiëren van werkende module — nooit handmatig typen |
+| DateTime in Salesforce | Zonder Z suffix: `{{chosen_date_iso}}T{{chosen_start_time}}:00.000` |
+| URL parameters in JSON | `&` literal gebruiken — niet `%26` |
 
 ---
 
-## Openstaande Acties
+## Openstaande Acties (To-do)
 
-| Actie | Door wie | Details |
-|-------|---------|---------|
-| `trial_lesson_confirmed_teacher` goedkeuring afwachten | Raouf | Meta melding afwachten → dan Scenario 3b modules 7-13 bouwen |
-| Scenario 3b modules 7-13 bouwen | Raouf + Claude | Na goedkeuring template — JSON bodies staan klaar in scenario-3b.md |
-| Einde-tot-einde test uitvoeren | Raouf | Na oplevering Scenario 3b — echt matching record gebruiken |
-| Meta display name goedkeuring afwachten | Raouf | Wachten, dan Scenario 1 Run once opnieuw |
-| Scenario 3b Pad B ontwerpen | Raouf + Claude | Wat gebeurt er als ouder "geen tijdslot past" aanvinkt? |
-| Scenario 02 SOQL + indices testen | Raouf | Nieuwe 0-based field indices en `fields[0]` voor matching_number verifiëren |
-| Disclaimer toevoegen aan templates | Raouf | Allerlaatste stap na volledig testen |
-| Meta Business Verificatie | Raouf | KvK 84707577 — lage urgentie |
+| Actie | Prioriteit | Details |
+|-------|-----------|---------|
+| Scenario 3b Pad B afbouwen | Hoog | SOQL + Get Student/Teacher + Update `Availability Conflict` + WhatsApp docent |
+| Template maken: Availability Conflict docent | Hoog | Instructie om ouder te bellen + contactgegevens — indienen bij Meta als Utility |
+| Nieuw polling scenario bouwen | Medium | Elke 15 min — check `Availability Conflict` + `Trial_Lesson_Date__c` leeg → reminder docent elke 3 uur |
+| Nieuw scenario: docent vult tijdslot in | Medium | Form → Salesforce update `Trial_Lesson_Date__c` + `Trial Lesson Scheduled` + bevestiging WhatsApp |
+| Filter dubbele submissions Scenario 3b | Medium | Voorkomt dat dezelfde submission twee keer verwerkt wordt |
+| Reminders 24u en 1u voor proefles | Laag | Herinnering aan ouder en docent vlak voor de proefles |
+| Einde-tot-einde test | Hoog | Na Pad B — volledig testen met echt matching record |
+| Picker hosten op brightpanda.nl | Laag | Webflow redirect — professionelere URL voor ouders |
+| Meta Business Verificatie | Laag | KvK 84707577 — naam zichtbaar bij ontvanger |
+| Help tekst bij Trial_Lesson_Status__c | Laag | Tooltip in Salesforce met uitleg wat elke status triggert |

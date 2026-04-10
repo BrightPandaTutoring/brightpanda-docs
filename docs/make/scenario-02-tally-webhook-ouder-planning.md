@@ -3,13 +3,13 @@
 **Make naam:** Integration Webhooks
 **Make Scenario ID:** 4740354 (eu1.make.com)
 **Laatste update:** 10 april 2026
-**Status:** ✅ Compleet
+**Status:** ✅ Werkend
 
 ---
 
 ## Doel
 
-Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerkt de tijdsloten via Google Apps Script, zoekt het matching record op in Salesforce, haalt oudergegevens op, stuurt een **WhatsApp bericht naar de ouder** met genummerde tijdsloten en Tally Form 2 link, en slaat de tijdslotenlijst op in `Available_Timeslots__c`.
+Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerkt de tijdsloten via Google Apps Script, zoekt het matching record op in Salesforce, haalt docent- en studentgegevens op, stuurt een **WhatsApp bericht naar de ouder** met de link naar de Google Apps Script picker pagina (waar de ouder een tijdslot kan kiezen), en slaat de `timeslotsRaw` string op in `Available_Timeslots__c`.
 
 **Probleem dat het oplost:** Ouders moesten handmatig benaderd worden na ontvangst van docent beschikbaarheid.
 
@@ -33,20 +33,20 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
 ```
 [1]  Webhooks → Custom Webhook (Tally Form 1)
         ↓
-[31] HTTP → Google Apps Script (bouw tijdsloten string)
+[31] HTTP POST → Google Apps Script (bouw tijdsloten strings)
         ↓
 [3]  Salesforce → Search Records (SOQL op matching_number)
         ↓
-[4]  Salesforce → Get a Record (Student Account)
+[32] Salesforce → Get a Record (Teacher Account — voor docent naam)
         ↓
-[32] Salesforce → Search Records SOQL (Parent Contact)
+[4]  Salesforce → Get a Record (Student Account — voor ouder contactgegevens)
         ↓
-[5]  HTTP → 360dialog (WhatsApp naar ouder)
+[5]  HTTP POST → 360dialog (WhatsApp naar ouder)
         ↓
 [6]  Salesforce → Update a Record (Available_Timeslots__c + status)
 ```
 
-> Volgorde: 1 → 31 → 3 → 4 → 32 → 5 → 6
+> Volgorde: 1 → 31 → 3 → 32 → 4 → 5 → 6
 
 ---
 
@@ -56,26 +56,33 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
 - **Naam:** Tally Docent Beschikbaarheid
 - **Output:** Volledige Tally form response met `data.fields[]` array
 
-> ⚠️ **Tally gebruikt 0-based indexering** — `fields[0]` is het eerste veld (matching_number), niet `fields[1]`. Dit is afwijkend van eerdere aanname en is bevestigd via daadwerkelijke webhook data.
+### Module 31 — HTTP POST → Google Apps Script
 
-### Module 31 — HTTP → Google Apps Script
-
-**Doel:** Alle Tally checkbox- en datumvelden verwerken tot een pipe-separated tijdsloten string. Complexe logica buiten Make.com om problemen met lange formules te vermijden.
+**Doel:** Alle Tally checkbox- en datumvelden verwerken tot twee tijdsloten strings. Complexe logica buiten Make.com om problemen met lange formules te vermijden.
 
 - **URL:** `https://script.google.com/macros/s/AKfycbxJDpq3i4b7kafFE3Sc1ZFUck2ii7zTCBpXrbrVKlMGYfsyjeMURYXkCAy8SDxigk4f/exec`
 - **Method:** POST
-- **Body:** Alle 65+ velden als JSON (0-based indices)
+- **Parse response:** YES
+- **Body:** Alle Tally velden als JSON (zie sectie Tally Form 1 voor indices)
+
+**Output:**
+
+| Variabele | Inhoud | Voorbeeld |
+|-----------|--------|-----------|
+| `{{31.data.timeslots}}` | Genummerde lijst voor WhatsApp | `"1. ma 10 mrt 10:00-11:00\|2. ma 10 mrt 11:00-12:00"` |
+| `{{31.data.timeslotsRaw}}` | Ruwe datumnotatie voor Salesforce opslag | `"2026-03-10 - 10:00-11:00\|2026-03-10 - 11:00-12:00"` |
+
+> `timeslotsRaw` wordt opgeslagen in `Available_Timeslots__c` en gebruikt door Scenario 3b (via de picker URL).
 
 **Volledige body (kopieer exact — aanhalingstekens om datumchips zijn kritiek):**
 ```json
 {
   "fields": {
-    "2": "{{1.data.fields[2].value}}",
-    "17": "{{1.data.fields[17].value}}",
-    "32": "{{1.data.fields[32].value}}",
-    "47": "{{1.data.fields[47].value}}",
-    "62": "{{1.data.fields[62].value}}",
-    "4": {{if(1.data.fields[4].value; true; false)}},
+    "3": "{{1.data.fields[3].value}}",
+    "18": "{{1.data.fields[18].value}}",
+    "33": "{{1.data.fields[33].value}}",
+    "48": "{{1.data.fields[48].value}}",
+    "63": "{{1.data.fields[63].value}}",
     "5": {{if(1.data.fields[5].value; true; false)}},
     "6": {{if(1.data.fields[6].value; true; false)}},
     "7": {{if(1.data.fields[7].value; true; false)}},
@@ -88,7 +95,7 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
     "14": {{if(1.data.fields[14].value; true; false)}},
     "15": {{if(1.data.fields[15].value; true; false)}},
     "16": {{if(1.data.fields[16].value; true; false)}},
-    "19": {{if(1.data.fields[19].value; true; false)}},
+    "17": {{if(1.data.fields[17].value; true; false)}},
     "20": {{if(1.data.fields[20].value; true; false)}},
     "21": {{if(1.data.fields[21].value; true; false)}},
     "22": {{if(1.data.fields[22].value; true; false)}},
@@ -101,7 +108,7 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
     "29": {{if(1.data.fields[29].value; true; false)}},
     "30": {{if(1.data.fields[30].value; true; false)}},
     "31": {{if(1.data.fields[31].value; true; false)}},
-    "34": {{if(1.data.fields[34].value; true; false)}},
+    "32": {{if(1.data.fields[32].value; true; false)}},
     "35": {{if(1.data.fields[35].value; true; false)}},
     "36": {{if(1.data.fields[36].value; true; false)}},
     "37": {{if(1.data.fields[37].value; true; false)}},
@@ -114,7 +121,7 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
     "44": {{if(1.data.fields[44].value; true; false)}},
     "45": {{if(1.data.fields[45].value; true; false)}},
     "46": {{if(1.data.fields[46].value; true; false)}},
-    "49": {{if(1.data.fields[49].value; true; false)}},
+    "47": {{if(1.data.fields[47].value; true; false)}},
     "50": {{if(1.data.fields[50].value; true; false)}},
     "51": {{if(1.data.fields[51].value; true; false)}},
     "52": {{if(1.data.fields[52].value; true; false)}},
@@ -127,7 +134,7 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
     "59": {{if(1.data.fields[59].value; true; false)}},
     "60": {{if(1.data.fields[60].value; true; false)}},
     "61": {{if(1.data.fields[61].value; true; false)}},
-    "64": {{if(1.data.fields[64].value; true; false)}},
+    "62": {{if(1.data.fields[62].value; true; false)}},
     "65": {{if(1.data.fields[65].value; true; false)}},
     "66": {{if(1.data.fields[66].value; true; false)}},
     "67": {{if(1.data.fields[67].value; true; false)}},
@@ -139,76 +146,58 @@ Ontvangt de beschikbaarheid van een docent via **Tally Form 1** webhook, verwerk
     "73": {{if(1.data.fields[73].value; true; false)}},
     "74": {{if(1.data.fields[74].value; true; false)}},
     "75": {{if(1.data.fields[75].value; true; false)}},
-    "76": {{if(1.data.fields[76].value; true; false)}}
+    "76": {{if(1.data.fields[76].value; true; false)}},
+    "77": {{if(1.data.fields[77].value; true; false)}}
   }
 }
 ```
 
-> **Waarom aanhalingstekens om datumchips?** Tally `INPUT_DATE` velden arriveren als date objects in Make.com. Direct samenvoegen met `&` of `formatDate()` geeft leeg resultaat. De aanhalingstekens forceren JSON serialisatie als string — Google Apps Script ontvangt dan gewoon tekst.
+> **Waarom aanhalingstekens om datumchips?** Tally `INPUT_DATE` velden arriveren als date objects in Make.com. Direct samenvoegen geeft leeg resultaat. Aanhalingstekens forceren JSON serialisatie als string.
 >
-> **Waarom `if(x; true; false)` voor checkboxes?** Make.com checkbox velden zijn een intern boolean type dat niet als geldig JSON boolean geserialiseerd wordt. De `if()`-wrapper garandeert altijd de letterlijke waarden `true` of `false`.
-
-**Output:** `{{31.data.timeslots}}` — pipe-separated string, bijv:
-```
-2026-03-10 - 10:00-11:00|2026-03-10 - 11:00-12:00|2026-03-12 - 14:00-15:00
-```
-
-Zie [Google Apps Script documentatie](google-apps-script.md) voor de volledige logica.
+> **Waarom `if(x; true; false)` voor checkboxes?** Make.com checkbox velden zijn een intern boolean type dat niet als geldig JSON boolean geserialiseerd wordt.
 
 ### Module 3 — Salesforce Search Records (SOQL)
 
 ```sql
-SELECT Id, Teacher__c, Student__c, Subject_s__c, Name
+SELECT Id, Student__c, Teacher__c, Available_Timeslots__c, Name
 FROM Student_Teacher_Matching__c
-WHERE Name = '{{1.data.fields[0].value}}'
+WHERE Name = '{{1.data.fields[1].value}}'
 ```
 
-> ⚠️ **Kritiek — 0-based indexering:** `fields[0]` is het matching_number veld (niet `fields[1]`). Het veld bevat de **volledige naam** "Matching Number 0016" — geen prefix toevoegen in de SOQL.
->
-> ⚠️ **Chip selectie:** Selecteer de chip handmatig als blauwe chip. Als de waarde leeg lijkt in de output, sluit het scenario en heropen het — soms geeft Make.com een verouderde preview.
+> **fields[1]** = matching_number hidden field in Tally Form 1 (bevat alleen het getal, bijv. `"0016"`). De SOQL zoekt op de volledige matching naam `"Matching Number 0016"` — Salesforce matcht automatisch.
 
-**Debug:** Als module 3 0 bundles retourneert:
-1. Controleer in Salesforce: `SELECT Id, Name FROM Student_Teacher_Matching__c WHERE Name = 'Matching Number 0016'`
-2. Controleer of `fields[0]` waarde correct is in de webhook log (Webhooks → Logs)
-3. Verwijder de chip in de SOQL en selecteer opnieuw als blauwe chip
+**Output:** `{{3.Id}}`, `{{3.Student__c}}`, `{{3.Teacher__c}}`
+
+### Module 32 — Salesforce Get a Record (Docent)
+- **Type:** Account
+- **Record ID:** `{{3.Teacher__c}}`
+- **Benodigde output:** `{{32.FirstName}}` (naam docent voor WhatsApp bericht)
 
 ### Module 4 — Salesforce Get a Record (Student)
 - **Type:** Account
 - **Record ID:** `{{3.Student__c}}`
-- **Gebruikte output:** `{{4.FirstName}}`, `{{4.Account ID}}`
+- **Gebruikte output:** `{{4.FirstName}}`, `{{4.ParentsName__c}}`, `{{4.ParentSPhone__c}}`
 
-> ⚠️ `ParentSPhone__c` is **niet bruikbaar** — ouders zijn Contact records in Salesforce, niet een veld op het Account. Gebruik module 32 (SOQL) om de ouder Contact op te halen.
+> Ouder contactgegevens komen direct van het **Student Account** via custom velden `ParentsName__c` en `ParentSPhone__c`. Geen aparte Contact SOQL nodig.
 
-### Module 32 — Salesforce Search Records SOQL (Ouder Contact)
-
-```sql
-SELECT Id, FirstName, Phone FROM Contact WHERE AccountId = '{{4.Account ID}}'
-```
-
-- **Limit:** 10
-- **Output:** `{{32.FirstName}}`, `{{32.Phone}}`
-
-> Ouders zijn **Contact** records in Salesforce, gekoppeld via `AccountId` aan het student Account.
-
-### Module 5 — HTTP → 360dialog (WhatsApp naar ouder)
+### Module 5 — HTTP POST → 360dialog (WhatsApp naar ouder)
 
 Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers/auth.
 
-**Template:** `parent_timeslot_invitation` (5 parameters)
+**Template:** `parent_timeslot_invitation` (4 parameters)
 
 | Parameter | Variabele | Inhoud |
 |-----------|-----------|--------|
-| `{{1}}` | `{{32.FirstName}}` | Voornaam ouder |
-| `{{2}}` | `{{1.data.fields[1].value}}` | Naam leerling (fields[1] = student_name) |
-| `{{3}}` | `{{3.Subject_s__c}}` | Vak |
-| `{{4}}` | `{{31.data.timeslots}}` | Pipe-separated tijdsloten string |
-| `{{5}}` | Tally Form 2 URL | `https://tally.so/r/WOozov?matching_number={{encodeURL(1.data.fields[0].value)}}&student_name={{1.data.fields[1].value}}` |
+| `{{1}}` | `{{4.ParentsName__c}}` | Naam ouder |
+| `{{2}}` | `{{4.FirstName}}` | Voornaam student |
+| `{{3}}` | `{{32.FirstName}}` | Voornaam docent |
+| `{{4}}` | GAS picker URL | Volledige picker URL (zie JSON body) |
 
 **JSON body:**
 ```json
 {
   "messaging_product": "whatsapp",
-  "to": "{{32.Phone}}",
+  "to": "{{4.ParentSPhone__c}}",
   "type": "template",
   "template": {
     "name": "parent_timeslot_invitation",
@@ -216,16 +205,17 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers/auth.
     "components": [{
       "type": "body",
       "parameters": [
+        {"type": "text", "text": "{{4.ParentsName__c}}"},
+        {"type": "text", "text": "{{4.FirstName}}"},
         {"type": "text", "text": "{{32.FirstName}}"},
-        {"type": "text", "text": "{{1.data.fields[1].value}}"},
-        {"type": "text", "text": "{{3.Subject_s__c}}"},
-        {"type": "text", "text": "{{31.data.timeslots}}"},
-        {"type": "text", "text": "https://tally.so/r/WOozov?matching_number={{encodeURL(1.data.fields[0].value)}}&student_name={{1.data.fields[1].value}}"}
+        {"type": "text", "text": "https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec?slots={{encodeURL(31.data.timeslotsRaw)}}&matching={{encodeURL(3.Name)}}&student_name={{encodeURL(4.FirstName)}}&parent_name={{encodeURL(4.ParentsName__c)}}"}
       ]
     }]
   }
 }
 ```
+
+> ⚠️ **`&` in JSON body:** Gebruik de `&` als literal in de URL parameter string — nooit `%26`. Dit werkt correct als de URL als text parameter wordt meegegeven.
 
 ### Module 6 — Salesforce Update a Record
 
@@ -234,36 +224,64 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers/auth.
 
 | Veld | Waarde |
 |------|--------|
-| `Available_Timeslots__c` | `{{31.data.timeslots}}` |
+| `Available_Timeslots__c` | `{{31.data.timeslotsRaw}}` |
 | `Trial_Lesson_Status__c` | `Parent Invited` |
+
+> **Waarom `timeslotsRaw` opslaan?** De picker pagina (Scenario 3b) gebruikt de ruwe datumnotatie om de tijdsloten te parsen. De genummerde string (`timeslots`) is alleen voor het WhatsApp bericht.
 
 ---
 
 ## Tally Form 1 — Webhook Datastructuur
 
-> **0-based indexering** — bevestigd via daadwerkelijke webhook data. `fields[0]` = eerste veld.
-
 | Index | Veldnaam | Type | Voorbeeldwaarde |
 |-------|----------|------|----------------|
-| `fields[0]` | matching_number | HIDDEN | `"Matching Number 0016"` ⚠️ volledige naam! |
-| `fields[1]` | student_name | HIDDEN | `"Raouf"` |
-| `fields[2]` | Datum 1 | INPUT_DATE | Date object ⚠️ |
-| `fields[3]` | Tijdsloten datum 1 | CHECKBOXES groep | options + value array |
-| `fields[4-16]` | Individuele checkboxes datum 1 | CHECKBOX | `true` of `false` (13 tijdsloten) |
-| `fields[17]` | Datum 2 | INPUT_DATE | Date object |
-| `fields[18]` | Tijdsloten datum 2 | CHECKBOXES groep | options + value array |
-| `fields[19-31]` | Individuele checkboxes datum 2 | CHECKBOX | `true` of `false` |
-| `fields[32]` | Datum 3 | INPUT_DATE | — |
-| `fields[33]` | Tijdsloten datum 3 | CHECKBOXES groep | — |
-| `fields[34-46]` | Individuele checkboxes datum 3 | CHECKBOX | — |
-| `fields[47]` | Datum 4 | INPUT_DATE | — |
-| `fields[48]` | Tijdsloten datum 4 | CHECKBOXES groep | — |
-| `fields[49-61]` | Individuele checkboxes datum 4 | CHECKBOX | — |
-| `fields[62]` | Datum 5 | INPUT_DATE | — |
-| `fields[63]` | Tijdsloten datum 5 | CHECKBOXES groep | — |
-| `fields[64-76]` | Individuele checkboxes datum 5 | CHECKBOX | — |
+| `fields[1]` | matching_number | HIDDEN | `"0016"` |
+| `fields[2]` | student_name | HIDDEN | `"Raouf"` |
+| `fields[3]` | Datum 1 | INPUT_DATE | Date object ⚠️ |
+| `fields[4]` | Tijdsloten datum 1 | CHECKBOXES groep | options + value array |
+| `fields[5-17]` | Individuele checkboxes datum 1 | CHECKBOX | `true` of `false` (13 tijdsloten) |
+| `fields[18]` | Datum 2 | INPUT_DATE | Date object |
+| `fields[19]` | Tijdsloten datum 2 | CHECKBOXES groep | options + value array |
+| `fields[20-32]` | Individuele checkboxes datum 2 | CHECKBOX | `true` of `false` |
+| `fields[33]` | Datum 3 | INPUT_DATE | — |
+| `fields[34]` | Tijdsloten datum 3 | CHECKBOXES groep | — |
+| `fields[35-47]` | Individuele checkboxes datum 3 | CHECKBOX | — |
+| `fields[48]` | Datum 4 | INPUT_DATE | — |
+| `fields[49]` | Tijdsloten datum 4 | CHECKBOXES groep | — |
+| `fields[50-62]` | Individuele checkboxes datum 4 | CHECKBOX | — |
+| `fields[63]` | Datum 5 | INPUT_DATE | — |
+| `fields[64]` | Tijdsloten datum 5 | CHECKBOXES groep | — |
+| `fields[65-77]` | Individuele checkboxes datum 5 | CHECKBOX | — |
 
 **13 tijdsloten per datum:** 08:00-09:00 t/m 20:00-21:00
+
+---
+
+## WhatsApp Template — `parent_timeslot_invitation`
+
+**Status:** ✅ Approved (opnieuw ingediend met nieuwe tekst)
+**Categorie:** Utility
+**Taal:** nl
+**Parameters:** 4
+
+**Volledige tekst:**
+```
+Hoi {{1}},
+
+Leerling {{2}} is gematcht met een docent via Bright Panda Bijles!
+
+Docent: {{3}}
+
+Kies een tijdslot voor de proefles via de link hieronder.
+Hoe sneller je kiest, hoe eerder de proefles ingepland kan worden!
+
+{{4}}
+
+Dit nummer is alleen voor het inplannen van proeflessen en wordt niet gebruikt voor communicatie.
+Voor andere vragen kun je ons bereiken via WhatsApp: +31613689666 of telefoon: 071-3031901.
+
+Bedankt!
+```
 
 ---
 
@@ -271,14 +289,13 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers/auth.
 
 | Fout | Oorzaak | Oplossing |
 |------|---------|-----------|
-| Module 3 retourneert 0 bundles | SOQL gebruikt `fields[1]` (oud) i.p.v. `fields[0]` (0-based) | Update chip naar `{{1.data.fields[0].value}}` — geen prefix toevoegen |
-| Module 3 retourneert 0 bundles | Chip niet correct geselecteerd als blauwe chip | Verwijder chip, hertype `{{` en selecteer opnieuw |
 | `and(x; y)` bestaat niet in Make.com | Make.com ondersteunt geen `and()` functie | Gebruik geneste `if(x; if(y; ...))` |
 | Tally date objects niet concateneerbaar | Datum object uit Tally kan niet direct als string gebruikt worden | Datum als JSON string doorgeven aan Google Apps Script |
 | Lange formules raken corrupt | Make.com formules zijn onbetrouwbaar bij complexiteit | Alle complexe logica naar Google Apps Script verplaatst |
 | Make.com pakt oudste webhook uit queue | Oude webhook data wordt verwerkt | Altijd "Wait for new data" klikken, dan direct nieuw formulier submitten |
 | `newline` / `char(10)` werken niet als separator | Make.com ondersteunt newlines niet betrouwbaar | Pipe `\|` gebruiken als separator |
-| `ParentSPhone__c` leeg of niet gevonden | Ouders zijn Contact records, niet een veld op Account | Gebruik SOQL: `SELECT Phone FROM Contact WHERE AccountId = '{{4.Account ID}}'` |
+| `ParentSPhone__c` leeg of niet gevonden | Contact SOQL werkte niet — ouders zijn geen Contact records | Custom velden `ParentSPhone__c` + `ParentsName__c` direct van Student Account gebruiken |
+| JSON fout door `&` in URL | `%26` in JSON body gaf coderings-issues | `&` als literal gebruiken in JSON body URL |
 
 ---
 
@@ -288,5 +305,5 @@ Zie [Gedeelde configuratie](gedeelde-configuratie.md) voor headers/auth.
 |----------|-------------|
 | [Scenario 01](scenario-01-docent-uitnodiging-whatsapp.md) | Stuurt Tally Form 1 link naar docent |
 | [Scenario 03](scenario-03-reminders-escalatie.md) | Reminders + escalatie bij niet-reageren |
-| [Scenario 3b](scenario-3b-ouder-tijdslot-verwerking.md) | Verwerkt Form 2 submission van ouder |
+| [Scenario 3b](scenario-3b-ouder-tijdslot-verwerking.md) | Verwerkt picker response van ouder |
 | [Google Apps Script](google-apps-script.md) | Tijdsloten verwerking (module 31) |
