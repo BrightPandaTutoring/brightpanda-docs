@@ -1,5 +1,5 @@
 # Bright Panda — To-Do Lijst
-*Laatste update: 11 april 2026*
+*Laatste update: 12 april 2026*
 
 ## ✅ Afgerond vandaag (11 april 2026)
 - [x] Scenario 12 gefixt — variabelen hersteld, actief op 1 uur
@@ -39,6 +39,8 @@
 - [ ] TinyURL aanmaken voor alle lange Google Apps Script picker links
 - [ ] Escalatie scenario checken — nog relevant na Scenario 5 en 6?
 - [ ] AVG/GDPR data verwijdering bouwen
+- [ ] Tally formulier fixen — conditional questions lopen nog niet goed, logica controleren en herstellen
+- [ ] Ondertekend contract opslaan in Salesforce na DocuSeal signing (bijv. als File/Attachment op Account)
 
 ## 📋 Salesforce
 - [ ] Contract_Start/End_Date__c toevoegen aan Business Account Layout
@@ -65,6 +67,7 @@
 ## 🔒 Compliance / GDPR
 - [ ] DPA afsluiten met Tally
 - [ ] Privacyverklaring controleren op verwerking docentgegevens
+- [ ] AVG/GDPR procedure uitwerken voor Offboarded / Not a Match / Not Interested docenten — welke data verwijderen, na hoeveel tijd, en hoe automatiseren
 
 ## 📊 Overig
 - [ ] Gmail inbox opruimen (labels + filters)
