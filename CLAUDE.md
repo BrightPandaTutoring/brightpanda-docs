@@ -23,6 +23,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
+**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation
+
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
 ## SALESFORCE
@@ -37,7 +39,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
@@ -57,7 +59,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 | 10 | Salesforce → MailerLite New Registration | ✅ Actief | - |
 | 11 | Post-proefles flow | ✅ Actief | - |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation | ✅ Actief | - |
+| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | - |
 | 14 | DocuSeal Contract Signed Webhook | ✅ Actief | - |
 
 ## KRITIEKE REGELS
