@@ -1,5 +1,5 @@
 # Bright Panda — To-Do Lijst
-*Laatste update: 12 april 2026*
+*Laatste update: 13 april 2026*
 
 ## ✅ Afgerond vandaag (11 april 2026)
 - [x] Scenario 12 gefixt — variabelen hersteld, actief op 1 uur
