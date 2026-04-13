@@ -54,8 +54,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 | 07 | Internal Alert Teacher No Response | ✅ Actief | - |
 | 08 | Lesson Date Reminder (48h/24h/2h) | ✅ Actief | - |
 | 09 | Parent Timeslot Reminders & Escalatie | ✅ Actief | - |
-| 10 | Salesforce → MailerLite New Registration | ⚠️ Debug | - |
-| 11 | Post-proefles flow | ⚠️ Timezone bug | - |
+| 10 | Salesforce → MailerLite New Registration | ✅ Actief | - |
+| 11 | Post-proefles flow | ✅ Actief | - |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
 | 13 | Docent Lifecycle Automation | ✅ Actief | - |
 | 14 | DocuSeal Contract Signed Webhook | ✅ Actief | - |
