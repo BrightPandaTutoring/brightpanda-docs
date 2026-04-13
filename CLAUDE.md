@@ -48,21 +48,21 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation | ✅ Actief | - |
-| 02 | Tally Webhook → Ouder Planning | ✅ Actief | - |
-| 03 | Trial Lesson Scheduled & Availability Conflict | ✅ Actief | - |
-| 04 | Teacher Timeslot Submission | ✅ Actief | - |
-| 05 | Availability Conflict Reminder (elke 4u) | ✅ Actief | - |
-| 06 | Teacher Availability Reminder (elke 2u) | ✅ Actief | - |
-| 07 | Internal Alert Teacher No Response | ✅ Actief | - |
-| 08 | Lesson Date Reminder (48h/24h/2h) | ✅ Actief | - |
-| 09 | Parent Timeslot Reminders & Escalatie | ✅ Actief | - |
-| 10 | Salesforce → MailerLite New Registration | ✅ Actief | - |
-| 11 | Post-proefles flow | ✅ Actief | - |
+| 01 | Teacher Invitation | 🔧 Inactief (wacht op test) | 4729958 |
+| 02 | Parent Timeslot Invitation | 🔧 Inactief (wacht op test) | 4740354 |
+| 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief (wacht op test) | 4783259 |
+| 04 | Teacher Timeslot Submission | 🔧 Inactief (wacht op test) | 4839158 |
+| 05 | Availability Conflict Reminder (elke 4u) | 🔧 Inactief (wacht op test) | 4840663 |
+| 06 | Teacher Availability Reminder (elke 2u) | 🔧 Inactief (wacht op test) | 4842456 |
+| 07 | Internal Alert Teacher No Response | 🔧 Inactief (wacht op test) | 4858555 |
+| 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief (wacht op test) | 4892054 |
+| 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief (wacht op test) | 4744104 |
+| 10 | Student New Registration → MailerLite + WhatsApp | ✅ Actief | 4969006 |
+| 11 | Post-proefles flow | 🔧 Inactief (wacht op test) | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | - |
-| 14 | DocuSeal Contract Signed Webhook (velden readonly, reminders 3/7/15 dagen) | ✅ Actief | - |
-| 15 | Pending Onboarding Tally Reminder (wacht op template goedkeuring Meta) | ⏳ Wacht op goedkeuring | - |
+| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | 5109244 |
+| 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen) | ✅ Actief | 5133318 |
+| 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
 
 ## KRITIEKE REGELS
 
