@@ -1,76 +1,173 @@
-# Bright Panda — To-Do Lijst
-*Laatste update: 13 april 2026*
+# Bright Panda — TODO
+Laatst bijgewerkt: 13 april 2026
 
-## ✅ Afgerond vandaag (11 april 2026)
-- [x] Scenario 12 gefixt — variabelen hersteld, actief op 1 uur
-- [x] Scenario 10 WhatsApp module 6 fout — al opgelost
-- [x] Scenario 11 timezone fix — al opgelost
-- [x] Scenario 8 timezone fix — SOQL query bijgewerkt met dynamische timezone
-- [x] Twee testrecords (Raouf Angudi Teacher + Raouf test 2) op On-boarded gezet
-- [x] WhatsApp template interview_invitation_confirmation ingediend en goedgekeurd door Meta
-- [x] HTTP module toegevoegd aan Scenario 13 Interview Invited route voor WhatsApp
-- [x] Is_Pro_Teacher__c checkbox veld aangemaakt in Salesforce + toegevoegd aan Business Account Layout
-- [x] Pro Teacher criteria toegevoegd aan Pending Onboarding guidance text in Salesforce Path
-- [x] Interview stage guidance text bijgewerkt met Pro Teacher criteria
-- [x] Contracting stage guidance text bijgewerkt
-- [x] Contract_Sent__c checkbox veld aangemaakt in Salesforce + toegevoegd aan Business Account Layout + Contracting Path key fields
-- [x] Scenario 13 Contracting route gesplitst in Contracting + Renew — beide met Contract_Sent__c check
-- [x] DocuSeal email templates ingesteld (signature request, reminder, document copy, completed notification)
-- [x] DocuSeal velden op readonly gezet zodat docent alleen kan tekenen
-- [x] MailerLite Pending Onboarding automation geactiveerd
-- [x] Tally link fix in MailerLite — URL correct opgebouwd met {$email} merge tag
-- [x] DNS records toegevoegd in Squarespace voor MailerLite (A + TXT groen, MX pending)
-- [x] Scenario 14 end-to-end getest — contract → ondertekening → Pending Onboarding → Tally email
-- [x] Scenarios 1 t/m 9 gedocumenteerd in GitHub (gisteren)
+---
+
+## ⏳ Wacht op externe actie (geen actie vereist, alleen opvolgen)
+- Template `pending_onboarding_tally_reminder` is ingediend bij 360dialog/Meta en wacht
+  op goedkeuring. Zodra goedgekeurd is Scenario 15 volledig operationeel.
+- Template `availability_conflict_teacher` opnieuw indienen bij 360dialog met
+  voorbeeldwaarden (eerder ingediend zonder voorbeelden, werd afgewezen).
+- Template `availability_conflict_teacher_reminder` opnieuw indienen bij 360dialog
+  met voorbeeldwaarden (zelfde probleem als hierboven).
+
+---
 
 ## 🔴 Hoge prioriteit
-- [ ] End-to-end onboarding volledig valideren met echte docent (niet testrecord)
-- [ ] Student Path guidance teksten instellen in Salesforce voor alle lifecycle stages
-- [ ] MX record controleren in MailerLite zodra DNS is gepropageerd (binnen 24 uur)
 
-## ⚙️ Make.com
-- [ ] Scenario 13 dubbele trigger monitoren
-- [ ] Tally reminder bouwen — dagelijks scenario voor docenten >3 dagen in Pending Onboarding met lege Profile_Completed_Date__c → reminder email via MailerLite
-- [ ] Onboarding emails bouwen in MailerLite met PDF bijlage (Docent Gids)
-- [ ] Guidelines_Accepted__c veld aanmaken in Salesforce + checkbox in Tally
-- [ ] Bulk import scenario bouwen — On-boarded docenten → MailerLite
-- [ ] Intern alert bouwen na proefles — reminder om ouder én docent te bellen
-- [ ] Re-engagement flow bouwen voor No Show matchings
-- [ ] TinyURL aanmaken voor alle lange Google Apps Script picker links
-- [ ] Escalatie scenario checken — nog relevant na Scenario 5 en 6?
-- [ ] AVG/GDPR data verwijdering bouwen
-- [ ] Tally formulier fixen — conditional questions lopen nog niet goed, logica controleren en herstellen
-- [ ] Ondertekend contract opslaan in Salesforce na DocuSeal signing (bijv. als File/Attachment op Account)
+- **End-to-end onboarding test uitvoeren**: doorloop de volledige flow van aanmelding
+  → contract tekenen → Pending Onboarding → Tally invullen → dagstart verwerking →
+  onboarding emails. Controleer of alle stappen correct doorlopen en Salesforce velden
+  correct gevuld worden.
 
-## 📋 Salesforce
-- [ ] Contract_Start/End_Date__c toevoegen aan Business Account Layout
-- [ ] Teaching_Location__c beschikbaar maken via klassieke URL
-- [ ] Profile_Completed_Date__c toevoegen aan Teacher Path key fields
-- [ ] ReferredToBPVia__c "Other" inschakelen voor Teacher én Student
+- **Student Path guidance teksten instellen in Salesforce**: stel voor elke klant
+  lifecycle stage de key fields en guidance tekst in via Salesforce Path Settings.
+  Stages: New, Enrollment, Matching Teacher, Trial Class, Client, Stopped - Never
+  Converted, Stopped - Existing Client, Wrong Match, Churned.
 
-## 📱 WhatsApp
-- [ ] Templates availability_conflict_teacher + reminder opnieuw indienen bij 360dialog
-- [ ] 24u reminder tekst schrijven voor docent (proefles tips)
+---
 
-## 📧 MailerLite / Email
-- [ ] Post-proefles flow inrichten
-- [ ] HTML design post-proefles email verwerken
-- [ ] parent_timeslot_final template aanpassen
-- [ ] Welkomstmail bouwen voor On-boarded docenten met Docent Gids PDF
+## 🧪 Testen
 
-## 📄 Docent Gids PDF
-- [ ] Hoofdstuk toevoegen: proefles belang voor Bright Panda
-- [ ] Hoofdstuk toevoegen: matching proces WhatsApp
-- [ ] Geboortedatum toevoegen aan Tally → Date_of_Birth__c
-- [ ] Bsport uitleg verzamelen
+- **Scenario 13 — Interview Invited WhatsApp testen**: de module is gebouwd maar nog
+  niet getest. Test door de lifecycle stage van een bestaande docent handmatig naar
+  "Interview Invited" te zetten en te controleren of de WhatsApp correct binnenkomt.
 
-## 🔒 Compliance / GDPR
-- [ ] DPA afsluiten met Tally
-- [ ] Privacyverklaring controleren op verwerking docentgegevens
-- [ ] AVG/GDPR procedure uitwerken voor Offboarded / Not a Match / Not Interested docenten — welke data verwijderen, na hoeveel tijd, en hoe automatiseren
+---
 
-## 📊 Overig
-- [ ] Gmail inbox opruimen (labels + filters)
-- [ ] Ashna Rajaram opvolgen: IBAN, studie, instelling, max niveau, max leerjaar, examentraining, basisschool
-- [ ] Bsport uitleg verzamelen voor welkomstmail On-boarded docenten
-- [ ] Testrecord emailadres terugzetten naar info@brightpanda.nl na afronding tests
+## 📄 Docent Gids & Onboarding
+
+- **Docent Gids afmaken** — de volgende hoofdstukken moeten nog geschreven worden
+  en toegevoegd aan de bestaande PDF:
+  - **Hoe het matching- en proefles planningssysteem werkt**: uitleg over de WhatsApp
+    flow (uitnodiging → tijdslot opgeven → bevestiging), waarom snelle reactie cruciaal
+    is, en wat er gebeurt als je niet reageert (automatische reminders elke 4 uur).
+  - **Bsport uitleg**: hoe werkt het platform, wat moet de docent doen om in te loggen
+    en lessen te registreren. Raouf levert de inhoud aan.
+  - **Gedragscode**: uitwerken op basis van de start die in een aparte chat is gemaakt.
+
+- **Tally akkoord-formulier bouwen**: een eenvoudig Tally formulier waarop de docent
+  bevestigt de Docent Gids te hebben gelezen via een verplichte checkbox. Na submit
+  vangt Make.com dit op en wordt `Documentation_Agreed__c` (datum) ingevuld in
+  Salesforce.
+
+- **Nieuw Salesforce veld aanmaken: `Documentation_Agreed__c`** (type: Date) —
+  wordt gevuld via het Tally akkoord-formulier hierboven.
+
+- **Nieuw Salesforce veld aanmaken: `Bsport_Account_Created__c`** (type: Checkbox) —
+  zodra Raouf/Yasin dit aanvinkt op het docent record, triggert Make.com automatisch
+  een email met de Docent Gids (PDF) en Bsport uitleg. Dit vervangt de handmatige
+  WhatsApp die nu verstuurd wordt. Er komt GEEN extra lifecycle stage voor dit moment.
+
+- **Geboortedatum toevoegen aan Tally aanvullend profiel formulier** (tally.so/r/NpY9RW)
+  en mappen naar `Date_of_Birth__c` in Salesforce via Make.com.
+
+---
+
+## ⚙️ Make.com / Automations
+
+- **Scenario 10 fout oplossen**: WhatsApp module 6 geeft een fout door een lege
+  tekst parameter. Module 6 inspecteren, de lege variabele identificeren en fixen.
+
+- **Bulk import scenario bouwen (eenmalig)**: een Make.com scenario dat alle
+  bestaande On-boarded docenten met een emailadres importeert in de MailerLite groep
+  "On-boarded". Gebruik Salesforce Search Records + MailerLite Create/Update Subscriber.
+  Na uitvoering direct deactiveren.
+
+- **Intern alert bouwen na proefles**: een Make.com scenario dat Raouf en Yasin een
+  herinnering stuurt om de ouder én docent te bellen na afloop van de proefles om te
+  horen hoe het ging.
+
+- **Salesforce status updaten na versturen `parent_timeslot_final`**: na het versturen
+  van dit WhatsApp template moet `Trial_Lesson_Status__c` automatisch bijgewerkt worden
+  naar de juiste waarde.
+
+- **Re-engagement flow bouwen voor No Show matchings**: als een matching de status
+  "No Show" krijgt, automatisch na 30 dagen een WhatsApp sturen ("Ben je nog steeds
+  op zoek naar bijles?") + een MailerLite email campagne starten voor ouders die niet
+  reageren op WhatsApp.
+
+- **TinyURL short links aanmaken** voor alle lange Google Apps Script picker links die
+  via WhatsApp worden verstuurd (Scenario 2, Scenario 5, Scenario 6, escalatie scenario).
+  Gebruik de TinyURL API via HTTP GET naar `https://tinyurl.com/api-create.php?url=`.
+
+- **Escalatie scenario controleren**: nakijken wat dit scenario precies doet en of het
+  nog relevant is nu Scenario 5 en 6 actief zijn.
+
+- **AVG/GDPR data verwijdering automatiseren**: twee maandelijkse Make.com scenarios
+  bouwen: (1) docenten met status Offboarded waarbij `Offboarded_Date__c` meer dan 2
+  jaar geleden is → persoonsgegevens wissen uit Salesforce; (2) docenten met status
+  Not a Match of Not Interested waarbij `LastModifiedDate` meer dan 6 maanden geleden
+  is → persoonsgegevens wissen.
+
+---
+
+## 📧 MailerLite
+
+- **Post-proefles email flow inrichten**: één lijst aanmaken "Bright Panda Ouders" met
+  custom velden (Trial_Lesson_Date, Teacher_Name, Student_Name, Status) en segmenten
+  (Proefles gehad, Actieve klant, No Show). Koppelen aan Make.com zodat ouders
+  automatisch worden toegevoegd na een proefles.
+
+- **HTML design verwerken in post-proefles automation**: het gebouwde HTML email
+  design (4 stappen + quote blok) verwerken als email automation in MailerLite.
+
+---
+
+## 🗄️ Salesforce
+
+- **Contract_Start_Date__c en Contract_End_Date__c toevoegen aan Business Account
+  Layout**: zodat deze datums zichtbaar zijn op het docent record zonder naar de
+  details tab te gaan.
+
+- **Teaching_Location__c beschikbaar maken voor Teacher Record Type**: via de klassieke
+  Salesforce URL de picklist waarden activeren voor het Teacher record type. URL:
+  `brightpanda.my.salesforce.com/setup/ui/recordtypefields.jsp?id=012KB000000ojZLYAY&type=Account&setupid=AccountRecordTypes`
+
+- **Profile_Completed_Date__c toevoegen aan Teacher Path key fields**: dit veld
+  toevoegen aan de Pending Onboarding stage in de Salesforce Path Settings, en
+  beschikbaar maken via dezelfde klassieke URL hierboven.
+
+---
+
+## 📱 WhatsApp / 360dialog
+
+- **WhatsApp tekst schrijven voor handmatige availability check**: een kant-en-klare
+  tekst schrijven die Raouf of Yasin kan sturen wanneer een docent handmatig benaderd
+  wordt bij een nieuwe matching. Inclusief docent naam, vak, niveau, locatie en
+  beschikbaarheidsvraag.
+
+- **`parent_timeslot_final` template aanpassen**: beslissen of de header een video of
+  afbeelding wordt. Video speelt niet automatisch af in WhatsApp, dus voorkeur gaat
+  naar een afbeelding. Template aanpassen in 360dialog.
+
+---
+
+## 👤 Docenten opvolging
+
+- **Ashna Rajaram opvolgen**: heeft gereageerd op het profiel update verzoek maar
+  heeft de volgende velden nog niet ingevuld: studie, instelling/universiteit, IBAN,
+  naam op bankpas, max niveau, max leerjaar, examentraining voorkeur, basisschool
+  voorkeur. Later opnieuw opvragen.
+
+---
+
+## 🔒 GDPR / Compliance
+
+- **Verwerkersovereenkomst (DPA) afsluiten met Tally**: Tally verwerkt
+  persoonsgegevens van docenten (IBAN, geboortedatum etc.). Een DPA is verplicht
+  onder de AVG. Transparantietekst toevoegen aan het formulier en controleren of
+  de privacyverklaring op brightpanda.nl de verwerking van docentgegevens beschrijft.
+
+---
+
+## 📬 Overig
+
+- **Gmail inbox info@brightpanda.nl opruimen via Cowork**: labels aanmaken en
+  filters instellen zodat inkomende emails automatisch gesorteerd worden per
+  categorie (docenten, ouders, intern, sollicitaties etc.).
+
+- **Dagstart routine**: elke ochtend "dagstart" typen in Claude. Claude haalt dan
+  automatisch op: (1) Google Calendar van vandaag, (2) Salesforce overzicht van
+  docenten per lifecycle stage, (3) nieuwe Tally form submissions verwerken via
+  Gmail, (4) ongelezen emails met profielreacties en sollicitaties.

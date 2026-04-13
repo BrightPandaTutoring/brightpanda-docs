@@ -7,23 +7,24 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **360dialog (WhatsApp):** API Key: xl6Aj3Gs66I40LQl7C6GbjlxAK (lowercase L, niet I) | Endpoint: https://waba-v2.360dialog.io/messages | Intern: +31613689666 | Raouf: +31630892143 | Yasin: +31623325599
 
-**MailerLite:** Connection ID: 6136292 | Groep "Nieuwe Docent Aanmelding" ID: 183306606217266363 | Merge tags altijd: {$field_name}
+**MailerLite:** Connection ID: 6136292 | Groep "Nieuwe Docent Aanmelding" ID: 183306606217266363 | Merge tags altijd: {$field_name} | Pending Onboarding automation: actief | DNS: A + TXT groen, MX pending (Squarespace)
 
 **Make.com:** eu1.make.com | Team ID: 1179486 | Org ID: 6817575 | MCP URL: https://eu1.make.com/mcp/server/79146aa0-dea6-44e8-90be-0c3dd9d06110/t/scq2NktCps_SG2juuHm4ynBgm3YzS8Vh41Yyi6C3pU/stateless
 
 **Anthropic API:** Model: claude-opus-4-6 | Endpoint: https://api.anthropic.com/v1/messages
 
-**DocuSeal:** Endpoint: https://api.docuseal.eu/submissions | Template ID: 485548 | API Key: kF6DXM8V8AEJcRhXshwE1RxdvarDx9NHwuYjd9FnZz3 | Veldnamen ALTIJD lowercase
+**DocuSeal:** Endpoint: https://api.docuseal.eu/submissions | Template ID: 485548 | API Key: kF6DXM8V8AEJcRhXshwE1RxdvarDx9NHwuYjd9FnZz3 | Veldnamen ALTIJD lowercase | Velden readonly (docent tekent alleen) | Reminders: 3, 7 en 15 dagen | Email templates: signature request, reminder, document copy, completed notification
 
 **TinyURL:** Token: azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji | Branded domain: go.brightpanda.nl | Output in Make.com: MODULE.data.data.tiny_url
 
-**Tally Forms:** Form 1: tally.so/r/2Ekaq9 | Form 3: tally.so/r/q4PDV9 | Profielinfo docent: tally.so/r/NpY9RW | Notificaties from: notifications@tally.so | Subject: "New Tally Form Submission for Docent — Aanvullende Profielinfo / Additional Profile"
+**Tally Forms:** Form 1: tally.so/r/2Ekaq9 | Form 3: tally.so/r/q4PDV9 | Profielinfo docent: tally.so/r/NpY9RW (conditional formatting geüpdatet 13 april) | MailerLite link: https://tally.so/r/NpY9RW?email={$email} | Notificaties from: notifications@tally.so | Subject: "New Tally Form Submission for Docent — Aanvullende Profielinfo / Additional Profile"
 
 **Google Apps Script (picker):** https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec
 
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
-**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation
+**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN)
+**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
@@ -39,7 +40,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
@@ -60,7 +61,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 | 11 | Post-proefles flow | ✅ Actief | - |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
 | 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | - |
-| 14 | DocuSeal Contract Signed Webhook | ✅ Actief | - |
+| 14 | DocuSeal Contract Signed Webhook (velden readonly, reminders 3/7/15 dagen) | ✅ Actief | - |
+| 15 | Pending Onboarding Tally Reminder (wacht op template goedkeuring Meta) | ⏳ Wacht op goedkeuring | - |
 
 ## KRITIEKE REGELS
 
@@ -132,6 +134,12 @@ Parse → update Salesforce → Profile_Completed_Date__c = vandaag → rapporte
 
 ### 📧 6. Gmail — Ongelezen
 Nieuwe profielreacties + sollicitaties samenvatten
+
+## AVG/GDPR BELEID
+
+- **Offboarded docenten:** persoonsgegevens wissen na 2 maanden, IBAN bewaren 7 jaar (fiscale bewaarplicht)
+- **Not a Match / Not Interested:** alles verwijderen na 6 maanden
+- **Contract PDF:** verwijderen na offboarding (geen juridische waarde zonder naam)
 
 ## TODO BEHEER
 - Bij elke sessie: lees TODO.md aan het begin
