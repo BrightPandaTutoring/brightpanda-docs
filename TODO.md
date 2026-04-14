@@ -71,6 +71,11 @@ Laatst bijgewerkt: 13 april 2026
   het docent record in Salesforce. PDF URL uit de webhook payload halen, downloaden
   via HTTP module, en uploaden naar Salesforce.
 
+- **Auto On-boarded scenario bouwen**: dagelijks scenario dat docenten in Pending
+  Onboarding checkt of alle drie velden gevuld zijn (Profile_Completed_Date__c,
+  Bsport_Account_Created__c, Documentation_Agreed__c) → LifecycleStage__c automatisch
+  naar On-boarded zetten.
+
 - **Scenario 10 fout oplossen**: WhatsApp module 6 geeft een fout door een lege
   tekst parameter. Module 6 inspecteren, de lege variabele identificeren en fixen.
 
