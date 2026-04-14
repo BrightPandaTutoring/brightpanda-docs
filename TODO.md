@@ -66,6 +66,11 @@ Laatst bijgewerkt: 13 april 2026
 
 ## ⚙️ Make.com / Automations
 
+- **Getekend contract opslaan in Salesforce**: Scenario 14 webhook uitbreiden zodat
+  de ondertekende PDF van DocuSeal wordt opgeslagen als bijlage (Attachment/File) op
+  het docent record in Salesforce. PDF URL uit de webhook payload halen, downloaden
+  via HTTP module, en uploaden naar Salesforce.
+
 - **Scenario 10 fout oplossen**: WhatsApp module 6 geeft een fout door een lege
   tekst parameter. Module 6 inspecteren, de lege variabele identificeren en fixen.
 
