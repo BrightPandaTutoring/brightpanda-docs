@@ -30,7 +30,7 @@ Bewaar dit document goed en sla het op als naslag voor momenten waarop je ergens
 
 # HOOFDSTUK 1 — Hoe maak je van bijles geven een succes?
 
-## Snelle checklist voor elke les
+## 1. Snelle checklist voor elke les
 
 Gebruik deze checklist als korte voorbereiding voor elke les. De volledige uitleg vind je verderop in dit document.
 
@@ -68,7 +68,41 @@ Zodra wij een potentiele match zien, benaderen we een aantal docenten tegelijker
 
 ---
 
-## 3. Voorbereiding op de proefles
+## 3. Van match tot ingeplande proefles
+
+Bright Panda koppelt je alleen aan een leerling nadat jij hebt aangegeven dat je hem of haar bijles kunt geven. Pas op dat moment gaan wij aan de slag met het inplannen van de proefles.
+
+### Stap 1 — Je ontvangt een WhatsApp van Bright Panda
+
+Na jouw bevestiging ontvang je een WhatsApp met daarin: de naam van de leerling, het vak, de naam en het telefoonnummer van de ouder, en een link om je beschikbaarheid op te geven.
+
+Vul de link **direct** in. Op het moment dat een ouder bijles aanvraagt, is de motivatie het grootst. Elk uur zonder reactie koelt dat gevoel af. Hoe langer het duurt voordat er een proefles staat, hoe groter de kans dat een ouder afhaakt of elders kijkt. Jouw snelheid bepaalt mede of deze proefles doorgaat.
+
+Let op: dit WhatsApp-nummer is alleen bedoeld voor het inplannen van proeflessen. Voor andere vragen bereik je ons via +31613689666.
+
+### Stap 2 — Neem contact op met de ouder
+
+Je ontvangt van ons een tweede WhatsApp met een kant-en-klare tekst die je direct kunt doorsturen naar de ouder. Doe dit zo snel mogelijk nadat je je beschikbaarheid hebt ingevuld. Dit eerste contactmoment bepaalt mede hoe de ouder jou als docent ervaart.
+
+### Stap 3 — De ouder kiest een tijdslot
+
+Zodra jij je beschikbaarheid hebt doorgegeven, ontvangt de ouder automatisch een bericht om een tijdslot te kiezen. Dit gaat volledig automatisch.
+
+### Stap 3b — Geen geschikt tijdslot?
+
+Kan de ouder geen geschikt tijdslot kiezen uit jouw beschikbaarheid? Dan ontvang jij automatisch een WhatsApp van Bright Panda met de naam en het telefoonnummer van de ouder. Neem direct contact op met de ouder om samen een moment af te spreken. Zodra jullie een tijdslot hebben afgesproken, vul jij dit in via de link in diezelfde WhatsApp zodat de proefles automatisch wordt ingepland in ons systeem.
+
+Reageer je niet? Dan ontvang je elke 4 uur een herinnering totdat het tijdslot is ingevuld.
+
+### Stap 4 — Jij ontvangt een bevestiging
+
+Zodra het tijdslot is bevestigd, ontvang jij een bevestiging via WhatsApp met de datum en het tijdstip. De proefles wordt door Bright Panda ingeboekt in ons boekingssysteem, je hoeft dit zelf niet te doen.
+
+[waarschuwing] De proefles duurt maximaal 1 uur. Geven de ouders aan vooraf meer lessen te willen afnemen? Dan moeten deze lessen eerst betaald en ingepland worden via Bright Panda. Lessen die niet via ons zijn ingepland kunnen wij niet uitbetalen.
+
+---
+
+## 4. Voorbereiding op de proefles
 
 [intro] Een goede voorbereiding is het halve werk. In dit hoofdstuk lees je wat je moet doen vanaf het moment dat je een match ontvangt tot aan het begin van de proefles. Een goed voorbereide docent maakt een sterkere eerste indruk en vergroot de kans op een succesvolle proefles aanzienlijk.
 
@@ -82,7 +116,7 @@ Geef je fysiek bijles? Spreek dan duidelijk af waar de proefles plaatsvindt.
 
 ---
 
-## 4. Online lesgeven
+## 5. Online lesgeven
 
 [intro] Online lesgeven biedt veel flexibiliteit, maar vraagt ook om een goede voorbereiding. Technische problemen, een slechte verbinding of een afleidende omgeving kunnen een les volledig verstoren. In dit hoofdstuk lees je hoe je je online les zo goed mogelijk voorbereidt en welke tools je kunt gebruiken om de les interactief en effectief te maken.
 
@@ -96,7 +130,7 @@ Met Google Docs maak je een document aan dat je deelt met de leerling zodat jull
 
 ---
 
-## 5. De fysieke leeromgeving
+## 6. De fysieke leeromgeving
 
 [intro] De omgeving waarin een leerling leert heeft een directe invloed op zijn of haar concentratie en leerprestaties. Als docent is het jouw taak om hier actief op te sturen, zowel bij fysieke als bij online lessen. Een rustige, afleidingsvrije omgeving is een van de eenvoudigste maar meest effectieve manieren om de kwaliteit van een les te verbeteren.
 
@@ -108,7 +142,7 @@ Geef je fysiek les en zit de leerling vlak bij een raam of andere afleidingsbron
 
 ---
 
-## 6. Tijdens de les
+## 7. Tijdens de les
 
 [intro] Dit hoofdstuk is het hart van dit document. Hier vind je alles wat je nodig hebt om een les goed op te bouwen en te begeleiden. Van de eerste indruk tot de afsluiting, van het omgaan met een niet-gemotiveerde leerling tot het bewaken van je tijd.
 
@@ -172,7 +206,7 @@ Vraag aan het einde van de les hoe de leerling het heeft ervaren en hoe hij of z
 
 ---
 
-## 7. Didactische aanpakken
+## 8. Didactische aanpakken
 
 [intro] Er zijn verschillende manieren om een les op te bouwen. De beste aanpak hangt af van de leerling, het niveau en de stof. Hieronder vind je vier bewezen aanpakken met uitleg over wanneer ze het best werken.
 
@@ -194,7 +228,7 @@ Begin met een concrete opgave of een realistisch probleem en werk van daaruit te
 
 ---
 
-## 8. Na de proefles
+## 9. Na de proefles
 
 [intro] Wat je doet na de proefles is net zo belangrijk als de proefles zelf. Proactiviteit en goede communicatie in de uren na de les kunnen het verschil maken tussen een leerling die doorgaat en een leerling die afhaakt.
 
@@ -206,7 +240,7 @@ Zet daarna je beschikbaarheid open op jouw account zodat vervolgafspraken ingepl
 
 ---
 
-## 9. Als de leerling klant wordt
+## 10. Als de leerling klant wordt
 [icon: trophy]
 
 [intro] De proefles was een succes en de leerling wil doorgaan. Gefeliciteerd! Maar dit is ook het moment waarop de echte verantwoordelijkheid begint. In dit hoofdstuk lees je wat er van je verwacht wordt als je een leerling voor langere tijd begeleidt.
@@ -235,7 +269,7 @@ Heb je vakantie, een tentamenweek of een andere reden waarom je minder beschikba
 
 ---
 
-## 10. Lesgeven aan leerlingen met specifieke leerbehoeften
+## 11. Lesgeven aan leerlingen met specifieke leerbehoeften
 
 [intro] Wij werken uitsluitend met minderjarige leerlingen. Een deel van hen heeft een diagnose of leermoeilijkheid die vraagt om een aangepaste aanpak. Hieronder vind je praktische tips per situatie.
 
@@ -257,7 +291,7 @@ Zorg voor een vaste structuur aan het begin van elke les: wat gaan we vandaag do
 
 ---
 
-## 11. Lesgeven aan verschillende leeftijdsgroepen en niveaus
+## 12. Lesgeven aan verschillende leeftijdsgroepen en niveaus
 
 [intro] De leeftijd en het schoolniveau van een leerling bepalen sterk hoe jij als docent het best kunt aansturen. In dit hoofdstuk vind je per groep de meest belangrijke inzichten en tips.
 
@@ -283,7 +317,7 @@ VWO-leerlingen zijn vaak gewend aan een hoog tempo en een hoge lat. Bij hen is d
 
 ---
 
-## 12. Praktijkscenario's
+## 13. Praktijkscenario's
 
 [intro] Hieronder vind je veelvoorkomende situaties die je als docent kunt tegenkomen, met concrete aanpakken per scenario.
 
