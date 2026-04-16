@@ -157,7 +157,7 @@ Begin niet direct met de lesstof. Stel jezelf voor aan de leerling en aan de oud
 
 Geef aan het begin van de les duidelijk aan dat jij er bent om de leerling zo goed mogelijk te helpen en dat het niet erg is als iets niet meteen duidelijk is. Stimuleer de leerling om door te blijven vragen totdat iets echt begrepen is. Door dit expliciet uit te spreken maak je duidelijk dat doorvragen niet dom is, maar juist slim. Een leerling die durft te vragen groeit sneller dan een leerling die stil blijft uit schaamte.
 
-Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten maken de beste manier is om te leren. Maak zelf ook bewust een fout en verbeter die samen met de leerling. Dit verlaagt de drempel om te proberen en creert een omgeving waarin de leerling zich veilig voelt.
+Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten maken de beste manier is om te leren. Maak zelf ook bewust een fout en verbeer die samen met de leerling. Dit verlaagt de drempel om te proberen en creert een omgeving waarin de leerling zich veilig voelt.
 
 ### Assertiviteit en structuur
 
@@ -570,12 +570,46 @@ Bright Panda betaalt uit op de eerste dag van de volgende maand. Valt de eerste 
 
 [intro] Als docent is het handig om te weten hoe het boekingsproces er voor de ouder uitziet. Zo kun je hen helpen als er iets misgaat.
 
-De ouder logt in op hun account en ziet jouw beschikbaarheid. Ze klikken op een tijdslot en doorlopen twee stappen: eerst een overzichtsscherm, dan een bevestigingsscherm. Hier gaat het regelmatig mis. Ouders klikken op het tijdslot maar vergeten de definitieve bevestiging te geven. De boeking is pas definitief na die tweede klik. Jij ontvangt dan een bevestigingsmail.
+### Stap 1 — Vak kiezen
 
-[foto: overzichtsscherm ouder]
+De ouder logt in op hun account en ziet een overzicht van alle vakken waarvoor bijles beschikbaar is. Ze klikken op het vak waarvoor zij bijles willen.
 
-[foto: bevestigingsscherm ouder]
+[foto: images/bsport_stap1_vak_kiezen.png]
 
-Komt er geen bevestigingsmail? Vraag de ouder vriendelijk om opnieuw in te loggen en de boeking te voltooien. Check altijd je Schedule voordat je begint met lesgeven. Als de les er niet in staat, is hij niet ingeboekt.
+### Stap 2 — Sessieduur, docent en tijdslot kiezen
+
+Op de volgende pagina kiest de ouder de sessieduur (1 uur of 2 uur) en de docent. Daarna worden de beschikbare tijdsloten getoond.
+
+Heb jij geen beschikbaarheid ingevoerd? Dan ziet de ouder de melding "There's no availability to display at this moment" en kan er geen les worden ingeboekt. Dit is de meest voorkomende reden waarom ouders vastlopen.
+
+[foto: images/bsport_stap2_geen_beschikbaarheid.png]
+
+Heb jij wel beschikbaarheid ingevoerd? Dan ziet de ouder jouw tijdsloten per dag. Ze kiezen eerst een dagdeel en klikken daarna op het gewenste tijdslot onderin het scherm.
+
+[foto: images/bsport_stap2_tijdsloten.png]
+
+### Stap 3 — Adres bevestigen
+
+Na het kiezen van een tijdslot komt de ouder op een bevestigingsscherm. Hier staat de datum en tijd van de les en een veld om een adres in te vullen. Als het adres al eerder is gecommuniceerd hoeft dit niet opnieuw ingevuld te worden.
+
+[foto: images/bsport_stap3_confirm_adres.png]
+
+[waarschuwing] Veel ouders denken dat de les nu geboekt is. Dat is niet het geval. De knop "Confirm" bevestigt alleen het tijdslot, de les is nog niet definitief ingeboekt. Er volgt nog een stap.
+
+### Stap 4 — Les definitief boeken via "Book"
+
+Na het klikken op Confirm komt de ouder op een pagina met hun beschikbare tegoed (My passes). Heeft de ouder een geldig urenpakket of abonnement, dan staat dit hier. Ze klikken op de knop "Book" om de les definitief in te boeken.
+
+[foto: images/bsport_stap4_book_knop.png]
+
+[waarschuwing] Pas na het klikken op "Book" is de les daadwerkelijk ingeboekt. Jij en de ouder ontvangen dan allebei een bevestigingsmail. Heeft de ouder geen geldig tegoed, dan moet hij of zij eerst een urenpakket of abonnement aanschaffen voordat de boeking afgerond kan worden.
+
+### Stap 5 — Boeking zichtbaar in My bookings
+
+Na de boeking is de les zichtbaar voor de ouder onder "My bookings", tabblad "Appointments". Hier ziet de ouder de datum, het tijdstip, de docent en de les.
+
+[foto: images/bsport_stap5_my_bookings.png]
+
+Als docent zie je de les in jouw Schedule in Bsport en ontvang je een bevestigingsmail. Check altijd je Schedule voordat je begint met lesgeven. Als de les er niet in staat, is hij niet ingeboekt.
 
 [info] Twijfel je of een les is ingeboekt? Check je Schedule en je inbox, niet je WhatsApp.
