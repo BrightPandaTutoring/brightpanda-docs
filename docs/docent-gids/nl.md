@@ -32,12 +32,11 @@ Bewaar dit document goed en sla het op als naslag voor momenten waarop je ergens
 
 ## 1. Snelle checklist voor elke les
 
-Gebruik deze checklist als korte voorbereiding voor elke les. De volledige uitleg vind je verderop in dit document.
+Gebruik deze checklist als korte voorbereiding voor elke les. Hoe het matchingproces werkt en hoe je je beschikbaarheid doorgeeft lees je in paragraaf 3. De volledige uitleg bij elk punt vind je verderop in dit document.
 
 ### Voor de les
 - Heb ik contact opgenomen met de ouder en gevraagd welke stof behandeld moet worden?
 - Heb ik me ingelezen in de lesstof?
-- Heb ik mijn beschikbaarheid doorgegeven via de link in de WhatsApp?
 - Heb ik de Google Meet link verstuurd (minimaal een dag van tevoren) bij online les?
 - Heb ik mijn technische setup getest bij online les?
 - Weet ik waar de les plaatsvindt bij fysieke les?
@@ -104,11 +103,9 @@ Zodra het tijdslot is bevestigd, ontvang jij een bevestiging via WhatsApp met de
 
 ## 4. Voorbereiding op de proefles
 
-[intro] Een goede voorbereiding is het halve werk. In dit hoofdstuk lees je wat je moet doen vanaf het moment dat je een match ontvangt tot aan het begin van de proefles. Een goed voorbereide docent maakt een sterkere eerste indruk en vergroot de kans op een succesvolle proefles aanzienlijk.
+[intro] Een goede voorbereiding is het halve werk. In dit hoofdstuk lees je wat je moet doen vanaf het moment dat de proefles is ingepland tot aan het begin van de les. Een goed voorbereide docent maakt een sterkere eerste indruk en vergroot de kans op een succesvolle proefles aanzienlijk.
 
-Zodra je bent gekoppeld aan een leerling, ontvang je via WhatsApp de gegevens van de ouder en leerling en word je gevraagd je beschikbaarheid door te geven voor een proefles van een uur. Doe dit direct via de link in de WhatsApp, want hoe sneller jij reageert, hoe groter de kans dat de match doorgaat. Zodra de ouder een tijdslot heeft geselecteerd, ontvang jij een bevestiging.
-
-Neem daarna zo snel mogelijk contact op met de ouder. Stel jezelf voor, vraag welke stof er behandeld moet worden en waar de leerling tegenaan loopt. Hoe meer informatie jij van tevoren hebt, hoe beter je je kunt voorbereiden en hoe groter de kans dat de proefles als succesvol wordt ervaren. De ouder kan stof doorsturen via WhatsApp.
+Neem zo snel mogelijk contact op met de ouder. Stel jezelf voor, vraag welke stof er behandeld moet worden en waar de leerling tegenaan loopt. Hoe meer informatie jij van tevoren hebt, hoe beter je je kunt voorbereiden en hoe groter de kans dat de proefles als succesvol wordt ervaren. De ouder kan stof doorsturen via WhatsApp.
 
 Lees je goed in de lesstof in. Een veelgemaakte fout, en een reden waarom ouders al afhaken na een proefles, is wanneer een docent niet volledig thuis lijkt te zijn in de stof. Dit is eenvoudig te voorkomen door je vooraf even in te lezen.
 
@@ -351,6 +348,35 @@ Reageer vriendelijk maar duidelijk: 'Ik begrijp dat u kosten wilt besparen, maar
 
 ---
 
+## 14. Slimmer werken met online tools
+
+[intro] Je hoeft het wiel niet elke les opnieuw uit te vinden. Een paar gratis tools maken je lessen overzichtelijker en besparen je tijd.
+
+Maak eenmalig een Google Meet link aan en gebruik die voor alle lessen met dezelfde leerling. Je hoeft niet elke keer een nieuwe link aan te maken. Stuur hem bij de eerste les op, communiceer dit duidelijk naar de ouder en leerling en bewaar hem zelf ook. Zo weet de leerling altijd waar hij of zij naartoe moet.
+
+Maak daarnaast een gedeeld Google Doc aan als leslogboek. Noteer na elke les in twee a drie zinnen wat er behandeld is en wat er de volgende keer op de planning staat. Geef de leerling bewerkingsrechten zodat hij of zij ook zelf kan teruglezen. Uitgewerkte opgaven kunnen direct in het document worden bewaard, zodat zowel jij als de leerling hier altijd op terug kunnen vallen. Het werkt als een gedeeld geheugen voor de hele begeleidingsperiode.
+
+Miro (miro.com) is een gratis digitaal whiteboard dat je kunt delen met de leerling. Alles wat jij tekent of schrijft is direct zichtbaar voor de leerling, en andersom. Je kunt de app downloaden op zowel je laptop als je telefoon. Op je telefoon kun je met je vinger tekenen, wat ideaal is als je snel een grafiek wilt schetsen of een formule wilt uitschrijven. Maak eenmalig een board aan, deel de link met de leerling en hergebruik het voor alle lessen. Ga naar miro.com en maak gratis een account aan.
+
+---
+
+## 15. Annulering van een les
+[icon: canceled]
+
+[intro] Het komt voor dat een leerling of ouder een les wil afzeggen. Dat kan, maar daar zijn duidelijke afspraken over.
+
+### Annulering korter dan 24 uur van tevoren
+
+Wanneer een leerling of ouder een les afzegt korter dan 24 uur voor aanvang, wordt deze les in rekening gebracht. Jij hebt je agenda vrijgehouden en je tijd gereserveerd voor deze les, dat verdient respect van de kant van de leerling en ouder.
+
+Wij begrijpen dat er soms onvoorziene omstandigheden zijn. In dat geval toon je als docent enige flexibiliteit en zie je het de eerste keer door de vingers. Geef dit vriendelijk maar duidelijk aan bij de ouder: 'Voor deze keer maak ik een uitzondering, maar ik wil jullie vragen er de volgende keer rekening mee te houden dat lessen die korter dan 24 uur van tevoren worden afgezegd in rekening worden gebracht.' Herhaal dit bij een volgende keer niet. Geef het ook bij ons aan zodat wij indien nodig het gesprek met de ouder kunnen voeren.
+
+### Annulering door de docent
+
+Natuurlijk geldt hetzelfde voor jou als docent. Probeer lessen altijd zo vroeg mogelijk af te zeggen als je verhinderd bent. Houd de 24-uursgrens ook voor jezelf aan en communiceer tijdig. Zie ook paragraaf 10 over vakantie, tentamens en ziekte.
+
+---
+
 # HOOFDSTUK 2 — Gedragscode
 
 Als docent bij Bright Panda vertegenwoordig jij ons bedrijf. Hoe jij je gedraagt tegenover leerlingen, ouders en ons als organisatie heeft directe invloed op onze reputatie en jouw eigen positie. Dit hoofdstuk geeft je duidelijkheid over wat we van je verwachten en hoe je omgaat met situaties die je kunt tegenkomen.
@@ -359,7 +385,7 @@ Als docent bij Bright Panda vertegenwoordig jij ons bedrijf. Hoe jij je gedraagt
 
 ## 1. Professionaliteit en gedrag
 
-Bij Bright Panda verwelkomen we iedereen — ongeacht afkomst, geloof, seksuele geaardheid, genderidentiteit of beperking. Diversiteit maakt ons team sterker. We vragen jou hetzelfde: behandel elke leerling en ouder met respect, zonder onderscheid.
+Bij Bright Panda verwelkomen we iedereen, ongeacht afkomst, geloof, seksuele geaardheid, genderidentiteit of beperking. Diversiteit maakt ons team sterker. We vragen jou hetzelfde: behandel elke leerling en ouder met respect, zonder onderscheid.
 
 Bijles is een professionele context. De les draait om de leerling en zijn of haar leerdoelen. Het is geen plek om jouw eigen overtuigingen, politieke meningen of levensbeschouwing te delen of te promoten. Blijf bij het vak en respecteer de ruimte van de leerling.
 
@@ -375,15 +401,15 @@ Zowel jij als docent als de ouder gaan bij aanvang een overeenkomst aan met Brig
 
 ## 2. Privacy en vertrouwelijkheid
 
-Als docent kom je soms informatie te weten over een leerling of gezin — thuissituatie, schoolprestaties, persoonlijke problemen. Dit is vertrouwelijke informatie.
+Als docent kom je soms informatie te weten over een leerling of gezin: thuissituatie, schoolprestaties, persoonlijke problemen. Dit is vertrouwelijke informatie.
 
-Deel nooit informatie over een leerling of ouder met derden. Bespreek leerlingen niet bij naam op social media of in andere openbare contexten. Als een leerling iets deelt wat zorgen baart — signalen van mishandeling, ernstige problemen thuis of andere zorgwekkende situaties — neem dan direct contact met ons op. Jij bent niet verantwoordelijk voor het oplossen ervan, maar wel voor het doorgeven.
+Deel nooit informatie over een leerling of ouder met derden. Bespreek leerlingen niet bij naam op social media of in andere openbare contexten. Als een leerling iets deelt wat zorgen baart, signalen van mishandeling, ernstige problemen thuis of andere zorgwekkende situaties, neem dan direct contact met ons op. Jij bent niet verantwoordelijk voor het oplossen ervan, maar wel voor het doorgeven.
 
 ---
 
 ## 3. Social media en online gedrag
 
-Jij vertegenwoordigt Bright Panda — ook online. We vragen je om geen ongepaste of controversiële berichten te plaatsen die te herleiden zijn naar jouw werk als docent. Zoek geen contact met leerlingen via privé social media. Communiceer via de kanalen die Bright Panda daarvoor heeft ingericht. Maak geen foto's of video's van leerlingen zonder uitdrukkelijke toestemming van de ouder.
+Jij vertegenwoordigt Bright Panda, ook online. We vragen je om geen ongepaste of controversiële berichten te plaatsen die te herleiden zijn naar jouw werk als docent. Zoek geen contact met leerlingen via privé social media. Communiceer via de kanalen die Bright Panda daarvoor heeft ingericht. Maak geen foto's of video's van leerlingen zonder uitdrukkelijke toestemming van de ouder.
 
 ### Content voor social media
 
@@ -401,7 +427,7 @@ Blijf kalm en professioneel. Reageer niet impulsief. Geef duidelijk en vriendeli
 
 ## 5. Confrontaties met leerlingen of ouders
 
-In uitzonderlijke gevallen kan er een conflict of confrontatie ontstaan. Blijf altijd rustig en verhef je stem niet. Luister naar wat de ander zegt zonder te onderbreken. Verdedig jezelf niet direct — erken eerst de gevoelens van de ander en geef aan dat je het wilt oplossen. Neem daarna contact met ons op zodat wij kunnen helpen bemiddelen. We verwachten niet dat jij dit soort situaties zelf oplost.
+In uitzonderlijke gevallen kan er een conflict of confrontatie ontstaan. Blijf altijd rustig en verhef je stem niet. Luister naar wat de ander zegt zonder te onderbreken. Verdedig jezelf niet direct, erken eerst de gevoelens van de ander en geef aan dat je het wilt oplossen. Neem daarna contact met ons op zodat wij kunnen helpen bemiddelen. We verwachten niet dat jij dit soort situaties zelf oplost.
 
 ---
 
@@ -409,7 +435,7 @@ In uitzonderlijke gevallen kan er een conflict of confrontatie ontstaan. Blijf a
 
 We willen graag weten hoe het gaat. Heb je een vraag, twijfel je over een situatie, of loop je ergens tegenaan? Stuur ons een bericht via +31613689666. We reageren snel en denken graag met je mee.
 
-We vragen ook om na elke proefles kort te laten weten hoe het ging, wijzigingen in je beschikbaarheid tijdig door te geven, en eventuele zorgen over een leerling altijd met ons te delen — hoe klein ook.
+We vragen ook om na elke proefles kort te laten weten hoe het ging, wijzigingen in je beschikbaarheid tijdig door te geven, en eventuele zorgen over een leerling altijd met ons te delen, hoe klein ook.
 
 ---
 
@@ -425,11 +451,21 @@ Wordt er ongewenst fysiek contact gemeld of ervaar je een situatie die hier raak
 
 Als docent bij Bright Panda kom je bij leerlingen thuis of geef je online les. Hoe jij eruitziet heeft directe invloed op hoe een ouder en leerling jou beoordelen, zeker bij de eerste ontmoeting. Wij vragen geen dresscode, maar wel dat je er verzorgd en representatief uitziet.
 
-Dat betekent in de praktijk: schone kleding die past bij een professionele context. Denk daarbij aan kleding die past bij een professionele ontmoeting: geen diep decolleté, geen blote buik, geen zichtbaar ondergoed. Verder: geen aanstootgevende of extreme prints, verzorgd haar en goede lichaamshygiëne. Online geldt dit net zo goed — ouders en leerlingen zien jou via de camera.
+Dat betekent in de praktijk: schone kleding die past bij een professionele context. Denk daarbij aan kleding die past bij een professionele ontmoeting: geen diep decolleté, geen blote buik, geen zichtbaar ondergoed. Verder: geen aanstootgevende of extreme prints, verzorgd haar en goede lichaamshygiëne. Online geldt dit net zo goed, ouders en leerlingen zien jou via de camera.
 
 Religieuze kleding of hoofdbedekkingen zijn volledig welkom, zolang de algehele uitstraling verzorgd is. Hetzelfde geldt voor tatoeages en piercings: wij maken daar geen harde regels over, maar vragen je bewust te zijn dat ouders een oordeel vormen op basis van eerste indruk.
 
 Twijfel je of iets passend is? Stel jezelf de vraag: zou ik mij zo presenteren bij een eerste kennismaking met iemand die ik wil imponeren? Als het antwoord nee is, pas het dan aan.
+
+---
+
+## 9. Gebruik van hulpmiddelen en AI
+
+Wij moedigen het gebruik van slimme hulpmiddelen aan. Via jouw Bright Panda Google Workspace for Education account heb je toegang tot een privacybeveiligde Google-omgeving. Daarbinnen kun je gebruik maken van Gemini (Google's AI-assistent), NotebookLM en andere Google-diensten. Alles wat je daar invoert valt onder de privacyafspraken van Google Workspace for Education, je data wordt niet gebruikt voor het trainen van AI-modellen.
+
+Praktisch gebruik: Gemini kan je helpen bij het voorbereiden van uitleg, het bedenken van voorbeelden of het vinden van een andere aanpak voor een leerling die iets niet begrijpt. NotebookLM kun je gebruiken om lesmateriaal of samenvattingen te analyseren. Gebruik deze tools als voorbereiding, niet als vervanging van jouw eigen inzicht.
+
+Wat je niet doet: huiswerk of toetsen voor een leerling laten maken via AI, of AI-gegenereerde uitleg klakkeloos voorlezen zonder het zelf te begrijpen. De leerling betaalt voor jouw begeleiding, niet voor een chatbot.
 
 ---
 
@@ -529,3 +565,17 @@ Wil je een overzicht bewaren? Download je payroll als PDF of CSV via de download
 [intro] Bright Panda hanteert een vaste uitbetalingsdatum.
 
 Bright Panda betaalt uit op de eerste dag van de volgende maand. Valt de eerste op een zaterdag of zondag, dan vindt de uitbetaling plaats op de eerstvolgende werkdag.
+
+## 8. Hoe boekt een ouder een les?
+
+[intro] Als docent is het handig om te weten hoe het boekingsproces er voor de ouder uitziet. Zo kun je hen helpen als er iets misgaat.
+
+De ouder logt in op hun account en ziet jouw beschikbaarheid. Ze klikken op een tijdslot en doorlopen twee stappen: eerst een overzichtsscherm, dan een bevestigingsscherm. Hier gaat het regelmatig mis. Ouders klikken op het tijdslot maar vergeten de definitieve bevestiging te geven. De boeking is pas definitief na die tweede klik. Jij ontvangt dan een bevestigingsmail.
+
+[foto: overzichtsscherm ouder]
+
+[foto: bevestigingsscherm ouder]
+
+Komt er geen bevestigingsmail? Vraag de ouder vriendelijk om opnieuw in te loggen en de boeking te voltooien. Check altijd je Schedule voordat je begint met lesgeven. Als de les er niet in staat, is hij niet ingeboekt.
+
+[info] Twijfel je of een les is ingeboekt? Check je Schedule en je inbox, niet je WhatsApp.
