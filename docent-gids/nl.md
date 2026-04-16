@@ -353,25 +353,71 @@ Reageer vriendelijk maar duidelijk: 'Ik begrijp dat u kosten wilt besparen, maar
 
 # HOOFDSTUK 2 — Gedragscode
 
-## 1. Professioneel gedrag en grenzen
+Als docent bij Bright Panda vertegenwoordig jij ons bedrijf. Hoe jij je gedraagt tegenover leerlingen, ouders en ons als organisatie heeft directe invloed op onze reputatie en jouw eigen positie. Dit hoofdstuk geeft je duidelijkheid over wat we van je verwachten en hoe je omgaat met situaties die je kunt tegenkomen.
 
-[intro] Als docent bij Bright Panda vertegenwoordig jij ons bedrijf. Hoe jij je gedraagt tegenover leerlingen, ouders en ons als organisatie heeft directe invloed op onze reputatie en jouw eigen positie.
+---
+
+## 1. Professionaliteit en gedrag
+
+Bij Bright Panda verwelkomen we iedereen — ongeacht afkomst, geloof, seksuele geaardheid, genderidentiteit of beperking. Diversiteit maakt ons team sterker. We vragen jou hetzelfde: behandel elke leerling en ouder met respect, zonder onderscheid.
+
+Bijles is een professionele context. De les draait om de leerling en zijn of haar leerdoelen. Het is geen plek om jouw eigen overtuigingen, politieke meningen of levensbeschouwing te delen of te promoten. Blijf bij het vak en respecteer de ruimte van de leerling.
 
 ### Communicatie met ouders
 
-Wij werken uitsluitend met minderjarige leerlingen. Jouw telefoonnummer wordt gedeeld met de ouder puur en alleen voor het plannen van lessen en communicatie over de voortgang van de lessen. Houd alle communicatie professioneel en zakelijk. Stuur geen berichten naar leerlingen buiten de context van de lessen om.
+Jouw telefoonnummer wordt gedeeld met de ouder puur en alleen voor het plannen van lessen en communicatie over de voortgang. Houd alle communicatie professioneel en zakelijk. Stuur geen berichten naar leerlingen buiten de context van de lessen om.
 
 ### Lessen buiten Bright Panda zijn strikt verboden
 
 Zowel jij als docent als de ouder gaan bij aanvang een overeenkomst aan met Bright Panda. Het is dan ook ten strengste verboden om lessen buiten ons platform om te plannen of te geven aan leerlingen die via Bright Panda aan jou zijn gekoppeld. Dit geldt ook als een ouder jou hier zelf om vraagt. Door hier helder over te zijn bescherm je zowel jezelf als de leerling.
 
-### Wat te doen als een les niet goed gaat
+---
 
-Soms lukt het niet om een leerling de stof te laten begrijpen, hoe je het ook uitlegt. Probeer het dan op een andere manier: gebruik een andere analogie, een tekening, een ander voorbeeld of een andere werkvorm. Lukt het ook dan niet, noteer het en bespreek het met ons. Als een leerling emotioneel wordt of zich oncomfortabel voelt, stop dan even met de lesstof en geef de leerling de ruimte. Lukt het niet om de situatie zelf te managen, neem dan contact met ons op.
+## 2. Privacy en vertrouwelijkheid
 
-## 2. Verdere gedragsafspraken
+Als docent kom je soms informatie te weten over een leerling of gezin — thuissituatie, schoolprestaties, persoonlijke problemen. Dit is vertrouwelijke informatie.
 
-Dit onderdeel wordt binnenkort verder uitgewerkt.
+Deel nooit informatie over een leerling of ouder met derden. Bespreek leerlingen niet bij naam op social media of in andere openbare contexten. Als een leerling iets deelt wat zorgen baart — signalen van mishandeling, ernstige problemen thuis of andere zorgwekkende situaties — neem dan direct contact met ons op. Jij bent niet verantwoordelijk voor het oplossen ervan, maar wel voor het doorgeven.
+
+---
+
+## 3. Social media en online gedrag
+
+Jij vertegenwoordigt Bright Panda — ook online. We vragen je om geen ongepaste of controversiële berichten te plaatsen die te herleiden zijn naar jouw werk als docent. Zoek geen contact met leerlingen via privé social media. Communiceer via de kanalen die Bright Panda daarvoor heeft ingericht. Maak geen foto's of video's van leerlingen zonder uitdrukkelijke toestemming van de ouder.
+
+### Content voor social media
+
+Bright Panda kan vragen om content te maken voor social media, zoals een korte video of foto tijdens een les. Dit gaat altijd met uitdrukkelijke toestemming van alle betrokken partijen: de ouder, de leerling én de docent. Niemand wordt verplicht hieraan mee te werken. De docent maakt zelf geen content van lessen of leerlingen zonder uitdrukkelijke toestemming van Bright Panda én de ouder.
+
+---
+
+## 4. Situaties waar je je niet prettig bij voelt
+
+Het kan voorkomen dat je tijdens een les iets ervaart wat je een ongemakkelijk gevoel geeft. Dat kan van alles zijn: een ongepaste opmerking, een leerling die zich vreemd gedraagt, of een ouder die je in een ongemakkelijke positie plaatst.
+
+Blijf kalm en professioneel. Reageer niet impulsief. Geef duidelijk en vriendelijk aan dat je je niet prettig voelt bij de situatie als dat passend is. Beëindig de les op een nette manier als de situatie dat vereist. Neem daarna zo snel mogelijk contact met ons op via WhatsApp of telefoon. Je hoeft dit nooit alleen op te lossen.
+
+---
+
+## 5. Confrontaties met leerlingen of ouders
+
+In uitzonderlijke gevallen kan er een conflict of confrontatie ontstaan. Blijf altijd rustig en verhef je stem niet. Luister naar wat de ander zegt zonder te onderbreken. Verdedig jezelf niet direct — erken eerst de gevoelens van de ander en geef aan dat je het wilt oplossen. Neem daarna contact met ons op zodat wij kunnen helpen bemiddelen. We verwachten niet dat jij dit soort situaties zelf oplost.
+
+---
+
+## 6. Communicatie met Bright Panda
+
+We willen graag weten hoe het gaat. Heb je een vraag, twijfel je over een situatie, of loop je ergens tegenaan? Stuur ons een bericht via +31613689666. We reageren snel en denken graag met je mee.
+
+We vragen ook om na elke proefles kort te laten weten hoe het ging, wijzigingen in je beschikbaarheid tijdig door te geven, en eventuele zorgen over een leerling altijd met ons te delen — hoe klein ook.
+
+---
+
+## 7. Fysiek contact
+
+Fysiek contact tussen docent en leerling is te allen tijde niet toegestaan, met uitzondering van een handdruk bij de begroeting. Houd altijd een professionele afstand en zorg dat de leerling zich veilig en comfortabel voelt.
+
+Wordt er ongewenst fysiek contact gemeld of ervaar je een situatie die hier raakvlakken mee heeft? Neem dan direct contact met ons op.
 
 ---
 
