@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 13 april 2026
+Laatst bijgewerkt: 16 april 2026
 
 ---
 
@@ -10,6 +10,9 @@ Laatst bijgewerkt: 13 april 2026
   voorbeeldwaarden (eerder ingediend zonder voorbeelden, werd afgewezen).
 - Template `availability_conflict_teacher_reminder` opnieuw indienen bij 360dialog
   met voorbeeldwaarden (zelfde probleem als hierboven).
+- Templates `teacher_invitation` (aangepast) en `teacher_intro_message_parent` (nieuw)
+  ingediend bij 360dialog/Meta — wachten op goedkeuring voordat Scenario 1 getest
+  kan worden.
 
 ---
 
@@ -33,18 +36,29 @@ Laatst bijgewerkt: 13 april 2026
   niet getest. Test door de lifecycle stage van een bestaande docent handmatig naar
   "Interview Invited" te zetten en te controleren of de WhatsApp correct binnenkomt.
 
+- **Scenario 1 testen**: zodra templates `teacher_invitation` en
+  `teacher_intro_message_parent` zijn goedgekeurd door Meta. Controleer of beide
+  WhatsApps binnenkomen met 180s tussenpoos en of de variabelen kloppen
+  ({{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName,
+  {{4}}=student FirstName).
+
 ---
 
 ## 📄 Docent Gids & Onboarding
 
 - **Docent Gids afmaken** — de volgende hoofdstukken moeten nog geschreven worden
   en toegevoegd aan de bestaande PDF:
-  - **Hoe het matching- en proefles planningssysteem werkt**: uitleg over de WhatsApp
-    flow (uitnodiging → tijdslot opgeven → bevestiging), waarom snelle reactie cruciaal
-    is, en wat er gebeurt als je niet reageert (automatische reminders elke 4 uur).
+  - **Hoofdstuk 3 (Bsport) aanvullen**: uitleg toevoegen over hoe een ouder correct
+    een les boekt in Bsport. Stappen, screenshots en wat er gebeurt als de boeking
+    niet juist gaat.
   - **Bsport uitleg**: hoe werkt het platform, wat moet de docent doen om in te loggen
     en lessen te registreren. Raouf levert de inhoud aan.
-  - **Gedragscode**: uitwerken op basis van de start die in een aparte chat is gemaakt.
+
+- **Bijenkorf boekje analyseren voor aanvullingen Gedragscode (H2)**: doorlopen
+  en relevante punten verwerken in de bestaande paragrafen van Hoofdstuk 2.
+
+- **PDF opnieuw genereren** zodra `docent-gids/nl.md` compleet is (na H3 Bsport
+  uitbreiding en Bijenkorf boekje verwerking).
 
 - **Tally akkoord-formulier bouwen**: een eenvoudig Tally formulier waarop de docent
   bevestigt de Docent Gids te hebben gelezen via een verplichte checkbox. Na submit
@@ -70,6 +84,11 @@ Laatst bijgewerkt: 13 april 2026
   de ondertekende PDF van DocuSeal wordt opgeslagen als bijlage (Attachment/File) op
   het docent record in Salesforce. PDF URL uit de webhook payload halen, downloaden
   via HTTP module, en uploaden naar Salesforce.
+
+- **Scenario 1 polling vervangen door Salesforce webhook**: het huidige polling
+  interval vervangen door een directe Salesforce webhook trigger zodat de invitation
+  meteen wordt verstuurd bij een nieuwe matching i.p.v. afhankelijk te zijn van
+  de polling cyclus.
 
 - **Auto On-boarded scenario bouwen**: dagelijks scenario dat docenten in Pending
   Onboarding checkt of alle drie velden gevuld zijn (Profile_Completed_Date__c,

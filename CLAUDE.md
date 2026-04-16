@@ -24,7 +24,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
 **WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN)
-**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder
+**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder, teacher_invitation (aangepast — verwijst nu naar tweede bericht voor contact ouder), teacher_intro_message_parent (nieuw — kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
@@ -50,7 +50,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation | 🔧 Inactief (wacht op test) | 4729958 |
+| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | 🔧 Inactief (wacht op template goedkeuring + test) | 4729958 |
 | 02 | Parent Timeslot Invitation | 🔧 Inactief (wacht op test) | 4740354 |
 | 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief (wacht op test) | 4783259 |
 | 04 | Teacher Timeslot Submission | 🔧 Inactief (wacht op test) | 4839158 |
@@ -79,6 +79,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 9. **newline in Make.com:** Gebruik keyword `newline`, niet char(10)
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
+12. **Sleutelwoord "Afsluiten":** Wanneer Raouf of Yasin "Afsluiten" typt aan het einde van een chat, vat dan de sessie kort samen, werk relevante bestanden bij (CLAUDE.md, TODO.md) en push naar GitHub
 
 ## DAGSTART ROUTINE
 
