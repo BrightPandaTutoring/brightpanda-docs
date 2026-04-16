@@ -79,7 +79,10 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 9. **newline in Make.com:** Gebruik keyword `newline`, niet char(10)
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
-12. **Sleutelwoord "Afsluiten":** Wanneer Raouf of Yasin "Afsluiten" typt aan het einde van een chat, vat dan de sessie kort samen, werk relevante bestanden bij (CLAUDE.md, TODO.md) en push naar GitHub
+12. **Sleutelwoorden tussen sessies:**
+    - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Klaar om door Raouf of Yasin in Claude Code te plakken.
+    - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te leggen.
+    - **"Pak op"** (hier in Claude Code, begin van nieuwe sessie): lees CLAUDE.md, TODO.md en recente git commits van de repo, en geef Raouf en Yasin een korte status zodat ze niets hoeven te herhalen wat eerder al besproken is.
 
 ## DAGSTART ROUTINE
 
