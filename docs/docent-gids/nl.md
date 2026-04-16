@@ -425,7 +425,7 @@ Wordt er ongewenst fysiek contact gemeld of ervaar je een situatie die hier raak
 
 Als docent bij Bright Panda kom je bij leerlingen thuis of geef je online les. Hoe jij eruitziet heeft directe invloed op hoe een ouder en leerling jou beoordelen, zeker bij de eerste ontmoeting. Wij vragen geen dresscode, maar wel dat je er verzorgd en representatief uitziet.
 
-Dat betekent in de praktijk: schone kleding die past bij een professionele context, geen aanstootgevende of extreme prints, verzorgd haar en goede lichaamshygiëne. Online geldt dit net zo goed — ouders en leerlingen zien jou via de camera.
+Dat betekent in de praktijk: schone kleding die past bij een professionele context. Denk daarbij aan kleding die past bij een professionele ontmoeting: geen diep decolleté, geen blote buik, geen zichtbaar ondergoed. Verder: geen aanstootgevende of extreme prints, verzorgd haar en goede lichaamshygiëne. Online geldt dit net zo goed — ouders en leerlingen zien jou via de camera.
 
 Religieuze kleding of hoofdbedekkingen zijn volledig welkom, zolang de algehele uitstraling verzorgd is. Hetzelfde geldt voor tatoeages en piercings: wij maken daar geen harde regels over, maar vragen je bewust te zijn dat ouders een oordeel vormen op basis van eerste indruk.
 
