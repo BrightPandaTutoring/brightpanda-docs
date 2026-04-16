@@ -265,7 +265,7 @@ Geef dit minstens een maand van tevoren aan bij ons en bij de leerling. Zo hebbe
 
 ### Vakantie, tentamens of ziekte
 
-Heb je vakantie, een tentamenweek of een andere reden waarom je minder beschikbaar bent? Geen probleem, maar communiceer dit tijdig en duidelijk met de ouder en leerling. De snelste manier om het vertrouwen te verliezen is een les op het laatste moment afzeggen. Geef ruim van tevoren aan dat je die week minder beschikbaar bent en stel voor om de week ervoor of erna een dubbele les in te plannen als compensatie. Of kijk of een online les in je agenda past. Ben je ziek? Geen probleem, geef het gewoon aan.
+Heb je vakantie, een tentamenweek of een andere reden waarop je minder beschikbaar bent? Geen probleem, maar communiceer dit tijdig en duidelijk met de ouder en leerling. De snelste manier om het vertrouwen te verliezen is een les op het laatste moment afzeggen. Geef ruim van tevoren aan dat je die week minder beschikbaar bent en stel voor om de week ervoor of erna een dubbele les in te plannen als compensatie. Of kijk of een online les in je agenda past. Ben je ziek? Geen probleem, geef het gewoon aan.
 
 ---
 
@@ -418,6 +418,18 @@ We vragen ook om na elke proefles kort te laten weten hoe het ging, wijzigingen 
 Fysiek contact tussen docent en leerling is te allen tijde niet toegestaan, met uitzondering van een handdruk bij de begroeting. Houd altijd een professionele afstand en zorg dat de leerling zich veilig en comfortabel voelt.
 
 Wordt er ongewenst fysiek contact gemeld of ervaar je een situatie die hier raakvlakken mee heeft? Neem dan direct contact met ons op.
+
+---
+
+## 8. Uiterlijke verzorging en presentatie
+
+Als docent bij Bright Panda kom je bij leerlingen thuis of geef je online les. Hoe jij eruitziet heeft directe invloed op hoe een ouder en leerling jou beoordelen, zeker bij de eerste ontmoeting. Wij vragen geen dresscode, maar wel dat je er verzorgd en representatief uitziet.
+
+Dat betekent in de praktijk: schone kleding die past bij een professionele context, geen aanstootgevende of extreme prints, verzorgd haar en goede lichaamshygiëne. Online geldt dit net zo goed — ouders en leerlingen zien jou via de camera.
+
+Religieuze kleding of hoofdbedekkingen zijn volledig welkom, zolang de algehele uitstraling verzorgd is. Hetzelfde geldt voor tatoeages en piercings: wij maken daar geen harde regels over, maar vragen je bewust te zijn dat ouders een oordeel vormen op basis van eerste indruk.
+
+Twijfel je of iets passend is? Stel jezelf de vraag: zou ik mij zo presenteren bij een eerste kennismaking met iemand die ik wil imponeren? Als het antwoord nee is, pas het dan aan.
 
 ---
 
