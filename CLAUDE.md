@@ -80,9 +80,11 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
 12. **Sleutelwoorden tussen sessies:**
-    - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Klaar om door Raouf of Yasin in Claude Code te plakken.
+    - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Werk SESSION_LOG.md bij in de repo (overschrijf met nieuwe sessie samenvatting). Klaar om door Raouf of Yasin in Claude Code te plakken voor verdere verwerking.
     - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te leggen.
-    - **"Pak op"** (hier in Claude Code, begin van nieuwe sessie): lees CLAUDE.md, TODO.md en recente git commits van de repo, en geef Raouf en Yasin een korte status zodat ze niets hoeven te herhalen wat eerder al besproken is.
+    - **"Pak op"** (in elke Claude chat, begin van nieuwe sessie): lees als eerste SESSION_LOG.md (laatste sessie), daarna CLAUDE.md (instructies + scenario-tabel) en TODO.md (actuele to-do's) uit de repo. Geef Raouf en Yasin een korte status (max 5 regels) en vraag wat ze vandaag willen doen. Zo hoeven ze niets te herhalen.
+
+13. **SESSION_LOG.md beheer:** Bij elke "Afsluiten" wordt SESSION_LOG.md volledig overschreven met de nieuwe sessie samenvatting (datum, waar gewerkt aan, beslissingen, wachten op, eerstvolgende acties, let op). Niet aanvullen, maar vervangen — zo blijft het bestand kort en altijd actueel.
 
 ## DAGSTART ROUTINE
 
