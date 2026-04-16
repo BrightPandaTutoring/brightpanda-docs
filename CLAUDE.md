@@ -28,6 +28,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
+**Docent Gids:** `docent-gids/nl.md` (NL) en `docent-gids/en.md` (EN, nog aan te maken). Structuur: ## = paragraaf, ### = subparagraaf, [icon: naam] = pictogram, [intro] = cursieve intro, [waarschuwing] = waarschuwingsblok, [info] = infoblok. Iconen beschikbaar: login, available, booking, time-management, free-trial, salary, calendar, trophy, canceled. Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
+
 ## SALESFORCE
 
 **Record Types:** Teacher: 012KB000000ojZLYAY | Student: 012KB000000ojZGYAY
