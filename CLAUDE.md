@@ -28,7 +28,16 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
-**Docent Gids:** `docent-gids/nl.md` (NL) en `docent-gids/en.md` (EN, nog aan te maken). Structuur: ## = paragraaf, ### = subparagraaf, [icon: naam] = pictogram, [intro] = cursieve intro, [waarschuwing] = waarschuwingsblok, [info] = infoblok. Iconen beschikbaar: login, available, booking, time-management, free-trial, salary, calendar, trophy, canceled. Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
+**Docent Gids:** `docs/docent-gids/nl.md` (NL) en `docs/docent-gids/en.md` (EN, nog aan te maken). Structuur: ## = paragraaf, ### = subparagraaf, [icon: naam] = pictogram, [intro] = cursieve intro, [waarschuwing] = waarschuwingsblok, [info] = infoblok. Iconen beschikbaar: login, available, booking, time-management, free-trial, salary, calendar, trophy, canceled. Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
+
+**Repo structuur:**
+- `/CLAUDE.md` — instructies (dit bestand) — single source of truth voor scenario statussen, credentials, regels
+- `/TODO.md` — actuele to-do lijst
+- `/SESSION_LOG.md` — laatste sessie samenvatting (overschrijven bij elke "Afsluiten")
+- `/README.md` — repo overzicht
+- `/docs/docent-gids/` — Docent Gids bestanden (nl.md, en.md)
+- `/docs/make/` — technische detail-documentatie per Make.com scenario (modules, JSON bodies, GAS scripts)
+- `/docs/archive-website-content/` — oud archief van website/marketing content (geen ops, niet bijwerken)
 
 ## SALESFORCE
 

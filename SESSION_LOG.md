@@ -6,10 +6,11 @@
 ## Laatste sessie: 16 april 2026
 
 ### Waar werd aan gewerkt
-- Documentatie structuur in GitHub repo `BrightPandaTutoring/brightpanda-docs`
-- Docent Gids `docent-gids/nl.md` — Hoofdstuk 1 (13 paragrafen) en Hoofdstuk 2 (Gedragscode, 7 paragrafen) volledig uitgeschreven
+- **Repo reorganisatie**: `docent-gids/` verplaatst naar `docs/docent-gids/`. Marketing/website content (leerlingen, ouders, over-ons, faq, platform, administratie, technisch, docenten) verplaatst naar `docs/archive-website-content/`. Duplicaten verwijderd (oude gedragscode, scenario-05-koppelingsbevestiging). `docs/make/README.md` vereenvoudigd — verwijst nu naar CLAUDE.md voor scenario statussen (single source of truth).
+- Docent Gids `docs/docent-gids/nl.md` — Hoofdstuk 1 (13 paragrafen) en Hoofdstuk 2 (Gedragscode, 7 paragrafen) volledig uitgeschreven
 - Scenario 1 (Teacher Invitation) uitgebreid: 2 berichten met 180s sleep + nieuw template `teacher_intro_message_parent`
 - Sleutelwoorden gedefinieerd: **Afsluiten**, **Update**, **Pak op**
+- SESSION_LOG.md aangemaakt voor sessie-continuiteit tussen Claude chats
 
 ### Belangrijkste beslissingen deze sessie
 - Hoofdstuk 2 Gedragscode opgesplitst in 7 paragrafen (i.p.v. 2 met "wordt nog uitgewerkt")
