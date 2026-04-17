@@ -56,10 +56,10 @@ Laatst bijgewerkt: 17 april 2026
 - **Bijenkorf boekje analyseren voor aanvullingen Gedragscode (H2)**: doorlopen
   en relevante punten verwerken in de bestaande paragrafen van Hoofdstuk 2.
 
-- **Tally akkoord-formulier bouwen**: een eenvoudig Tally formulier waarop de docent
-  bevestigt de Docent Gids te hebben gelezen via een verplichte checkbox. Na submit
-  vangt Make.com dit op en wordt `Documentation_Agreed__c` (datum) ingevuld in
-  Salesforce.
+- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B) — docent bevestigt
+  Docent Gids gelezen te hebben. MailerLite automation verstuurt de email via groep
+  "Teacher Guide To Be Read" (Scenario 16 trigger). Make.com vult
+  `Documentation_Agreed__c` in Salesforce na submit.
 
 - **Geboortedatum toevoegen aan Tally aanvullend profiel formulier** (tally.so/r/NpY9RW)
   en mappen naar `Date_of_Birth__c` in Salesforce via Make.com.
@@ -78,10 +78,10 @@ Laatst bijgewerkt: 17 april 2026
   meteen wordt verstuurd bij een nieuwe matching i.p.v. afhankelijk te zijn van
   de polling cyclus.
 
-- **Auto On-boarded scenario bouwen**: dagelijks scenario dat docenten in Pending
-  Onboarding checkt of alle drie velden gevuld zijn (Profile_Completed_Date__c,
-  Bsport_Account_Created__c, Documentation_Agreed__c) → LifecycleStage__c automatisch
-  naar On-boarded zetten.
+- **✅ GEDAAN: Scenario 17 — Auto On-boarded gebouwd**: dagelijks scenario dat docenten
+  in Pending Onboarding checkt of alle drie velden gevuld zijn
+  (Profile_Completed_Date__c, Bsport_Account_Created__c, Documentation_Agreed__c) →
+  LifecycleStage__c automatisch naar On-boarded. Schedule: dagelijks 08:00.
 
 - **Scenario 10 fout oplossen**: WhatsApp module 6 geeft een fout door een lege
   tekst parameter. Module 6 inspecteren, de lege variabele identificeren en fixen.
