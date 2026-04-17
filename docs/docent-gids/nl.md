@@ -157,7 +157,7 @@ Begin elke les met een kort moment van verbinding voordat je overgaat op de less
 
 Bij de proefles neem je hier meer tijd voor. Stel jezelf voor aan de leerling en aan de ouder als die aanwezig is, vertel iets over jezelf en vraag de leerling naar zijn of haar interesses en hobby's. Niet elke leerling staat meteen te springen voor bijles, geef het de tijd.
 
-Bij een reguliere les is een korte check — hoe gaat het, hoe was de week — genoeg om de verbinding levend te houden voordat je begint.
+Bij een reguliere les is een korte check, hoe gaat het, hoe was de week, genoeg om de verbinding levend te houden voordat je begint.
 
 ### Veilige leeromgeving
 
@@ -167,7 +167,7 @@ Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten 
 
 ### Verwachtingen en doelen
 
-Vraag aan het begin van de les — zeker bij de proefles — wat de leerling verwacht en hoe hij of zij het liefst geholpen wordt. Wees eerlijk dat dit een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
+Vraag aan het begin van de les, zeker bij de proefles, wat de leerling verwacht en hoe hij of zij het liefst geholpen wordt. Wees eerlijk dat dit een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
 
 Bij een reguliere les gebruik je wat je al weet: sluit aan op waar je de vorige les bent gebleven en wat er in de tussentijd is geoefend.
 
@@ -288,7 +288,7 @@ Heb je vakantie, een tentamenweek of een andere reden waarop je minder beschikba
 
 Een telefoon die zichtbaar op tafel ligt, zelfs als hij niet afgaat, vermindert de concentratie aantoonbaar. Hetzelfde geldt voor een raam met uitzicht op een drukke straat, een televisie op de achtergrond of een rommelige werkomgeving. Onderzoek bevestigt dat afleiding de cognitieve belasting verhoogt, waardoor er minder ruimte overblijft voor het daadwerkelijk verwerken van informatie.
 
-Als docent ben jij degene die hier alert op moet zijn. Grijp echter pas in wanneer je merkt dat de omgeving daadwerkelijk afleidt — breng dit niet proactief ter sprake aan het begin van de eerste of de proefles. Bij een eerste kennismaking ben je primair gericht op verbinding, warmte en het op zijn gemak stellen van de leerling. Onnodige regels stellen kan dan streng overkomen en de toon verkeerd zetten.
+Als docent ben jij degene die hier alert op moet zijn. Grijp echter pas in wanneer je merkt dat de omgeving daadwerkelijk afleidt, breng dit niet proactief ter sprake aan het begin van de eerste of de proefles. Bij een eerste kennismaking ben je primair gericht op verbinding, warmte en het op zijn gemak stellen van de leerling. Onnodige regels stellen kan dan streng overkomen en de toon verkeerd zetten.
 
 Zodra je merkt dat afleiding een rol speelt, kun je dit vriendelijk maar direct benoemen: 'Ik merk dat het fijner werkt als we allebei onze telefoon even wegleggen, dan kunnen we er echt vol voor gaan.' Door het als een gezamenlijke afspraak te framen en niet als een opgelegde regel, is de kans groter dat de leerling dit accepteert.
 
