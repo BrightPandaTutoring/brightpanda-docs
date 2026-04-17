@@ -32,28 +32,53 @@ Bewaar dit document goed en sla het op als naslag voor momenten waarop je ergens
 
 ## 1. Snelle checklist voor elke les
 
-Gebruik deze checklist als korte voorbereiding voor elke les. Hoe het matchingproces werkt en hoe je je beschikbaarheid doorgeeft lees je in paragraaf 3. De volledige uitleg bij elk punt vind je verderop in dit document.
+Gebruik deze checklists als snelle voorbereiding. De proefles en een reguliere les vragen om een andere aanpak. De volledige uitleg bij elk punt vind je verderop in dit document.
 
-### Voor de les
+### Checklist proefles
+
+**Voor de proefles**
+- Heb ik mijn beschikbaarheid doorgegeven via de link in de WhatsApp?
 - Heb ik contact opgenomen met de ouder en gevraagd welke stof behandeld moet worden?
 - Heb ik me ingelezen in de lesstof?
-- Heb ik de Google Meet link verstuurd (minimaal een dag van tevoren) bij online les?
+- Heb ik afgesproken waar de les plaatsvindt bij fysieke les?
+- Heb ik de Google Meet link verstuurd, minimaal een dag van tevoren, bij online les?
 - Heb ik mijn technische setup getest bij online les?
-- Weet ik waar de les plaatsvindt bij fysieke les?
 
-### Tijdens de les
+**Tijdens de proefles**
 - Ben ik op tijd, verzorgd en met een open houding?
-- Heb ik mezelf voorgesteld aan de leerling en eventueel de ouder?
-- Heb ik een veilige leeromgeving gecreeerd?
-- Heb ik een duidelijke lesstructuur (theorie, voorbeeld, oefenen)?
+- Heb ik mezelf voorgesteld aan de leerling en aan de ouder als die aanwezig is?
+- Heb ik een veilige leeromgeving gecreeerd en aangegeven dat doorvragen normaal is?
+- Heb ik gevraagd wat de leerling zelf verwacht van de bijles?
+- Heb ik een duidelijke lesstructuur aangehouden (theorie, voorbeeld, oefenen)?
 - Vraag ik door en let ik op lichaamstaal?
-- Bewaak ik de tijd?
+- Bewaak ik de tijd? De proefles duurt maximaal een uur.
 
-### Na de les
-- Heb ik een kort appje gestuurd naar de leerling en ouder?
+**Na de proefles**
+- Heb ik een kort appje gestuurd naar de leerling en de ouder?
 - Heb ik Bright Panda geinformeerd over hoe de proefles ging?
 - Heb ik mijn beschikbaarheid opengezet op mijn account?
-- Heb ik in twee of drie zinnen genoteerd wat er behandeld is en wat er volgende keer gepland staat?
+- Heb ik een voorstel gedaan voor een vervolgles?
+
+### Checklist reguliere les
+
+**Voor de les**
+- Is de les ingeboekt op mijn account voor aanvang van de les?
+- Weet ik welke stof we vandaag behandelen en heb ik dit voorbereid?
+- Heb ik de Google Meet link verstuurd naar de leerling bij online les? Je hoeft niet elke keer een nieuwe link aan te maken, gebruik dezelfde link voor alle lessen.
+- Heb ik mijn technische setup getest bij online les?
+
+**Tijdens de les**
+- Ben ik op tijd, verzorgd en met een open houding?
+- Begin ik kort met een check: hoe staat de leerling er vandaag voor?
+- Heb ik een duidelijke lesstructuur aangehouden (theorie, voorbeeld, oefenen)?
+- Vraag ik door en let ik op lichaamstaal?
+- Bewaak ik de tijd?
+- Heb ik tijdens de les al een volgende les ingepland samen met de leerling?
+
+**Na de les**
+- Heb ik aan het einde van de les aangegeven wat we volgende keer gaan behandelen?
+- Heb ik mijn beschikbaarheid opengezet op mijn account voor de volgende les?
+- Heb ik in twee of drie zinnen genoteerd wat er behandeld is en wat volgende keer op de planning staat?
 
 ---
 
@@ -139,9 +164,9 @@ Geef je fysiek les en zit de leerling vlak bij een raam of andere afleidingsbron
 
 ---
 
-## 7. Tijdens de les
+## 7. Tijdens de (proef)les
 
-[intro] Dit hoofdstuk is het hart van dit document. Hier vind je alles wat je nodig hebt om een les goed op te bouwen en te begeleiden. Van de eerste indruk tot de afsluiting, van het omgaan met een niet-gemotiveerde leerling tot het bewaken van je tijd.
+[intro] Dit hoofdstuk is het hart van dit document. Hier vind je alles wat je nodig hebt om een les goed op te bouwen en te begeleiden. Waar iets specifiek alleen voor de proefles geldt, is dat aangegeven. De rest is van toepassing op elke les.
 
 ### Eerste indruk
 
@@ -149,15 +174,23 @@ Zorg dat je op tijd bent, bij voorkeur vijf minuten eerder. Een eerste indruk wo
 
 Hoe jij je presenteert op het moment van kennismaken zegt veel. Maak oogcontact als je jezelf voorstelt, dat geeft vertrouwen. Geef je iemand een hand, geef dan een stevige, zelfverzekerde handdruk. Dit klinkt misschien als een klein detail, maar het zijn precies die kleine dingen die een sterke eerste indruk maken.
 
-### Bouw een band op
+### Bouw een band op — alleen proefles
 
-Begin niet direct met de lesstof. Stel jezelf voor aan de leerling en aan de ouder als die aanwezig is, dit is een blijk van respect en professionaliteit. Vertel iets over jezelf en vraag de leerling naar zijn of haar interesses en hobby's. Niet elke leerling staat meteen te springen voor bijles, geef het de tijd. Hoe meer de leerling zich op zijn gemak voelt bij jou, hoe beter de samenwerking zal verlopen.
+Bij de proefles begin je niet direct met de lesstof. Stel jezelf voor aan de leerling en aan de ouder als die aanwezig is, dit is een blijk van respect en professionaliteit. Vertel iets over jezelf en vraag de leerling naar zijn of haar interesses en hobby's. Niet elke leerling staat meteen te springen voor bijles, geef het de tijd. Hoe meer de leerling zich op zijn gemak voelt bij jou, hoe beter de samenwerking zal verlopen.
+
+Bij een reguliere les kun je korter beginnen: een korte check hoe het met de leerling gaat is genoeg voordat je overgaat op de lesstof.
 
 ### Veilige leeromgeving
 
 Geef aan het begin van de les duidelijk aan dat jij er bent om de leerling zo goed mogelijk te helpen en dat het niet erg is als iets niet meteen duidelijk is. Stimuleer de leerling om door te blijven vragen totdat iets echt begrepen is. Door dit expliciet uit te spreken maak je duidelijk dat doorvragen niet dom is, maar juist slim. Een leerling die durft te vragen groeit sneller dan een leerling die stil blijft uit schaamte.
 
-Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten maken de beste manier is om te leren. Maak zelf ook bewust een fout en verbeer die samen met de leerling. Dit verlaagt de drempel om te proberen en creert een omgeving waarin de leerling zich veilig voelt.
+Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten maken de beste manier is om te leren. Maak zelf ook bewust een fout en verbeter die samen met de leerling. Dit verlaagt de drempel om te proberen en creert een omgeving waarin de leerling zich veilig voelt.
+
+### Verwachtingen en doelen — alleen proefles
+
+Vraag aan het begin van de proefles wat de leerling zelf verwacht en hoe hij of zij het liefst geholpen wordt. Leerlingen en ouders verwachten soms dat een docent direct precies weet hoe hij de leerling het beste kan helpen. Wees eerlijk dat dit ook voor jou een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
+
+Bij een reguliere les ken je de leerling al. Gebruik die kennis: sluit aan op waar je de vorige les bent gebleven en wat er in de tussentijd is geoefend.
 
 ### Assertiviteit en structuur
 
@@ -173,8 +206,6 @@ Gebruik de naam van de leerling tijdens de les. Dit klinkt simpel maar heeft een
 
 Geef de leerling waar mogelijk keuzevrijheid. Laat de leerling kiezen welk onderwerp hij of zij als eerste wil behandelen, of welke opgave hij of zij wil maken. Autonomie vergroot de motivatie. Stel bovendien open vragen in plaats van gesloten vragen. 'Wat denk jij dat de volgende stap is?' werkt beter dan 'Is dit de juiste stap?' Een open vraag dwingt de leerling na te denken, een gesloten vraag nodigt uit tot gokken.
 
-Vraag aan het begin van de proefles ook wat de leerling zelf verwacht en hoe hij of zij het liefst geholpen wordt. Leerlingen en ouders verwachten soms dat een docent direct precies weet hoe hij de leerling het beste kan helpen. Wees eerlijk dat dit ook voor jou een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
-
 ### Actief leren en herhaling
 
 Onderzoek toont aan dat leerlingen informatie beter onthouden als ze er actief mee aan de slag gaan. Laat de leerling zelf uitleggen wat hij of zij zojuist heeft geleerd, in eigen woorden. Als een leerling iets kan uitleggen, begrijpt hij het echt. Dit wordt ook wel de Feynman-techniek genoemd: je begrijpt iets pas echt als je het kunt uitleggen aan iemand anders.
@@ -187,7 +218,9 @@ Veel leerlingen die bijles nodig hebben, hebben ook een negatief zelfbeeld als h
 
 ### Tijdsbewaking
 
-De proefles duurt een uur. Bewaak je eigen tijd, je mag een paar minuten uitlopen, maar houd het daarbij. Wil de leerling daarna verder met je? Geweldig, maar zij moeten daarvoor eerst een account aanmaken en een pakket of abonnement aanschaffen via ons systeem.
+Bewaak je eigen tijd. De proefles duurt maximaal een uur. Bij een reguliere les hou je de afgesproken lesduur aan. In beide gevallen mag je een paar minuten uitlopen, maar houd het daarbij.
+
+Wil de leerling na de proefles doorgaan? Geweldig, maar zij moeten daarvoor eerst een account aanmaken en een pakket of abonnement aanschaffen via ons systeem. Plan bij reguliere lessen de volgende les bij voorkeur al in aan het einde van de les, zodat er geen gat valt.
 
 ### Tips bij een les van twee uur
 
@@ -199,7 +232,11 @@ Niet elke leerling is blij met bijles. Sommige leerlingen worden door ouders ver
 
 ### Afsluiting van de les
 
-Vraag aan het einde van de les hoe de leerling het heeft ervaren en hoe hij of zij het vervolg ziet. Geef aan wat er in een volgende les behandeld kan worden. Heb je de ouder even gesproken na de les? Geef een korte terugkoppeling over hoe het ging, dit wordt zeer gewaardeerd, zeker bij jongere leerlingen.
+Vraag aan het einde van de les hoe de leerling het heeft ervaren en hoe hij of zij het vervolg ziet. Geef aan wat er in een volgende les behandeld kan worden.
+
+Bij de proefles: heb je de ouder even gesproken na de les? Geef een korte terugkoppeling over hoe het ging. Dit wordt zeer gewaardeerd, zeker bij jongere leerlingen, en vergroot de kans dat de ouder besluit door te gaan.
+
+Bij een reguliere les: geef aan het einde aan wat er de volgende keer op de planning staat en plan indien mogelijk de volgende les direct in.
 
 ---
 
