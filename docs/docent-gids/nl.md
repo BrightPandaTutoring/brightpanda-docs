@@ -280,11 +280,13 @@ Heb je vakantie, een tentamenweek of een andere reden waarop je minder beschikba
 
 ## 9. De fysieke leeromgeving
 
-[intro] De omgeving waarin een leerling leert heeft een directe invloed op zijn of haar concentratie en leerprestaties. Als docent is het jouw taak om hier actief op te sturen, zowel bij fysieke als bij online lessen. Een rustige, afleidingsvrije omgeving is een van de eenvoudigste maar meest effectieve manieren om de kwaliteit van een les te verbeteren.
+[intro] De omgeving waarin een leerling leert heeft een directe invloed op zijn of haar concentratie en leerprestaties. Als docent is het jouw taak om hier alert op te zijn, zowel bij fysieke als bij online lessen. Een rustige, afleidingsvrije omgeving is een van de eenvoudigste maar meest effectieve manieren om de kwaliteit van een les te verbeteren.
 
 Een telefoon die zichtbaar op tafel ligt, zelfs als hij niet afgaat, vermindert de concentratie aantoonbaar. Hetzelfde geldt voor een raam met uitzicht op een drukke straat, een televisie op de achtergrond of een rommelige werkomgeving. Onderzoek bevestigt dat afleiding de cognitieve belasting verhoogt, waardoor er minder ruimte overblijft voor het daadwerkelijk verwerken van informatie.
 
-Als docent ben jij degene die hier assertief in moet zijn. Maak aan het begin van de eerste les duidelijke afspraken over de leeromgeving. Dit kan vriendelijk maar direct: 'Ik merk dat het fijner werkt als we allebei onze telefoon even wegleggen, dan kunnen we er echt vol voor gaan.' Door het als een gezamenlijke afspraak te framen en niet als een opgelegde regel, is de kans groter dat de leerling dit accepteert.
+Als docent ben jij degene die hier alert op moet zijn. Grijp echter pas in wanneer je merkt dat de omgeving daadwerkelijk afleidt — breng dit niet proactief ter sprake aan het begin van de eerste of de proefles. Bij een eerste kennismaking ben je primair gericht op verbinding, warmte en het op zijn gemak stellen van de leerling. Onnodige regels stellen kan dan streng overkomen en de toon verkeerd zetten.
+
+Zodra je merkt dat afleiding een rol speelt, kun je dit vriendelijk maar direct benoemen: 'Ik merk dat het fijner werkt als we allebei onze telefoon even wegleggen, dan kunnen we er echt vol voor gaan.' Door het als een gezamenlijke afspraak te framen en niet als een opgelegde regel, is de kans groter dat de leerling dit accepteert.
 
 Geef je fysiek les en zit de leerling vlak bij een raam of andere afleidingsbron? Stel voor om van plek te wisselen. Bij online les geldt hetzelfde: vraag de leerling om op een rustige plek te gaan zitten en de telefoon weg te leggen. Doe dit ook zelf. Wees een rolmodel in concentratie.
 
