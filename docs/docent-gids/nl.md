@@ -87,7 +87,9 @@ Gebruik deze checklists als snelle voorbereiding. De proefles en een reguliere l
 
 [intro] Voordat je voor de eerste keer voor een leerling staat, doorloop je het matchingproces. In dit hoofdstuk leggen we uit hoe dat werkt, wat wij van jou verwachten en waarom snelheid en flexibiliteit daarin zo belangrijk zijn.
 
-Wij zijn afhankelijk van de aanvragen die binnenkomen van ouders en leerlingen. Het kan soms even duren voordat we een geschikte match voor je vinden. Hoe flexibeler jij bent in je beschikbaarheid, hoe makkelijker het voor ons wordt om dat te doen. Geduld en flexibiliteit zijn daarin een groot voordeel.
+Wij zijn afhankelijk van de aanvragen die binnenkomen van ouders en leerlingen. Het kan soms even duren voordat we een geschikte match voor je vinden. Hoe flexibeler jij bent in je beschikbaarheid, hoe makkelijker het voor ons wordt om dat te doen.
+
+Wij proberen elke leerling binnen twee dagen aan een docent te koppelen. Dat betekent ook dat er bij je aanmelding geen leerlingen op jou staan te wachten. Het kan daarom even duren voordat we jou aan het aantal leerlingen kunnen koppelen dat je zoekt. We vragen om je geduld en doen ons best.
 
 Zodra wij een potentiele match zien, benaderen we een aantal docenten tegelijkertijd om te vragen of zij de leerling zouden kunnen begeleiden. We werken hierbij op basis van first come, first served: de docent die het eerst reageert, krijgt de match. Het is dus belangrijk dat jij snel reageert op onze berichten. Ouders vragen namelijk ook bij andere bureaus aan, en de snelheid waarmee wij en onze docenten handelen is een van de belangrijkste redenen waarom wij klanten binnenhalen en behouden.
 
@@ -149,11 +151,13 @@ Zorg dat je op tijd bent, bij voorkeur vijf minuten eerder. Een eerste indruk wo
 
 Hoe jij je presenteert op het moment van kennismaken zegt veel. Maak oogcontact als je jezelf voorstelt, dat geeft vertrouwen. Geef je iemand een hand, geef dan een stevige, zelfverzekerde handdruk. Dit klinkt misschien als een klein detail, maar het zijn precies die kleine dingen die een sterke eerste indruk maken.
 
-### Bouw een band op — alleen proefles
+### Bouw een band op
 
-Bij de proefles begin je niet direct met de lesstof. Stel jezelf voor aan de leerling en aan de ouder als die aanwezig is, dit is een blijk van respect en professionaliteit. Vertel iets over jezelf en vraag de leerling naar zijn of haar interesses en hobby's. Niet elke leerling staat meteen te springen voor bijles, geef het de tijd. Hoe meer de leerling zich op zijn gemak voelt bij jou, hoe beter de samenwerking zal verlopen.
+Begin elke les met een kort moment van verbinding voordat je overgaat op de lesstof. Hoe meer de leerling zich op zijn gemak voelt bij jou, hoe beter de samenwerking verloopt.
 
-Bij een reguliere les kun je korter beginnen: een korte check hoe het met de leerling gaat is genoeg voordat je overgaat op de lesstof.
+Bij de proefles neem je hier meer tijd voor. Stel jezelf voor aan de leerling en aan de ouder als die aanwezig is, vertel iets over jezelf en vraag de leerling naar zijn of haar interesses en hobby's. Niet elke leerling staat meteen te springen voor bijles, geef het de tijd.
+
+Bij een reguliere les is een korte check — hoe gaat het, hoe was de week — genoeg om de verbinding levend te houden voordat je begint.
 
 ### Veilige leeromgeving
 
@@ -161,11 +165,11 @@ Geef aan het begin van de les duidelijk aan dat jij er bent om de leerling zo go
 
 Normaliseer ook fouten maken. Zeg expliciet aan het begin van de les dat fouten maken de beste manier is om te leren. Maak zelf ook bewust een fout en verbeter die samen met de leerling. Dit verlaagt de drempel om te proberen en creert een omgeving waarin de leerling zich veilig voelt.
 
-### Verwachtingen en doelen — alleen proefles
+### Verwachtingen en doelen
 
-Vraag aan het begin van de proefles wat de leerling zelf verwacht en hoe hij of zij het liefst geholpen wordt. Leerlingen en ouders verwachten soms dat een docent direct precies weet hoe hij de leerling het beste kan helpen. Wees eerlijk dat dit ook voor jou een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
+Vraag aan het begin van de les — zeker bij de proefles — wat de leerling verwacht en hoe hij of zij het liefst geholpen wordt. Wees eerlijk dat dit een leerproces is en dat je de leerling steeds beter zult begrijpen naarmate je meer lessen geeft.
 
-Bij een reguliere les ken je de leerling al. Gebruik die kennis: sluit aan op waar je de vorige les bent gebleven en wat er in de tussentijd is geoefend.
+Bij een reguliere les gebruik je wat je al weet: sluit aan op waar je de vorige les bent gebleven en wat er in de tussentijd is geoefend.
 
 ### Assertiviteit en structuur
 
@@ -280,7 +284,7 @@ Heb je vakantie, een tentamenweek of een andere reden waarop je minder beschikba
 
 ## 9. De fysieke leeromgeving
 
-[intro] De omgeving waarin een leerling leert heeft een directe invloed op zijn of haar concentratie en leerprestaties. Als docent is het jouw taak om hier alert op te zijn, zowel bij fysieke als bij online lessen. Een rustige, afleidingsvrije omgeving is een van de eenvoudigste maar meest effectieve manieren om de kwaliteit van een les te verbeteren.
+[intro] De omgeving waarin een leerling leert heeft een directe invloed op zijn of haar concentratie en leerprestaties. Als docent is het jouw taak om hier actief op te sturen, zowel bij fysieke als bij online lessen. Een rustige, afleidingsvrije omgeving is een van de eenvoudigste maar meest effectieve manieren om de kwaliteit van een les te verbeteren.
 
 Een telefoon die zichtbaar op tafel ligt, zelfs als hij niet afgaat, vermindert de concentratie aantoonbaar. Hetzelfde geldt voor een raam met uitzicht op een drukke straat, een televisie op de achtergrond of een rommelige werkomgeving. Onderzoek bevestigt dat afleiding de cognitieve belasting verhoogt, waardoor er minder ruimte overblijft voor het daadwerkelijk verwerken van informatie.
 
@@ -380,7 +384,7 @@ Maak er een gezamenlijke afspraak van: 'Zullen we allebei onze telefoon even omg
 
 ### De leerling begrijpt de stof echt niet, hoe je het ook uitlegt
 
-Stop met dezelfde uitleg herhalen op dezelfde manier. Probeer een totaal andere insteek: gebruik een tekening, een analogie uit het dagelijks leven, een ander voorbeeld of een andere werkvorm. Soms helpt het om de leerling te vragen wat hij of zij wel al begrijpt, en van daar verder te bouwen. Lukt het ook dan niet, noteer het dan en neem contact op met ons.
+Stop met dezelfde uitleg herhalen op dezelfde manier. Probeer een totaal andere insteek: gebruik een tekening, een analogie uit het dagelijks leven, een ander voorbeeld of een andere werkvorm. Soms helpt het om de leerling te vragen wat hij of zij wel al begrijpt, en van daar verder te bouwen.
 
 ### Een ouder geeft commentaar tijdens de les
 
@@ -409,8 +413,104 @@ Reageer vriendelijk maar duidelijk: 'Ik begrijp dat u kosten wilt besparen, maar
 
 Wanneer een leerling of ouder een les afzegt korter dan 24 uur voor aanvang, wordt deze les in rekening gebracht. Jij hebt je agenda vrijgehouden en je tijd gereserveerd voor deze les, dat verdient respect van de kant van de leerling en ouder.
 
-Wij begrijpen dat er soms onvoorziene omstandigheden zijn. In dat geval toon je als docent enige flexibiliteit en zie je het de eerste keer door de vingers. Geef dit vriendelijk maar duidelijk aan bij de ouder: 'Voor deze keer maak ik een uitzondering, maar ik wil jullie vragen er de volgende keer rekening mee te houden dat lessen die korter dan 24 uur van tevoren worden afgezegd in rekening worden gebracht.' Herhaal dit bij een volgende keer niet. Geef het ook bij ons aan zodat wij indien nodig het gesprek met de ouder kunnen voeren.
+Wij begrijpen dat er soms onvoorziene omstandigheden zijn. In dat geval vragen wij je als docent om je flexibel op te stellen en de situatie te beoordelen op basis van wat er werkelijk speelt.
 
 ### Annulering door de docent
 
-Natuurlijk geldt hetzelfde voor jou als docent. Probeer lessen altijd zo vroeg mogelijk af te zeggen als je verhinderd bent. Houd de 24-uursgrens ook voor jezelf aan en communiceer tijdig. Zie ook paragraaf 8 over vakantie, tentamens en ziekte.
+Natuurlijk geldt hetzelfde voor jou als docent. Probeer lessen altijd zo vroeg mogelijk af te zeggen als je verhinderd bent. Houd de 24-uursgrens ook voor jezelf aan en communiceer tijdig. Zie ook paragraaf 10 over vakantie, tentamens en ziekte.
+
+---
+
+# HOOFDSTUK 2 — Gedragscode
+
+Als docent bij Bright Panda vertegenwoordig jij ons bedrijf. Hoe jij je gedraagt tegenover leerlingen, ouders en ons als organisatie heeft directe invloed op onze reputatie en jouw eigen positie. Dit hoofdstuk geeft je duidelijkheid over wat we van je verwachten en hoe je omgaat met situaties die je kunt tegenkomen.
+
+---
+
+## 1. Professionaliteit en gedrag
+
+Bij Bright Panda verwelkomen we iedereen, ongeacht afkomst, geloof, seksuele geaardheid, genderidentiteit of beperking. Diversiteit maakt ons team sterker. We vragen jou hetzelfde: behandel elke leerling en ouder met respect, zonder onderscheid.
+
+Bijles is een professionele context. De les draait om de leerling en zijn of haar leerdoelen. Het is geen plek om jouw eigen overtuigingen, politieke meningen of levensbeschouwing te promoten. Blijf bij het vak en respecteer de ruimte van de leerling.
+
+### Communicatie met ouders
+
+Jouw telefoonnummer wordt gedeeld met de ouder puur en alleen voor het plannen van lessen en communicatie over de voortgang. Houd alle communicatie professioneel en zakelijk. Stuur geen berichten naar leerlingen buiten de context van de lessen om.
+
+### Lessen buiten Bright Panda zijn strikt verboden
+
+Zowel jij als docent als de ouder gaan bij aanvang een overeenkomst aan met Bright Panda. Het is ten strengste verboden om lessen buiten ons platform om te plannen of te geven aan leerlingen die via Bright Panda aan jou zijn gekoppeld. Dit geldt ook als een ouder jou hier zelf om vraagt.
+
+Bright Panda investeert veel in het vinden van leerlingen, het matchen van docenten en het waarborgen van kwaliteit. Van die service gebruik maken en lessen vervolgens buiten ons platform om inboeken, betekent dat je profiteert van onze investering zonder daar iets voor terug te geven. Dat beschouwen wij als diefstal.
+
+Wordt dit geconstateerd, dan wordt het contract per direct ontbonden. Daarnaast behouden wij ons het recht voor om aanvullende sancties op te leggen, waaronder het vorderen van een schadevergoeding.
+
+---
+
+## 2. Privacy en vertrouwelijkheid
+
+Als docent kom je soms informatie te weten over een leerling of gezin: thuissituatie, schoolprestaties, persoonlijke problemen. Dit is vertrouwelijke informatie.
+
+Deel nooit informatie over een leerling of ouder met derden. Bespreek leerlingen niet bij naam op social media of in andere openbare contexten.
+
+---
+
+## 3. Social media en online gedrag
+
+Zoek geen contact met leerlingen via privé social media. Communiceer via de kanalen die Bright Panda daarvoor heeft ingericht, zoals WhatsApp, telefoon of online lessen via Google Meet. Maak geen foto's of video's van leerlingen zonder uitdrukkelijke toestemming van de ouder. De docent maakt zelf geen content van lessen of leerlingen zonder uitdrukkelijke toestemming van Bright Panda, de ouder én de leerling.
+
+---
+
+## 4. Situaties waar je je niet prettig bij voelt
+
+Het kan voorkomen dat je tijdens een les iets ervaart wat je een ongemakkelijk gevoel geeft. Dat kan van alles zijn: een ongepaste opmerking, een leerling die zich vreemd gedraagt, of een ouder die je in een ongemakkelijke positie plaatst.
+
+Blijf kalm en professioneel. Reageer niet impulsief. Geef duidelijk en vriendelijk aan dat je je niet prettig voelt bij de situatie als dat passend is. Beëindig de les op een nette manier als de situatie dat vereist. Neem daarna zo snel mogelijk contact met ons op via WhatsApp of telefoon. Je hoeft dit nooit alleen op te lossen.
+
+---
+
+## 5. Confrontaties met leerlingen of ouders
+
+In uitzonderlijke gevallen kan er een conflict of confrontatie ontstaan. Blijf altijd rustig en verhef je stem niet. Luister naar wat de ander zegt zonder te onderbreken. Verdedig jezelf niet direct, erken eerst de gevoelens van de ander en geef aan dat je het wilt oplossen. Neem daarna contact met ons op zodat wij kunnen helpen bemiddelen. We verwachten niet dat jij dit soort situaties zelf oplost.
+
+---
+
+## 6. Communicatie met Bright Panda
+
+We willen graag weten hoe het gaat. Heb je een vraag, twijfel je over een situatie, of loop je ergens tegenaan? Stuur ons een bericht via +31613689666. We reageren snel en denken graag met je mee.
+
+We vragen ook om na elke proefles kort te laten weten hoe het ging, wijzigingen in je beschikbaarheid tijdig door te geven, en eventuele zorgen over een leerling altijd met ons te delen.
+
+---
+
+## 7. Fysiek contact
+
+Fysiek contact tussen docent en leerling is te allen tijde niet toegestaan, met uitzondering van een handdruk bij de begroeting. Houd altijd een professionele afstand en zorg dat de leerling zich veilig en comfortabel voelt.
+
+Wordt er ongewenst fysiek contact gemeld of ervaar je een situatie die hier raakvlakken mee heeft? Neem dan direct contact met ons op.
+
+---
+
+## 8. Uiterlijke verzorging en presentatie
+
+Als docent bij Bright Panda kom je bij leerlingen thuis of geef je online les. Hoe je eruitziet heeft direct invloed op hoe een ouder en leerling jou ervaren, zeker bij de eerste ontmoeting. Wij vragen geen dresscode, maar wel dat je er verzorgd en representatief uitziet.
+
+Dat betekent in de praktijk, maar is niet gelimiteerd tot: schone kleding die past bij een professionele context. Geen diep decolleté, geen blote buik, geen zichtbaar ondergoed en geen aanstootgevende prints. Online geldt dit net zo goed, ouders en leerlingen zien jou via de camera.
+
+Religieuze kleding of hoofdbedekkingen, tatoeages en piercings zijn volledig welkom, zolang de algehele uitstraling verzorgd is.
+
+### Persoonlijke hygiëne
+
+Bijles geven betekent dat je dicht bij iemand zit. Zorg er daarom voor dat je fris bent en dat je kleding niet naar zweet ruikt. Let ook op je adem: koffie, knoflook en sigaretten kunnen voor een onaangename geur zorgen. Poets je tanden voor de les of gebruik een mondverfrisser. Verzorgde nagels horen daar ook bij.
+
+Dit klinkt vanzelfsprekend, maar het heeft een directe invloed op hoe prettig een les voor de leerling is.
+
+---
+
+## 9. Gebruik van hulpmiddelen en AI
+
+Wij moedigen het gebruik van slimme hulpmiddelen op een verantwoorde manier aan. Via jouw Bright Panda Google Workspace for Education account heb je toegang tot een privacybeveiligde Google-omgeving. Daarbinnen kun je gebruik maken van Gemini (Google's AI-assistent), NotebookLM en andere Google-diensten. Alles wat je daar invoert valt onder de privacyafspraken van Google Workspace for Education, je data wordt niet gebruikt voor het trainen van AI-modellen.
+
+Praktisch gebruik: Gemini kan je helpen bij het voorbereiden van uitleg, het bedenken van voorbeelden of het vinden van een andere aanpak voor een leerling die iets niet begrijpt. NotebookLM kun je gebruiken om lesmateriaal of samenvattingen te analyseren. Gebruik deze tools als voorbereiding, niet als vervanging van jouw eigen inzicht.
+
+Wat je niet doet: huiswerk of toetsen voor een leerling laten maken via AI, of AI-gegenereerde uitleg klakkeloos voorlezen zonder het zelf te begrijpen. De leerling betaalt voor jouw begeleiding, niet voor een chatbot.
