@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 16 april 2026
+Laatst bijgewerkt: 17 april 2026
 
 ---
 
@@ -28,6 +28,13 @@ Laatst bijgewerkt: 16 april 2026
   Stages: New, Enrollment, Matching Teacher, Trial Class, Client, Stopped - Never
   Converted, Stopped - Existing Client, Wrong Match, Churned.
 
+- **Sanctie toevoegen aan freelance contract (DocuSeal)**: de Docent Gids stelt dat
+  bij het organiseren van lessen buiten Bright Panda om het contract per direct wordt
+  ontbonden en dat aanvullende sancties opgelegd kunnen worden, waaronder het vorderen
+  van een schadevergoeding. Dit moet juridisch verankerd worden in het freelance
+  contract dat docenten ondertekenen via DocuSeal. Laten beoordelen door een jurist
+  en vervolgens verwerken in de contracttekst.
+
 ---
 
 ## 🧪 Testen
@@ -46,32 +53,13 @@ Laatst bijgewerkt: 16 april 2026
 
 ## 📄 Docent Gids & Onboarding
 
-- **Docent Gids afmaken** — de volgende hoofdstukken moeten nog geschreven worden
-  en toegevoegd aan de bestaande PDF:
-  - **Hoofdstuk 3 (Bsport) aanvullen**: uitleg toevoegen over hoe een ouder correct
-    een les boekt in Bsport. Stappen, screenshots en wat er gebeurt als de boeking
-    niet juist gaat.
-  - **Bsport uitleg**: hoe werkt het platform, wat moet de docent doen om in te loggen
-    en lessen te registreren. Raouf levert de inhoud aan.
-
 - **Bijenkorf boekje analyseren voor aanvullingen Gedragscode (H2)**: doorlopen
   en relevante punten verwerken in de bestaande paragrafen van Hoofdstuk 2.
-
-- **PDF opnieuw genereren** zodra `docent-gids/nl.md` compleet is (na H3 Bsport
-  uitbreiding en Bijenkorf boekje verwerking).
 
 - **Tally akkoord-formulier bouwen**: een eenvoudig Tally formulier waarop de docent
   bevestigt de Docent Gids te hebben gelezen via een verplichte checkbox. Na submit
   vangt Make.com dit op en wordt `Documentation_Agreed__c` (datum) ingevuld in
   Salesforce.
-
-- **Nieuw Salesforce veld aanmaken: `Documentation_Agreed__c`** (type: Date) —
-  wordt gevuld via het Tally akkoord-formulier hierboven.
-
-- **Nieuw Salesforce veld aanmaken: `Bsport_Account_Created__c`** (type: Checkbox) —
-  zodra Raouf/Yasin dit aanvinkt op het docent record, triggert Make.com automatisch
-  een email met de Docent Gids (PDF) en Bsport uitleg. Dit vervangt de handmatige
-  WhatsApp die nu verstuurd wordt. Er komt GEEN extra lifecycle stage voor dit moment.
 
 - **Geboortedatum toevoegen aan Tally aanvullend profiel formulier** (tally.so/r/NpY9RW)
   en mappen naar `Date_of_Birth__c` in Salesforce via Make.com.
