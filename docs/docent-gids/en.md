@@ -67,7 +67,7 @@ Use these checklists as a quick reference before each lesson. A trial lesson and
 **Before the lesson**
 - Is the lesson booked on my account before the lesson starts?
 - Do I know which subject matter we will cover today and have I prepared for it?
-- Have I sent the Google Meet link to the student? You do not need to generate a new link each time — use the same link for all lessons.
+- Have I sent the Google Meet link to the student? You do not need to generate a new link each time. Use the same link for all lessons.
 - Have I tested my technical setup (for online lessons)?
 
 **During the lesson**
@@ -91,7 +91,7 @@ Use these checklists as a quick reference before each lesson. A trial lesson and
 
 We depend on the requests that come in from parents and students. It may sometimes take a while before we find a suitable match for you. The more flexible you are with your availability, the easier it is for us to find the right match.
 
-We aim to match every student with a tutor within two days. That also means there are no students waiting for you when you first join us — it may take some time before we can link you to the number of students you are looking for. We appreciate your patience and will do our best.
+We aim to match every student with a tutor within two days. That also means there are no students waiting for you when you first join us. It may take some time before we can link you to the number of students you are looking for. We appreciate your patience and will do our best.
 
 Once we identify a potential match, we reach out to several tutors at the same time to ask whether they would be able to teach that student. We work on a first come, first served basis: the tutor who responds first gets the match. It is therefore important that you respond to our messages quickly. Parents often enquire at multiple agencies at once, and the speed with which we and our tutors act is one of the main reasons we attract and retain clients.
 
@@ -125,7 +125,7 @@ Not responding? You will receive a reminder every 4 hours until the time slot is
 
 ### Step 4 — You receive a confirmation
 
-Once the time slot is confirmed, you receive a confirmation via WhatsApp with the date and time. The trial lesson is booked by Bright Panda in our booking system — you do not need to do this yourself.
+Once the time slot is confirmed, you receive a confirmation via WhatsApp with the date and time. The trial lesson is booked by Bright Panda in our booking system. You do not need to do this yourself.
 
 [warning] The trial lesson lasts a maximum of 1 hour. If parents indicate they want to book more lessons in advance, these must first be paid for and scheduled via Bright Panda. Lessons not scheduled through us cannot be paid out.
 
@@ -137,7 +137,7 @@ Once the time slot is confirmed, you receive a confirmation via WhatsApp with th
 
 Contact the parent as soon as possible. Introduce yourself, ask which topics need to be covered and where the student is struggling. The more information you have in advance, the better you can prepare and the greater the chance the trial lesson is seen as a success. The parent can send materials via WhatsApp.
 
-Read up on the subject matter. A common mistake — and a reason why parents drop out after a trial lesson — is when a tutor does not appear fully confident in the subject. This is easy to prevent by reading up in advance.
+Read up on the subject matter. A common mistake, and a reason why parents drop out after a trial lesson, is when a tutor does not appear fully confident in the subject. This is easy to prevent by reading up in advance.
 
 Teaching in person? Make sure to agree on where the lesson will take place.
 
@@ -209,7 +209,7 @@ A two-hour lesson requires a different approach. After about 45 minutes, concent
 
 ### Handling an unmotivated student
 
-Not every student is enthusiastic about tutoring. Some are there because their parents require it, others simply do not see the point. Do not get into a power struggle. Connect with the student's interests, make the material relevant to their world and set small, achievable goals. Celebrate small wins — they all count. If a student consistently refuses to engage, contact us so we can work towards a solution together.
+Not every student is enthusiastic about tutoring. Some are there because their parents require it, others simply do not see the point. Do not get into a power struggle. Connect with the student's interests, make the material relevant to their world and set small, achievable goals. Celebrate small wins, they all count. If a student consistently refuses to engage, contact us so we can work towards a solution together.
 
 ### Closing the lesson
 
@@ -473,7 +473,7 @@ Stay calm and professional. Do not react impulsively. If appropriate, calmly and
 
 ## 5. Confrontations with students or parents
 
-In exceptional cases a conflict or confrontation may arise. Always stay calm and do not raise your voice. Listen to what the other person is saying without interrupting. Do not defend yourself immediately — first acknowledge the other person's feelings and indicate that you want to resolve the situation. Then contact us so we can help mediate. We do not expect you to resolve these situations yourself.
+In exceptional cases a conflict or confrontation may arise. Always stay calm and do not raise your voice. Listen to what the other person is saying without interrupting. Do not defend yourself immediately, first acknowledge the other person's feelings and indicate that you want to resolve the situation. Then contact us so we can help mediate. We do not expect you to resolve these situations yourself.
 
 ---
 
@@ -511,7 +511,7 @@ This may seem obvious, but it has a direct impact on how comfortable a lesson is
 
 ## 9. Use of tools and AI
 
-We encourage the use of smart tools in a responsible way. Via your Bright Panda Google Workspace for Education account you have access to a privacy-secured Google environment. Within this environment you can use Gemini (Google's AI assistant), NotebookLM and other Google services. Everything you enter there falls under the privacy agreements of Google Workspace for Education — your data is not used to train AI models.
+We encourage the use of smart tools in a responsible way. Via your Bright Panda Google Workspace for Education account you have access to a privacy-secured Google environment. Within this environment you can use Gemini (Google's AI assistant), NotebookLM and other Google services. Everything you enter there falls under the privacy agreements of Google Workspace for Education. Your data is not used to train AI models.
 
 Practical use: Gemini can help you prepare explanations, come up with examples or find a different approach for a student who is not grasping something. NotebookLM can be used to analyse teaching materials or summaries. Use these tools as preparation, not as a replacement for your own insight.
 
