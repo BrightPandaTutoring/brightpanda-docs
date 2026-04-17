@@ -159,7 +159,7 @@ Start every lesson with a brief moment of connection before moving on to the sub
 
 At the trial lesson, take more time for this. Introduce yourself to the student and to the parent if they are present, tell them a little about yourself, and ask the student about their interests and hobbies. Not every student is immediately enthusiastic about tutoring, so give it time.
 
-For a regular lesson, a short check-in — how are you, how was your week — is enough to keep the connection alive before you begin.
+For a regular lesson, a short check-in, how are you, how was your week, is enough to keep the connection alive before you begin.
 
 ### Safe learning environment
 
@@ -169,7 +169,7 @@ Also normalise making mistakes. Say explicitly at the start of the lesson that m
 
 ### Expectations and goals
 
-At the start of the lesson — especially the trial lesson — ask what the student expects and how they think they learn best. Be honest that this is a learning process and that you will understand the student better with each lesson.
+At the start of the lesson, especially the trial lesson, ask what the student expects and how they think they learn best. Be honest that this is a learning process and that you will understand the student better with each lesson.
 
 For a regular lesson, use what you already know: pick up where you left off and ask what the student has practised in the meantime.
 
@@ -290,7 +290,9 @@ Have you got a holiday, an exam period or another reason why you are less availa
 
 A phone left visible on the table, even if it is not making any noise, measurably reduces concentration. The same applies to a window overlooking a busy street, a TV in the background, or a cluttered workspace. Research confirms that distractions increase cognitive load, leaving less mental capacity for actually processing new information.
 
-As a tutor, you are the one who needs to be assertive about this. At the start of the first lesson, set clear agreements about the learning environment. You can do this in a friendly but direct way: 'I find it works better if we both put our phones away for now, so we can really focus.' By framing it as a shared agreement rather than an imposed rule, the student is more likely to go along with it.
+As a tutor, you are the one who needs to be alert to this. However, only step in when you actually notice the environment is causing distraction, do not bring it up proactively at the start of the first or trial lesson. At a first meeting your focus is on connection, warmth and making the student feel at ease. Setting unnecessary rules can come across as strict and set the wrong tone.
+
+Once you notice distraction is a factor, you can address it in a friendly but direct way: 'I find it works better if we both put our phones away for now, so we can really focus.' By framing it as a shared agreement rather than an imposed rule, the student is more likely to go along with it.
 
 Teaching in person and the student is sitting near a window or another source of distraction? Suggest changing seats. For online lessons the same applies: ask the student to sit in a quiet spot and put their phone away. Do the same yourself. Lead by example.
 
@@ -384,7 +386,7 @@ Turn it into a shared agreement: 'Shall we both turn our phones face down for th
 
 ### The student genuinely does not understand the material no matter how you explain it
 
-Stop repeating the same explanation in the same way. Try a completely different approach: use a drawing, an analogy from everyday life, a different example or a different working method. Sometimes it helps to ask the student what they do already understand, and build from there. If it still does not work, make a note and contact us.
+Stop repeating the same explanation in the same way. Try a completely different approach: use a drawing, an analogy from everyday life, a different example or a different working method. Sometimes it helps to ask the student what they do already understand, and build from there.
 
 ### A parent gives comments during the lesson
 
@@ -413,7 +415,7 @@ Respond in a friendly but clear manner: 'I understand you would like to reduce c
 
 When a student or parent cancels a lesson less than 24 hours before it is due to start, that lesson will be charged. You as a tutor have kept your schedule free and reserved your time for that lesson. That deserves respect.
 
-We understand that unforeseen circumstances do arise. In that case we ask you as a tutor to show some flexibility and let it go the first time. Communicate this in a friendly but clear way to the parent: 'I will make an exception this time, but I would ask you to keep in mind for the future that lessons cancelled less than 24 hours in advance will be charged.' Do not let it go a second time. Also let us know so that we can step in with the parent if needed.
+We understand that unforeseen circumstances do arise. In that case we ask you as a tutor to show flexibility and assess the situation based on what is really going on.
 
 ### Cancellation by the tutor
 
@@ -495,7 +497,7 @@ If unwanted physical contact is reported or you experience a situation related t
 
 As a tutor at Bright Panda you come to students' homes or teach online. How you look has a direct impact on how a parent and student perceive you, especially at the first meeting. We do not require a dress code, but we do ask that you look neat and presentable.
 
-In practice this means, but is not limited to: clean clothing that suits a professional context. No deep necklines, no exposed midriff, no visible underwear and no offensive prints. The same applies online — parents and students see you on camera.
+In practice this means, but is not limited to: clean clothing that suits a professional context. No deep necklines, no exposed midriff, no visible underwear and no offensive prints. The same applies online, parents and students see you on camera.
 
 Religious clothing or head coverings, tattoos and piercings are fully welcome, as long as the overall appearance is neat and presentable.
 
