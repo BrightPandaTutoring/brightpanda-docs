@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 17 april 2026
+Laatst bijgewerkt: 18 april 2026
 
 ---
 
@@ -53,13 +53,18 @@ Laatst bijgewerkt: 17 april 2026
 
 ## 📄 Docent Gids & Onboarding
 
-- **Bijenkorf boekje analyseren voor aanvullingen Gedragscode (H2)**: doorlopen
-  en relevante punten verwerken in de bestaande paragrafen van Hoofdstuk 2.
+- **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**.
+  Build script: docs/docent-gids/build_final.py. Klikbare TOC, doorlopende
+  paginanummering, geen witte bladzijden, logo + hoofdstukpagina's. Alle
+  tekstwijzigingen H1+H2 doorgevoerd in NL en EN. Streepjes vervangen door
+  komma's/punten in beide versies. H3 content volledig aanwezig in EN versie.
 
-- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B) — docent bevestigt
-  Docent Gids gelezen te hebben. MailerLite automation verstuurt de email via groep
-  "Teacher Guide To Be Read" (Scenario 16 trigger). Make.com vult
-  `Documentation_Agreed__c` in Salesforce na submit.
+- **✅ GEDAAN: Bijenkorf boekje verwerkt in H2 Gedragscode** — relevante punten
+  opgenomen in de bestaande paragrafen van Hoofdstuk 2.
+
+- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B) — docent
+  bevestigt Docent Gids gelezen te hebben. Make.com vult `Documentation_Agreed__c`
+  in Salesforce na submit.
 
 - **Geboortedatum toevoegen aan Tally aanvullend profiel formulier** (tally.so/r/NpY9RW)
   en mappen naar `Date_of_Birth__c` in Salesforce via Make.com.
