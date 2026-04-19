@@ -61,9 +61,6 @@ Laatst bijgewerkt: 19 april 2026
   (Profile_Completed_Date__c, Bsport_Account_Created__c, Documentation_Agreed__c) →
   LifecycleStage__c automatisch naar On-boarded. Schedule: dagelijks 08:00.
 
-- **Scenario 10 fout oplossen**: WhatsApp module 6 geeft een fout door een lege
-  tekst parameter. Module 6 inspecteren, de lege variabele identificeren en fixen.
-
 - **Bulk import scenario bouwen (eenmalig)**: een Make.com scenario dat alle
   bestaande On-boarded docenten met een emailadres importeert in de MailerLite groep
   "On-boarded". Gebruik Salesforce Search Records + MailerLite Create/Update Subscriber.
