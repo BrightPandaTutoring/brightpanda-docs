@@ -51,6 +51,15 @@ Laatst bijgewerkt: 19 april 2026
 
 ## ⚙️ Make.com / Automations
 
+- **Scenario 20 bouwen — Tally "Aanvullende Profielinfo" → Salesforce automatisering**:
+  Vervang de handmatige dagstart-verwerking van deze Tally submissions door een Make.com
+  scenario. Huidige situatie faalt: op 18 april 2026 heeft de dagstart een submission
+  van yasinangudi@gmail.com maar half verwerkt (IBAN, HBO_WO__c, Teaching_Level_Details__c,
+  en Comments_FromWebForm__c ontbraken). Bouw een scenario dat alle velden uit de
+  veldmapping tabel in CLAUDE.md correct invult. Trigger: Tally webhook voor
+  formulier `tally.so/r/NpY9RW`. Zet `Profile_Completed_Date__c` pas als alle verplichte
+  velden zijn gevuld (zie CLAUDE.md dagstart sectie voor de mapping).
+
 - **Scenario 1 polling vervangen door Salesforce webhook**: het huidige polling
   interval vervangen door een directe Salesforce webhook trigger zodat de invitation
   meteen wordt verstuurd bij een nieuwe matching i.p.v. afhankelijk te zijn van

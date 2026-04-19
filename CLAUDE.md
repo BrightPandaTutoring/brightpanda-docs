@@ -51,7 +51,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
@@ -150,8 +150,35 @@ Actie: Raouf en Yasin evalueren → nieuw contract via DocuSeal
 Lees TODO.md en toon alle openstaande taken per categorie.
 
 ### 📬 5. Gmail — Tally submissions
-Zoek: from:notifications@tally.so subject:"New Tally Form Submission for Docent"
-Parse → update Salesforce → Profile_Completed_Date__c = vandaag → rapporteer
+Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent — Aanvullende Profielinfo"`
+
+**Verplichte Tally → Salesforce veldmapping (Aanvullende Profielinfo formulier):**
+
+| Tally vraag | SF veld | Type | Opmerking |
+|---|---|---|---|
+| email | PersonEmail (lookup) | — | Om docent record te vinden |
+| Studeer je momenteel / afgestudeerd? | — | — | Niet gemapped, alleen context |
+| Wat studeer je? | `Study__c` | string | Vrije tekst |
+| Bij welke instelling? | `University__c` | string | Vrije tekst, eventueel normaliseren ("Haagse" → "Haagse Hogeschool") |
+| Wat is je opleidingsniveau? | `HBO_WO__c` | picklist | Exacte waarden: "HBO (Bacherlor)" / "WO Bachelor" / "WO Master" |
+| — (als studie in picklist past) | `HBO_Bachelor__c` / `WO_Bachelor__c` / `WO_Master__c` | picklist | Alleen vullen als de studienaam in de betreffende picklist staat. Anders leeg laten. |
+| — (als instelling in picklist past) | `University_HBO__c` / `University_WO__c` | picklist | Alleen vullen als matchend. |
+| Volg je een tweede studie? | `Follow2ndStudy__c` | boolean | Ja=true, Nee=false |
+| Tweede studie (alleen bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
+| Woon je in andere stad? | — | — | Niet gemapped |
+| Wat is je IBAN? | `IBAN__c` | string | **VERPLICHT — nooit overslaan** |
+| Naam op bankpas? | `NameOnBankCard__c` | string | |
+| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | "Online" / "Fysiek" / "Beide" |
+| In welke taal geef je bijles? | — | — | Geen veld. Optioneel in Comments opslaan als belangrijk. |
+| Welke vakken? | `Subjects__c` | multi-picklist | Komma-gescheiden |
+| Niveau/leerjaar per vak | `Teaching_Level_Details__c` | textarea | **VERPLICHT — nooit overslaan** |
+| Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
+| Basisschoolleerlingen? | `CanTeachElementarySchool__c` | boolean | Ja=true, Nee=false |
+| Is er nog iets toe te voegen? | `Comments_FromWebForm__c` | textarea | **VERPLICHT — nooit overslaan, ook als kort** |
+
+**Daarna ook altijd:** `Profile_Completed_Date__c` = vandaag.
+
+**Regel:** Elk Tally-antwoord MOET worden verwerkt. Lege/korte antwoorden (zoals "Te st") wel degelijk opslaan in Comments. Als een picklist-waarde niet matcht (bijv. "Es" past niet in `WO_Master__c` picklist), laat dan alleen het picklist-veld leeg maar vul wél `Study__c` (string) en `HBO_WO__c` (niveau). Rapporteer per docent: welke velden zijn gevuld, welke zijn leeg en waarom.
 
 ### 📧 6. Gmail — Ongelezen
 Nieuwe profielreacties + sollicitaties samenvatten
