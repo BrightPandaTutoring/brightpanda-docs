@@ -51,7 +51,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
@@ -72,8 +72,10 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 | 11 | Post-proefles flow | 🔧 Inactief (wacht op test) | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
 | 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | 5109244 |
-| 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen) | ✅ Actief | 5133318 |
+| 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen, vult Contract_URL__c) | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
+| 17 | Auto On-boarded (dagelijks 08:00, checkt 3 velden: Profile_Completed_Date__c + Bsport_Account_Created__c + Documentation_Agreed__c) | ✅ Actief | - |
+| 19 | Documentation Reminder Pending Onboarding (filter vóór iterator: Total number of bundles > 0) | ✅ Actief | - |
 
 ## KRITIEKE REGELS
 
@@ -88,12 +90,14 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 9. **newline in Make.com:** Gebruik keyword `newline`, niet char(10)
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
-12. **Sleutelwoorden tussen sessies:**
+12. **`salesforce:makeApiCall` in Make.com:** Voegt de Salesforce instance URL **niet** automatisch als prefix toe — altijd absolute URL gebruiken (`https://brightpanda.my.salesforce.com/services/data/v62.0/...`). Let op: zelfs met absolute URL geeft het ContentVersion endpoint een `[404]` error — waarschijnlijk door ontbrekende OAuth scopes in Make.com's gedeelde Salesforce app. Een eigen Connected App aanmaken vereist Insufficient Privileges-permissies die niet beschikbaar zijn op de huidige licentie. Workaround: PDF URL opslaan in `Contract_URL__c` in plaats van bestand uploaden naar Salesforce.
+13. **Make.com iterator met 0 resultaten:** De iterator geeft toch een lege bundle door naar downstream modules, wat leidt tot errors (bijv. 360dialog DataError "The parameter to is required"). **Altijd een filter vóór de iterator toevoegen** op `Total number of bundles > 0` om dit te voorkomen.
+14. **Sleutelwoorden tussen sessies:**
     - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Werk SESSION_LOG.md bij in de repo (overschrijf met nieuwe sessie samenvatting). Klaar om door Raouf of Yasin in Claude Code te plakken voor verdere verwerking.
     - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te leggen.
     - **"Pak op"** (in elke Claude chat, begin van nieuwe sessie): lees als eerste SESSION_LOG.md (laatste sessie), daarna CLAUDE.md (instructies + scenario-tabel) en TODO.md (actuele to-do's) uit de repo. Geef Raouf en Yasin een korte status (max 5 regels) en vraag wat ze vandaag willen doen. Zo hoeven ze niets te herhalen.
 
-13. **SESSION_LOG.md beheer:** Bij elke "Afsluiten" wordt SESSION_LOG.md volledig overschreven met de nieuwe sessie samenvatting (datum, waar gewerkt aan, beslissingen, wachten op, eerstvolgende acties, let op). Niet aanvullen, maar vervangen — zo blijft het bestand kort en altijd actueel.
+15. **SESSION_LOG.md beheer:** Bij elke "Afsluiten" wordt SESSION_LOG.md volledig overschreven met de nieuwe sessie samenvatting (datum, waar gewerkt aan, beslissingen, wachten op, eerstvolgende acties, let op). Niet aanvullen, maar vervangen — zo blijft het bestand kort en altijd actueel.
 
 ## DAGSTART ROUTINE
 

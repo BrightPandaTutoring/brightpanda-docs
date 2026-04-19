@@ -3,37 +3,46 @@
 
 ---
 
-## Laatste sessie: 16 april 2026
+## Laatste sessie: 19 april 2026
 
 ### Waar werd aan gewerkt
-- **Repo reorganisatie**: `docent-gids/` verplaatst naar `docs/docent-gids/`. Marketing/website content (leerlingen, ouders, over-ons, faq, platform, administratie, technisch, docenten) verplaatst naar `docs/archive-website-content/`. Duplicaten verwijderd (oude gedragscode, scenario-05-koppelingsbevestiging). `docs/make/README.md` vereenvoudigd — verwijst nu naar CLAUDE.md voor scenario statussen (single source of truth).
-- Docent Gids `docs/docent-gids/nl.md` — Hoofdstuk 1 (13 paragrafen) en Hoofdstuk 2 (Gedragscode, 7 paragrafen) volledig uitgeschreven
-- Scenario 1 (Teacher Invitation) uitgebreid: 2 berichten met 180s sleep + nieuw template `teacher_intro_message_parent`
-- Sleutelwoorden gedefinieerd: **Afsluiten**, **Update**, **Pak op**
-- SESSION_LOG.md aangemaakt voor sessie-continuiteit tussen Claude chats
+- **Scenario 14 (DocuSeal Contract Signed)** uitgebreid met `Contract_URL__c` veld
+- **Scenario 19 (Documentation Reminder Pending Onboarding)** fix: filter toegevoegd vóór iterator om lege bundles te voorkomen
+- Nieuw Salesforce veld `Contract_URL__c` (URL, 500 chars) aangemaakt op Account object
+- Uitgebreid onderzoek gedaan naar PDF upload als ContentVersion in Salesforce — niet mogelijk op huidige licentie
 
 ### Belangrijkste beslissingen deze sessie
-- Hoofdstuk 2 Gedragscode opgesplitst in 7 paragrafen (i.p.v. 2 met "wordt nog uitgewerkt")
-- Scenario 1 stuurt nu 2 berichten naar docent: invitation + 180s pauze + kant-en-klare doorstuurtekst voor ouder
-- Drie sleutelwoorden vastgelegd in CLAUDE.md sectie "KRITIEKE REGELS"
+- **PDF bestand uploaden naar Salesforce niet haalbaar**: zowel `salesforce:makeApiCall` (met en zonder absolute URL) als eigen Connected App geven problemen → tijdelijke oplossing: `Contract_URL__c` slaat DocuSeal PDF URL op
+- **Make.com iterator regel geformaliseerd**: altijd filter `Total number of bundles > 0` vóór iterator plaatsen om downstream errors bij 0 resultaten te voorkomen
+- **`salesforce:makeApiCall` regel geformaliseerd**: altijd absolute URL gebruiken, instance URL wordt niet automatisch toegevoegd
+
+### Key learnings toegevoegd aan CLAUDE.md
+- KRITIEKE REGEL 12: `salesforce:makeApiCall` vereist absolute URL, ContentVersion endpoint geeft nog steeds [404] door ontbrekende OAuth scopes
+- KRITIEKE REGEL 13: Make.com iterator met 0 bundles → altijd filter vooraf
+- Salesforce Connected App aanmaken vereist specifieke permissies — niet beschikbaar op huidige licentie
+
+### Scenarios geüpdate in CLAUDE.md
+- Scenario 14: beschrijving uitgebreid met "vult Contract_URL__c"
+- Scenario 17: toegevoegd aan tabel (Auto On-boarded, dagelijks 08:00)
+- Scenario 19: toegevoegd aan tabel (Documentation Reminder, met filter)
 
 ### Wachten op externe actie
-- Templates `teacher_invitation` (aangepast) + `teacher_intro_message_parent` (nieuw) → wachten op Meta goedkeuring via 360dialog
-- Template `pending_onboarding_tally_reminder` → wachten op Meta goedkeuring (Scenario 15 hangt hierop)
+- Template `pending_onboarding_tally_reminder` → wachten op Meta goedkeuring (Scenario 15)
 - Templates `availability_conflict_teacher` + `_reminder` → opnieuw indienen met voorbeeldwaarden
+- Templates `teacher_invitation` + `teacher_intro_message_parent` → wachten op Meta goedkeuring (Scenario 1)
 
 ### Eerstvolgende acties
-1. Zodra `teacher_invitation` + `teacher_intro_message_parent` zijn goedgekeurd → Scenario 1 testen
-2. End-to-end onboarding test met echte docent (geen testrecord)
-3. Student Path guidance teksten in Salesforce instellen voor alle stages
-4. MX record check in MailerLite zodra DNS gepropageerd
+1. End-to-end onboarding test met echte docent (geen testrecord meer)
+2. Student Path guidance teksten in Salesforce instellen voor alle lifecycle stages
+3. Scenario 1 testen zodra templates goedgekeurd zijn
+4. Scenario 13 — Interview Invited WhatsApp testen
+5. Licentie-upgrade onderzoeken voor PDF upload naar Salesforce (of alternatieve opslag: Google Drive / Dropbox / S3)
 
 ### Let op / context
 - Scenarios 1-9 + 11 staan op **inactief** in Make.com (Raouf zet ze pas live na test)
-- Scenario 10, 12, 13, 14, 15 zijn **actief**
-- Docent Gids workflow: aanpassen in `docent-gids/nl.md` → committen → daarna PDF opnieuw genereren
-- DocuSeal velden zijn readonly, reminders staan op 3/7/15 dagen
-- Tally form NpY9RW heeft conditional formatting bug — staat op TODO
+- Scenario 10, 12, 13, 14, 15, 17, 19 zijn **actief**
+- Nieuw veld `Contract_URL__c` staat nu in Teacher velden in CLAUDE.md
+- Test op 19 april: Raouf Angudi Teacher record gebruikt voor Scenario 19 test, daarna weer op On-boarded gezet
 
 ### Volledige to-do lijst
 Zie `TODO.md` in deze repo voor de actuele lijst per categorie.

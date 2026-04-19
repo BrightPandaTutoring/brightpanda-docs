@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 18 april 2026
+Laatst bijgewerkt: 19 april 2026
 
 ---
 
@@ -73,10 +73,15 @@ Laatst bijgewerkt: 18 april 2026
 
 ## ⚙️ Make.com / Automations
 
-- **Getekend contract opslaan in Salesforce**: Scenario 14 webhook uitbreiden zodat
-  de ondertekende PDF van DocuSeal wordt opgeslagen als bijlage (Attachment/File) op
-  het docent record in Salesforce. PDF URL uit de webhook payload halen, downloaden
-  via HTTP module, en uploaden naar Salesforce.
+- **🟡 GEDEELTELIJK GEDAAN: Contract opslaan in Salesforce**: Scenario 14 vult nu
+  `Contract_URL__c` met de DocuSeal PDF URL (19 april 2026). Upload van PDF als
+  ContentVersion (bestand op het record) blijkt niet mogelijk op de huidige licentie:
+  - `salesforce:makeApiCall` in Make.com geeft [404] op ContentVersion endpoint, ook
+    met absolute URL (`https://brightpanda.my.salesforce.com/services/data/v62.0/sobjects/ContentVersion`)
+  - Root cause: ontbrekende OAuth scopes in Make.com's gedeelde Salesforce app
+  - Eigen Connected App aanmaken mislukt door Insufficient Privileges op huidige licentie
+  - **Vervolg-TODO**: licentie upgraden of alternatieve oplossing onderzoeken (bijv.
+    PDF naar Google Drive, Dropbox of S3 met link-referentie) zodra dat prioriteit krijgt
 
 - **Scenario 1 polling vervangen door Salesforce webhook**: het huidige polling
   interval vervangen door een directe Salesforce webhook trigger zodat de invitation
