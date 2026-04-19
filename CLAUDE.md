@@ -23,8 +23,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
-**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN)
-**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder, teacher_invitation (aangepast — verwijst nu naar tweede bericht voor contact ouder), teacher_intro_message_parent (nieuw — kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
+**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN), teacher_invitation (verwijst naar tweede bericht voor contact ouder), teacher_intro_message_parent (kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
+**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder, availability_conflict_teacher (opnieuw indienen met voorbeeldwaarden), availability_conflict_teacher_reminder (opnieuw indienen met voorbeeldwaarden)
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
@@ -59,7 +59,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | 🔧 Inactief (wacht op template goedkeuring + test) | 4729958 |
+| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | ✅ Actief | 4729958 |
 | 02 | Parent Timeslot Invitation | 🔧 Inactief (wacht op test) | 4740354 |
 | 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief (wacht op test) | 4783259 |
 | 04 | Teacher Timeslot Submission | 🔧 Inactief (wacht op test) | 4839158 |

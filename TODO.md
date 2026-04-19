@@ -10,18 +10,10 @@ Laatst bijgewerkt: 19 april 2026
   voorbeeldwaarden (eerder ingediend zonder voorbeelden, werd afgewezen).
 - Template `availability_conflict_teacher_reminder` opnieuw indienen bij 360dialog
   met voorbeeldwaarden (zelfde probleem als hierboven).
-- Templates `teacher_invitation` (aangepast) en `teacher_intro_message_parent` (nieuw)
-  ingediend bij 360dialog/Meta — wachten op goedkeuring voordat Scenario 1 getest
-  kan worden.
 
 ---
 
 ## 🔴 Hoge prioriteit
-
-- **End-to-end onboarding test uitvoeren**: doorloop de volledige flow van aanmelding
-  → contract tekenen → Pending Onboarding → Tally invullen → dagstart verwerking →
-  onboarding emails. Controleer of alle stappen correct doorlopen en Salesforce velden
-  correct gevuld worden.
 
 - **Student Path guidance teksten instellen in Salesforce**: stel voor elke klant
   lifecycle stage de key fields en guidance tekst in via Salesforce Path Settings.
@@ -34,20 +26,6 @@ Laatst bijgewerkt: 19 april 2026
   van een schadevergoeding. Dit moet juridisch verankerd worden in het freelance
   contract dat docenten ondertekenen via DocuSeal. Laten beoordelen door een jurist
   en vervolgens verwerken in de contracttekst.
-
----
-
-## 🧪 Testen
-
-- **Scenario 13 — Interview Invited WhatsApp testen**: de module is gebouwd maar nog
-  niet getest. Test door de lifecycle stage van een bestaande docent handmatig naar
-  "Interview Invited" te zetten en te controleren of de WhatsApp correct binnenkomt.
-
-- **Scenario 1 testen**: zodra templates `teacher_invitation` en
-  `teacher_intro_message_parent` zijn goedgekeurd door Meta. Controleer of beide
-  WhatsApps binnenkomen met 180s tussenpoos en of de variabelen kloppen
-  ({{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName,
-  {{4}}=student FirstName).
 
 ---
 
@@ -72,16 +50,6 @@ Laatst bijgewerkt: 19 april 2026
 ---
 
 ## ⚙️ Make.com / Automations
-
-- **🟡 GEDEELTELIJK GEDAAN: Contract opslaan in Salesforce**: Scenario 14 vult nu
-  `Contract_URL__c` met de DocuSeal PDF URL (19 april 2026). Upload van PDF als
-  ContentVersion (bestand op het record) blijkt niet mogelijk op de huidige licentie:
-  - `salesforce:makeApiCall` in Make.com geeft [404] op ContentVersion endpoint, ook
-    met absolute URL (`https://brightpanda.my.salesforce.com/services/data/v62.0/sobjects/ContentVersion`)
-  - Root cause: ontbrekende OAuth scopes in Make.com's gedeelde Salesforce app
-  - Eigen Connected App aanmaken mislukt door Insufficient Privileges op huidige licentie
-  - **Vervolg-TODO**: licentie upgraden of alternatieve oplossing onderzoeken (bijv.
-    PDF naar Google Drive, Dropbox of S3 met link-referentie) zodra dat prioriteit krijgt
 
 - **Scenario 1 polling vervangen door Salesforce webhook**: het huidige polling
   interval vervangen door een directe Salesforce webhook trigger zodat de invitation
