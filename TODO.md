@@ -1,24 +1,23 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 19 april 2026
+Laatst bijgewerkt: 20 april 2026
 
 ---
 
-## ⏳ Wacht op externe actie (geen actie vereist, alleen opvolgen)
-- Template `pending_onboarding_tally_reminder` is ingediend bij 360dialog/Meta en wacht
-  op goedkeuring. Zodra goedgekeurd is Scenario 15 volledig operationeel.
-- Template `availability_conflict_teacher` opnieuw indienen bij 360dialog met
-  voorbeeldwaarden (eerder ingediend zonder voorbeelden, werd afgewezen).
-- Template `availability_conflict_teacher_reminder` opnieuw indienen bij 360dialog
-  met voorbeeldwaarden (zelfde probleem als hierboven).
+## ✅ Afgerond (recent)
+- **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026):
+  `pending_onboarding_tally_reminder`, `teacher_invitation`,
+  `teacher_intro_message_parent`, `availability_conflict_teacher`,
+  `availability_conflict_teacher_reminder` — allemaal goedgekeurd en operationeel.
+  Scenario 15 is hiermee volledig operationeel.
 
 ---
 
 ## 🔴 Hoge prioriteit
 
-- **Student Path guidance teksten instellen in Salesforce**: stel voor elke klant
-  lifecycle stage de key fields en guidance tekst in via Salesforce Path Settings.
-  Stages: New, Enrollment, Matching Teacher, Trial Class, Client, Stopped - Never
-  Converted, Stopped - Existing Client, Wrong Match, Churned.
+- **Student Path guidance teksten instellen in Salesforce** — IN UITVOERING 20 april 2026:
+  stel voor elke klant lifecycle stage de key fields en guidance tekst in via
+  Salesforce Path Settings. Stages: New, Enrollment, Matching Teacher, Trial Class,
+  Client, Stopped - Never Converted, Stopped - Existing Client, Wrong Match, Churned.
 
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: de Docent Gids stelt dat
   bij het organiseren van lessen buiten Bright Panda om het contract per direct wordt
