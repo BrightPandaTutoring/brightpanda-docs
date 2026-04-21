@@ -1,14 +1,17 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 20 april 2026
+Laatst bijgewerkt: 21 april 2026
 
 ---
 
 ## ✅ Afgerond (recent)
-- **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026):
-  `pending_onboarding_tally_reminder`, `teacher_invitation`,
-  `teacher_intro_message_parent`, `availability_conflict_teacher`,
-  `availability_conflict_teacher_reminder` — allemaal goedgekeurd en operationeel.
-  Scenario 15 is hiermee volledig operationeel.
+- **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026)
+- **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**
+- **✅ GEDAAN: Bijenkorf boekje verwerkt in H2 Gedragscode**
+- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B)
+- **✅ GEDAAN: Scenario 17 — Auto On-boarded gebouwd**
+- **✅ GEDAAN: Geboortedatum toegevoegd aan Tally profielformulier** (21 april 2026) → `Date_of_Birth__c`
+- **✅ GEDAAN: Bulk import On-boarded docenten naar MailerLite** (21 april 2026) — 104 docenten geïmporteerd
+- **✅ GEDAAN: MailerLite Scenario 13 — Name + Last name velden toegevoegd** (21 april 2026)
 
 ---
 
@@ -28,23 +31,18 @@ Laatst bijgewerkt: 20 april 2026
 
 ---
 
-## 📄 Docent Gids & Onboarding
+## 🗄️ Salesforce — Nieuwe velden aanmaken
 
-- **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**.
-  Build script: docs/docent-gids/build_final.py. Klikbare TOC, doorlopende
-  paginanummering, geen witte bladzijden, logo + hoofdstukpagina's. Alle
-  tekstwijzigingen H1+H2 doorgevoerd in NL en EN. Streepjes vervangen door
-  komma's/punten in beide versies. H3 content volledig aanwezig in EN versie.
+- **Nieuw veld: `Graduated__c`** (of "Currently Studying") — aanmaken op Account (Teacher).
+  Picklist met waarden: "Studeer momenteel" / "Afgestudeerd". Mappen vanuit Tally vraag
+  "Studeer je momenteel of ben je al afgestudeerd?".
 
-- **✅ GEDAAN: Bijenkorf boekje verwerkt in H2 Gedragscode** — relevante punten
-  opgenomen in de bestaande paragrafen van Hoofdstuk 2.
+- **Nieuw veld: `Exam_Training_Details__c`** — textarea op Account (Teacher).
+  Mappen vanuit Tally vraag "In welke vakken kun je examentraining geven en op welk niveau?".
 
-- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B) — docent
-  bevestigt Docent Gids gelezen te hebben. Make.com vult `Documentation_Agreed__c`
-  in Salesforce na submit.
-
-- **Geboortedatum toevoegen aan Tally aanvullend profiel formulier** (tally.so/r/NpY9RW)
-  en mappen naar `Date_of_Birth__c` in Salesforce via Make.com.
+- **Nieuw veld: `Profile_Comments__c`** — textarea op Account (Teacher).
+  Aparte sectie voor opmerkingen uit het aanvullend profielformulier (Tally), los van
+  `Comments_FromWebForm__c` die voor de initiële aanmelding is.
 
 ---
 
@@ -52,122 +50,77 @@ Laatst bijgewerkt: 20 april 2026
 
 - **Scenario 20 bouwen — Tally "Aanvullende Profielinfo" → Salesforce automatisering**:
   Vervang de handmatige dagstart-verwerking van deze Tally submissions door een Make.com
-  scenario. Huidige situatie faalt: op 18 april 2026 heeft de dagstart een submission
-  van yasinangudi@gmail.com maar half verwerkt (IBAN, HBO_WO__c, Teaching_Level_Details__c,
-  en Comments_FromWebForm__c ontbraken). Bouw een scenario dat alle velden uit de
-  veldmapping tabel in CLAUDE.md correct invult. Trigger: Tally webhook voor
+  scenario. Gebruik de volledige veldmapping in CLAUDE.md. Trigger: Tally webhook voor
   formulier `tally.so/r/NpY9RW`. Zet `Profile_Completed_Date__c` pas als alle verplichte
-  velden zijn gevuld (zie CLAUDE.md dagstart sectie voor de mapping).
+  velden zijn gevuld.
 
 - **Scenario 1 polling vervangen door Salesforce webhook**: het huidige polling
   interval vervangen door een directe Salesforce webhook trigger zodat de invitation
-  meteen wordt verstuurd bij een nieuwe matching i.p.v. afhankelijk te zijn van
-  de polling cyclus.
-
-- **✅ GEDAAN: Scenario 17 — Auto On-boarded gebouwd**: dagelijks scenario dat docenten
-  in Pending Onboarding checkt of alle drie velden gevuld zijn
-  (Profile_Completed_Date__c, Bsport_Account_Created__c, Documentation_Agreed__c) →
-  LifecycleStage__c automatisch naar On-boarded. Schedule: dagelijks 08:00.
-
-- **Bulk import scenario bouwen (eenmalig)**: een Make.com scenario dat alle
-  bestaande On-boarded docenten met een emailadres importeert in de MailerLite groep
-  "On-boarded". Gebruik Salesforce Search Records + MailerLite Create/Update Subscriber.
-  Na uitvoering direct deactiveren.
+  meteen wordt verstuurd bij een nieuwe matching.
 
 - **Intern alert bouwen na proefles**: een Make.com scenario dat Raouf en Yasin een
-  herinnering stuurt om de ouder én docent te bellen na afloop van de proefles om te
-  horen hoe het ging.
+  herinnering stuurt om de ouder én docent te bellen na afloop van de proefles.
 
 - **Salesforce status updaten na versturen `parent_timeslot_final`**: na het versturen
-  van dit WhatsApp template moet `Trial_Lesson_Status__c` automatisch bijgewerkt worden
-  naar de juiste waarde.
+  van dit WhatsApp template moet `Trial_Lesson_Status__c` automatisch bijgewerkt worden.
 
 - **Re-engagement flow bouwen voor No Show matchings**: als een matching de status
-  "No Show" krijgt, automatisch na 30 dagen een WhatsApp sturen ("Ben je nog steeds
-  op zoek naar bijles?") + een MailerLite email campagne starten voor ouders die niet
-  reageren op WhatsApp.
+  "No Show" krijgt, automatisch na 30 dagen een WhatsApp sturen + MailerLite campagne.
 
 - **TinyURL short links aanmaken** voor alle lange Google Apps Script picker links die
-  via WhatsApp worden verstuurd (Scenario 2, Scenario 5, Scenario 6, escalatie scenario).
-  Gebruik de TinyURL API via HTTP GET naar `https://tinyurl.com/api-create.php?url=`.
+  via WhatsApp worden verstuurd (Scenario 2, 5, 6, escalatie).
 
 - **Escalatie scenario controleren**: nakijken wat dit scenario precies doet en of het
   nog relevant is nu Scenario 5 en 6 actief zijn.
 
 - **AVG/GDPR data verwijdering automatiseren**: twee maandelijkse Make.com scenarios
-  bouwen: (1) docenten met status Offboarded waarbij `Offboarded_Date__c` meer dan 2
-  jaar geleden is → persoonsgegevens wissen uit Salesforce; (2) docenten met status
-  Not a Match of Not Interested waarbij `LastModifiedDate` meer dan 6 maanden geleden
-  is → persoonsgegevens wissen.
+  bouwen: (1) Offboarded > 2 jaar → persoonsgegevens wissen; (2) Not a Match / Not
+  Interested > 6 maanden → persoonsgegevens wissen.
 
 ---
 
 ## 📧 MailerLite
 
-- **Post-proefles email flow inrichten**: één lijst aanmaken "Bright Panda Ouders" met
-  custom velden (Trial_Lesson_Date, Teacher_Name, Student_Name, Status) en segmenten
-  (Proefles gehad, Actieve klant, No Show). Koppelen aan Make.com zodat ouders
-  automatisch worden toegevoegd na een proefles.
+- **Post-proefles email flow inrichten**: lijst "Bright Panda Ouders" aanmaken met
+  custom velden en segmenten. Koppelen aan Make.com.
 
 - **HTML design verwerken in post-proefles automation**: het gebouwde HTML email
   design (4 stappen + quote blok) verwerken als email automation in MailerLite.
 
 ---
 
-## 🗄️ Salesforce
+## 🗄️ Salesforce — Overig
 
-- **Contract_Start_Date__c en Contract_End_Date__c toevoegen aan Business Account
-  Layout**: zodat deze datums zichtbaar zijn op het docent record zonder naar de
-  details tab te gaan.
+- **Contract_Start_Date__c en Contract_End_Date__c toevoegen aan Business Account Layout**.
 
-- **Teaching_Location__c beschikbaar maken voor Teacher Record Type**: via de klassieke
-  Salesforce URL de picklist waarden activeren voor het Teacher record type. URL:
+- **Teaching_Location__c beschikbaar maken voor Teacher Record Type** via klassieke URL:
   `brightpanda.my.salesforce.com/setup/ui/recordtypefields.jsp?id=012KB000000ojZLYAY&type=Account&setupid=AccountRecordTypes`
 
-- **Profile_Completed_Date__c toevoegen aan Teacher Path key fields**: dit veld
-  toevoegen aan de Pending Onboarding stage in de Salesforce Path Settings, en
-  beschikbaar maken via dezelfde klassieke URL hierboven.
+- **Profile_Completed_Date__c toevoegen aan Teacher Path key fields**.
 
 ---
 
 ## 📱 WhatsApp / 360dialog
 
-- **WhatsApp tekst schrijven voor handmatige availability check**: een kant-en-klare
-  tekst schrijven die Raouf of Yasin kan sturen wanneer een docent handmatig benaderd
-  wordt bij een nieuwe matching. Inclusief docent naam, vak, niveau, locatie en
-  beschikbaarheidsvraag.
+- **WhatsApp tekst schrijven voor handmatige availability check**.
 
-- **`parent_timeslot_final` template aanpassen**: beslissen of de header een video of
-  afbeelding wordt. Video speelt niet automatisch af in WhatsApp, dus voorkeur gaat
-  naar een afbeelding. Template aanpassen in 360dialog.
+- **`parent_timeslot_final` template aanpassen**: video → afbeelding in header.
 
 ---
 
 ## 👤 Docenten opvolging
 
-- **Ashna Rajaram opvolgen**: heeft gereageerd op het profiel update verzoek maar
-  heeft de volgende velden nog niet ingevuld: studie, instelling/universiteit, IBAN,
-  naam op bankpas, max niveau, max leerjaar, examentraining voorkeur, basisschool
-  voorkeur. Later opnieuw opvragen.
+- **Ashna Rajaram opvolgen**: studie, instelling, IBAN, naam op bankpas, max niveau,
+  max leerjaar, examentraining voorkeur, basisschool voorkeur nog niet ingevuld.
 
 ---
 
 ## 🔒 GDPR / Compliance
 
-- **Verwerkersovereenkomst (DPA) afsluiten met Tally**: Tally verwerkt
-  persoonsgegevens van docenten (IBAN, geboortedatum etc.). Een DPA is verplicht
-  onder de AVG. Transparantietekst toevoegen aan het formulier en controleren of
-  de privacyverklaring op brightpanda.nl de verwerking van docentgegevens beschrijft.
+- **Verwerkersovereenkomst (DPA) afsluiten met Tally**.
 
 ---
 
 ## 📬 Overig
 
-- **Gmail inbox info@brightpanda.nl opruimen via Cowork**: labels aanmaken en
-  filters instellen zodat inkomende emails automatisch gesorteerd worden per
-  categorie (docenten, ouders, intern, sollicitaties etc.).
-
-- **Dagstart routine**: elke ochtend "dagstart" typen in Claude. Claude haalt dan
-  automatisch op: (1) Google Calendar van vandaag, (2) Salesforce overzicht van
-  docenten per lifecycle stage, (3) nieuwe Tally form submissions verwerken via
-  Gmail, (4) ongelezen emails met profielreacties en sollicitaties.
+- **Gmail inbox info@brightpanda.nl opruimen via Cowork**.
