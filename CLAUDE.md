@@ -167,7 +167,7 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 | Tweede studie (alleen bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
 | Woon je in andere stad? | — | — | Niet gemapped |
 | Wat is je IBAN? | `IBAN__c` | string | **VERPLICHT — nooit overslaan** |
-| Naam op bankpas? | `NameOnBankCard__c` | string | |
+| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam zoals op de pas staat (niet de banknaam). Vraag is verduidelijkt in Tally op 21 april 2026. |
 | Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | "Online" / "Fysiek" / "Beide" |
 | In welke taal geef je bijles? | — | — | Geen veld. Optioneel in Comments opslaan als belangrijk. |
 | Welke vakken? | `Subjects__c` | multi-picklist | Komma-gescheiden |
@@ -175,6 +175,7 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 | Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
 | Basisschoolleerlingen? | `CanTeachElementarySchool__c` | boolean | Ja=true, Nee=false |
 | Is er nog iets toe te voegen? | `Comments_FromWebForm__c` | textarea | **VERPLICHT — nooit overslaan, ook als kort** |
+| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Toegevoegd aan Tally op 21 april 2026 (laatste pagina). Opslaan als YYYY-MM-DD. |
 
 **Daarna ook altijd:** `Profile_Completed_Date__c` = vandaag.
 
