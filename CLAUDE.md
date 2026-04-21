@@ -39,6 +39,52 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 - `/docs/make/` — technische detail-documentatie per Make.com scenario (modules, JSON bodies, GAS scripts)
 - `/docs/archive-website-content/` — oud archief van website/marketing content (geen ops, niet bijwerken)
 
+## EMAIL TEMPLATES
+
+### Aanvulling profiel (handmatig, eerste keer)
+Onderwerp: `Aanvulling profiel — Bright Panda Bijles`
+Gebruik wanneer: docent staat op On-boarded maar heeft het Tally profielformulier nog niet ingevuld, en dit is de eerste keer dat ze het verzoek ontvangen.
+
+```
+Hoi [Voornaam],
+
+Leuk dat je bij Bright Panda werkt als docent. We zijn bezig om alle gegevens up-to-date te maken zodat alles administratief goed staat.
+
+Kopieer dit bericht, plak het hieronder in deze chat en vul alle velden in. Stuur het daarna terug naar ons!
+
+• E-mailadres:
+• Telefoonnummer:
+• Geboortedatum:
+• Straat + huisnummer:
+• Postcode:
+• Stad:
+• Woon je in een andere stad dan waar je studeert? (ja/nee):
+• Studie:
+• Instelling/universiteit:
+• IBAN (graag dubbel checken!):
+• Naam op bankpas (exact zoals op je pas staat):
+• Hoe kun jij bijles geven? (kies één optie):
+   A. Online
+   B. Fysiek (thuis bij de leerling)
+   C. Fysiek (openbare ruimte)
+   D. Fysiek (openbare ruimte + thuis bij de leerling)
+   E. Hybride (online + openbare ruimte + thuis)
+   F. Hybride (online + openbare ruimte)
+• Welke vakken kun je geven? (zie de volledige vakkenlijst onderaan dit bericht):
+• Tot welk niveau kun je lesgeven? (VMBO / HAVO / VWO / Gymnasium):
+• Tot welk leerjaar? (bijv. t/m klas 4, 5 of 6):
+• Kun je examentraining geven in vakken waar je je prettig bij voelt? (ja/nee):
+• Zo ja, in welke vakken:
+• Vind je het leuk om aan basisschoolleerlingen bijles te geven in bijvoorbeeld taal, rekenen of Cito-toetsvoorbereiding? (ja/nee):
+
+Alvast bedankt!
+Team Bright Panda
+
+---
+Alle vakken die wij aanbieden:
+Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologie, Nederlands, Engels, Frans, Duits, Spaans, Latijn, Grieks, Arabisch, Chinees, Italiaans, Russisch, Turks, Informatica, Aardrijkskunde, Geschiedenis, Economie, Bedrijfseconomie, Filosofie, Maatschappijleer, Muziek, Kunst, CKV, Cito Toets, Coderen, Rekenen
+```
+
 ## SALESFORCE
 
 **Record Types:** Teacher: 012KB000000ojZLYAY | Student: 012KB000000ojZGYAY
@@ -71,7 +117,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 | 10 | Student New Registration → MailerLite + WhatsApp | ✅ Actief | 4969006 |
 | 11 | Post-proefles flow | 🔧 Inactief (wacht op test) | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | 5109244 |
+| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) — MailerLite modules bijgewerkt 21 april: Name + Last name velden toegevoegd | ✅ Actief | 5109244 |
 | 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen, vult Contract_URL__c) | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
 | 17 | Auto On-boarded (dagelijks 08:00, checkt 3 velden: Profile_Completed_Date__c + Bsport_Account_Created__c + Documentation_Agreed__c) | ✅ Actief | - |
@@ -94,7 +140,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 13. **Make.com iterator met 0 resultaten:** De iterator geeft toch een lege bundle door naar downstream modules, wat leidt tot errors (bijv. 360dialog DataError "The parameter to is required"). **Altijd een filter vóór de iterator toevoegen** op `Total number of bundles > 0` om dit te voorkomen.
 14. **Sleutelwoorden tussen sessies:**
     - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Werk SESSION_LOG.md bij in de repo (overschrijf met nieuwe sessie samenvatting). Klaar om door Raouf of Yasin in Claude Code te plakken voor verdere verwerking.
-    - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te leggen.
+    - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te laggen.
     - **"Pak op"** (in elke Claude chat, begin van nieuwe sessie): lees als eerste SESSION_LOG.md (laatste sessie), daarna CLAUDE.md (instructies + scenario-tabel) en TODO.md (actuele to-do's) uit de repo. Geef Raouf en Yasin een korte status (max 5 regels) en vraag wat ze vandaag willen doen. Zo hoeven ze niets te herhalen.
 
 15. **SESSION_LOG.md beheer:** Bij elke "Afsluiten" wordt SESSION_LOG.md volledig overschreven met de nieuwe sessie samenvatting (datum, waar gewerkt aan, beslissingen, wachten op, eerstvolgende acties, let op). Niet aanvullen, maar vervangen — zo blijft het bestand kort en altijd actueel.
