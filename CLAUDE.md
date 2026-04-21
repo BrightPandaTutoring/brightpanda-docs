@@ -17,7 +17,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **TinyURL:** Token: azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji | Branded domain: go.brightpanda.nl | Output in Make.com: MODULE.data.data.tiny_url
 
-**Tally Forms:** Form 1: tally.so/r/2Ekaq9 | Form 3: tally.so/r/q4PDV9 | Profielinfo docent: tally.so/r/NpY9RW (conditional formatting geüpdatet 13 april) | MailerLite link: https://tally.so/r/NpY9RW?email={$email} | Notificaties from: notifications@tally.so | Subject: "New Tally Form Submission for Docent — Aanvullende Profielinfo / Additional Profile"
+**Tally Forms:** Form 1: tally.so/r/2Ekaq9 | Form 3: tally.so/r/q4PDV9 | Profielinfo docent: tally.so/r/NpY9RW | MailerLite link: https://tally.so/r/NpY9RW?email={$email} | Notificaties from: notifications@tally.so | Subject: "New Tally Form Submission for Docent — Aanvullende Profielinfo / Additional Profile"
 
 **Google Apps Script (picker):** https://script.google.com/macros/s/AKfycbyrP2jVtMak_H2r5glM57KPvmjzBgBQ-GiObv6Iel1A5f0Y9Fu6X2GV7DmBkOX4kDRISA/exec
 
@@ -28,16 +28,16 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
-**Docent Gids:** `docs/docent-gids/nl.md` (NL) en `docs/docent-gids/en.md` (EN, nog aan te maken). Structuur: ## = paragraaf, ### = subparagraaf, [icon: naam] = pictogram, [intro] = cursieve intro, [waarschuwing] = waarschuwingsblok, [info] = infoblok. Iconen beschikbaar: login, available, booking, time-management, free-trial, salary, calendar, trophy, canceled. Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
+**Docent Gids:** `docs/docent-gids/nl.md` (NL) en `docs/docent-gids/en.md` (EN). Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
 
 **Repo structuur:**
-- `/CLAUDE.md` — instructies (dit bestand) — single source of truth voor scenario statussen, credentials, regels
+- `/CLAUDE.md` — instructies (dit bestand) — single source of truth
 - `/TODO.md` — actuele to-do lijst
 - `/SESSION_LOG.md` — laatste sessie samenvatting (overschrijven bij elke "Afsluiten")
 - `/README.md` — repo overzicht
 - `/docs/docent-gids/` — Docent Gids bestanden (nl.md, en.md)
-- `/docs/make/` — technische detail-documentatie per Make.com scenario (modules, JSON bodies, GAS scripts)
-- `/docs/archive-website-content/` — oud archief van website/marketing content (geen ops, niet bijwerken)
+- `/docs/make/` — technische detail-documentatie per Make.com scenario
+- `/docs/archive-website-content/` — oud archief
 
 ## EMAIL TEMPLATES
 
@@ -97,9 +97,23 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c (TODO), Exam_Training_Details__c (TODO), Profile_Comments__c (TODO)
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
+
+**Teaching_Location__c picklist waarden (exacte SF waarden):**
+Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + thuis) | Hybride (online + openbare ruimte) | Hybride (online + openbare ruimte + thuis)
+
+**Can_Teach_Until_Education_Level__c picklist:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
+
+**Can_Teach_Until_School_Year__c picklist:** Groep 1 t/m Groep 8 (basisschool) | 1 t/m 6 (voortgezet onderwijs)
+
+**Niveaus en max leerjaren:**
+- Basisschool: Groep 1 t/m Groep 8
+- VMBO: leerjaar 1 t/m 4
+- HAVO: leerjaar 1 t/m 5
+- VWO: leerjaar 1 t/m 6
+- Gymnasium: leerjaar 1 t/m 6
 
 ## MAKE.COM SCENARIOS
 
@@ -136,107 +150,116 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 9. **newline in Make.com:** Gebruik keyword `newline`, niet char(10)
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
-12. **`salesforce:makeApiCall` in Make.com:** Voegt de Salesforce instance URL **niet** automatisch als prefix toe — altijd absolute URL gebruiken (`https://brightpanda.my.salesforce.com/services/data/v62.0/...`). Let op: zelfs met absolute URL geeft het ContentVersion endpoint een `[404]` error — waarschijnlijk door ontbrekende OAuth scopes in Make.com's gedeelde Salesforce app. Een eigen Connected App aanmaken vereist Insufficient Privileges-permissies die niet beschikbaar zijn op de huidige licentie. Workaround: PDF URL opslaan in `Contract_URL__c` in plaats van bestand uploaden naar Salesforce.
-13. **Make.com iterator met 0 resultaten:** De iterator geeft toch een lege bundle door naar downstream modules, wat leidt tot errors (bijv. 360dialog DataError "The parameter to is required"). **Altijd een filter vóór de iterator toevoegen** op `Total number of bundles > 0` om dit te voorkomen.
-14. **Sleutelwoorden tussen sessies:**
-    - **"Afsluiten"** (in andere Claude chats, bijv. Claude.ai): genereer een complete samenvatting van de hele sessie — beslissingen, nieuwe to-do's, gewijzigde/nieuwe scenarios, nieuwe templates, gewijzigde Salesforce velden, alles wat nodig is om de documentatie bij te werken. Werk SESSION_LOG.md bij in de repo (overschrijf met nieuwe sessie samenvatting). Klaar om door Raouf of Yasin in Claude Code te plakken voor verdere verwerking.
-    - **"Update"** (in andere Claude chats): geef tussentijds een korte stand-van-zaken samenvatting zonder de chat af te sluiten. Handig bij lange sessies of om een tussenstap vast te laggen.
-    - **"Pak op"** (in elke Claude chat, begin van nieuwe sessie): lees als eerste SESSION_LOG.md (laatste sessie), daarna CLAUDE.md (instructies + scenario-tabel) en TODO.md (actuele to-do's) uit de repo. Geef Raouf en Yasin een korte status (max 5 regels) en vraag wat ze vandaag willen doen. Zo hoeven ze niets te herhalen.
-
-15. **SESSION_LOG.md beheer:** Bij elke "Afsluiten" wordt SESSION_LOG.md volledig overschreven met de nieuwe sessie samenvatting (datum, waar gewerkt aan, beslissingen, wachten op, eerstvolgende acties, let op). Niet aanvullen, maar vervangen — zo blijft het bestand kort en altijd actueel.
+12. **`salesforce:makeApiCall` in Make.com:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL opslaan in `Contract_URL__c`.
+13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`.
+14. **Sleutelwoorden:**
+    - **"Afsluiten"**: samenvatting genereren → SESSION_LOG.md overschrijven → commit + push
+    - **"Update"**: korte tussentijdse samenvatting
+    - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → geef korte status → vraag wat ze willen doen
+15. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
 
 ## DAGSTART ROUTINE
 
-Wanneer Raouf of Yasin "dagstart" typt, start je altijd met:
+Wanneer Raouf of Yasin "dagstart" typt:
 
 # ☀️🐼 Dagstart Bright Panda — [datum van vandaag]
-*Goedemorgen Raouf en Yasin! Dit is jullie overzicht voor vandaag.*
 
-Voer dan uit in volgorde:
+Voer uit in volgorde:
 
-### 📅 1. Google Calendar
-Haal events van vandaag op en toon ze overzichtelijk.
+### 1. Google Calendar — events vandaag
 
-### 👨‍👩‍💼 2. Acties voor klanten
+### 2. Klanten
+- Nieuwe aanmeldingen: RecordTypeId = Student AND LifecycleStage__c = 'New'
+- Proefles gehad: Trial_Lesson_Status__c = 'Trial Lesson Completed'
+- Openstaande proefles acties: Teacher Invited >24u / Availability Conflict / Trial Scheduled + verstreken
 
-**🆕 Nieuwe aanmeldingen**
-Query: RecordTypeId = Student AND LifecycleStage__c = 'New'
-Toon: naam, vak, niveau, stad, aanmelddatum
-Actie: Raouf en Yasin benaderen deze ouders voor intake
+### 3. Docenten
+- Nieuwe docenten: RecordTypeId = Teacher AND LifecycleStage__c = 'New' (toon Claude_Recommendation__c)
+- Pending Onboarding: IBAN gevuld? Tally ingevuld? Dagen in status?
+- Contract verlenging: LifecycleStage__c IN ('Contract Expiring Soon', 'Renew')
 
-**✅ Proefles gehad — benaderen**
-Query: Trial_Lesson_Status__c = 'Trial Lesson Completed'
-Toon: naam, docent, vakken, datum proefles
-Actie: Raouf en Yasin bellen ouder én docent
+### 4. To-do — lees TODO.md uit GitHub
 
-**⚠️ Openstaande acties proefles proces**
-- Teacher Invited + Teacher_Invited_At__c > 24u → docent heeft niet gereageerd
-- Availability Conflict → ouder heeft geen datum geselecteerd
-- Trial Lesson Scheduled + datum verstreken → proefles had al moeten plaatsvinden
-Toon: naam leerling, naam docent, status, hoelang in deze status
-
-### 👩‍🏫 3. Acties voor docenten
-
-**🆕 Nieuwe docenten — evalueren**
-Query: RecordTypeId = Teacher AND LifecycleStage__c = 'New'
-Toon: naam, vakken, studie, universiteit, stad, aanmelddatum, Claude_Recommendation__c
-Actie: Raouf en Yasin beoordelen of interview aangeraden wordt
-
-**⏳ Pending Onboarding — openstaande acties**
-Query: RecordTypeId = Teacher AND LifecycleStage__c = 'Pending Onboarding'
-Toon: naam, IBAN gevuld (ja/nee), Tally ingevuld (ja/nee), dagen in status
-Actie: IBAN leeg + >3 dagen → WhatsApp reminder | Alles gevuld → zetten op On-boarded
-
-**🔄 Contract verlenging**
-Query: LifecycleStage__c IN ('Contract Expiring Soon', 'Renew')
-Toon: naam, Contract_End_Date__c, status
-Actie: Raouf en Yasin evalueren → nieuw contract via DocuSeal
-
-### 📋 4. To-do lijst
-Lees TODO.md en toon alle openstaande taken per categorie.
-
-### 📬 5. Gmail — Tally submissions
+### 5. Gmail — Tally submissions
 Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent — Aanvullende Profielinfo"`
 
-**Verplichte Tally → Salesforce veldmapping (Aanvullende Profielinfo formulier):**
+**Tally → Salesforce veldmapping (volledig, 21 april 2026):**
 
 | Tally vraag | SF veld | Type | Opmerking |
 |---|---|---|---|
 | email | PersonEmail (lookup) | — | Om docent record te vinden |
-| Studeer je momenteel / afgestudeerd? | — | — | Niet gemapped, alleen context |
-| Wat studeer je? | `Study__c` | string | Vrije tekst |
-| Bij welke instelling? | `University__c` | string | Vrije tekst, eventueel normaliseren ("Haagse" → "Haagse Hogeschool") |
-| Wat is je opleidingsniveau? | `HBO_WO__c` | picklist | Exacte waarden: "HBO (Bacherlor)" / "WO Bachelor" / "WO Master" |
-| — (als studie in picklist past) | `HBO_Bachelor__c` / `WO_Bachelor__c` / `WO_Master__c` | picklist | Alleen vullen als de studienaam in de betreffende picklist staat. Anders leeg laten. |
-| — (als instelling in picklist past) | `University_HBO__c` / `University_WO__c` | picklist | Alleen vullen als matchend. |
+| Studeer je momenteel of afgestudeerd? | `Graduated__c` | picklist | TODO: veld nog aanmaken |
+| Wat heb je gestudeerd? | `Study__c` | string | Vrije tekst |
+| Bij welke instelling? | `University__c` | string | Vrije tekst |
+| — (als instelling in picklist past) | `University_HBO__c` / `University_WO__c` | picklist | Alleen vullen als matchend |
+| Wat is je opleidingsniveau? | `HBO_WO__c` | picklist | "HBO (Bacherlor)" / "WO Bachelor" / "WO Master" |
+| — (als studie in picklist past) | `HBO_Bachelor__c` / `WO_Bachelor__c` / `WO_Master__c` | picklist | Alleen vullen als matchend |
 | Volg je een tweede studie? | `Follow2ndStudy__c` | boolean | Ja=true, Nee=false |
-| Tweede studie (alleen bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
-| Woon je in andere stad? | — | — | Niet gemapped |
-| Wat is je IBAN? | `IBAN__c` | string | **VERPLICHT — nooit overslaan** |
-| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam zoals op de pas staat (niet de banknaam). Vraag is verduidelijkt in Tally op 21 april 2026. |
-| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | "Online" / "Fysiek" / "Beide" |
-| In welke taal geef je bijles? | — | — | Geen veld. Optioneel in Comments opslaan als belangrijk. |
-| Welke vakken? | `Subjects__c` | multi-picklist | Komma-gescheiden |
-| Niveau/leerjaar per vak | `Teaching_Level_Details__c` | textarea | **VERPLICHT — nooit overslaan** |
+| Tweede studie (bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
+| Woon je in andere stad dan studie? | `PersonOtherCity` | string | Alleen invullen bij Ja: studiestad invullen |
+| Wat is je IBAN? | `IBAN__c` | string | Verplicht |
+| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam (niet banknaam) |
+| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | Zie Teaching_Location mapping hieronder |
+| In welke taal geef je bijles? | `PreferredLanguage__c` | picklist | "Dutch" / "English" / "Both / No Preference" |
+| Welke vakken? | `Subjects__c` | multi-picklist | Engelstalige SF waarden gebruiken |
+| Niveau/leerjaar per vak | `Can_Teach_Until_Education_Level__c` + `Can_Teach_Until_School_Year__c` + `Teaching_Level_Details__c` | picklist + textarea | Zie niveau-logica hieronder |
 | Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
+| In welke vakken examentraining? | `Exam_Training_Details__c` | textarea | TODO: veld nog aanmaken |
 | Basisschoolleerlingen? | `CanTeachElementarySchool__c` | boolean | Ja=true, Nee=false |
-| Is er nog iets toe te voegen? | `Comments_FromWebForm__c` | textarea | **VERPLICHT — nooit overslaan, ook als kort** |
-| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Toegevoegd aan Tally op 21 april 2026 (laatste pagina). Opslaan als YYYY-MM-DD. |
+| Is er nog iets toe te voegen? | `Profile_Comments__c` | textarea | TODO: veld nog aanmaken |
+| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Toegevoegd 21 april 2026. Opslaan als YYYY-MM-DD. |
 
-**Daarna ook altijd:** `Profile_Completed_Date__c` = vandaag.
+**Daarna altijd:** `Profile_Completed_Date__c` = vandaag.
 
-**Regel:** Elk Tally-antwoord MOET worden verwerkt. Lege/korte antwoorden (zoals "Te st") wel degelijk opslaan in Comments. Als een picklist-waarde niet matcht (bijv. "Es" past niet in `WO_Master__c` picklist), laat dan alleen het picklist-veld leeg maar vul wél `Study__c` (string) en `HBO_WO__c` (niveau). Rapporteer per docent: welke velden zijn gevuld, welke zijn leeg en waarom.
+**Teaching_Location__c mapping (Tally optie → SF waarde):**
+- A. Online → `Online`
+- B. Fysiek (thuis bij de leerling) → `Fysiek (thuis)`
+- C. Fysiek (openbare ruimte) → `Fysiek (openbare ruimte)`
+- D. Fysiek (openbare ruimte + thuis bij de leerling) → `Fysiek (openbare ruimte + thuis)`
+- E. Hybride (online + openbare ruimte + thuis) → `Hybride (online + openbare ruimte + thuis)`
+- F. Hybride (online + openbare ruimte) → `Hybride (online + openbare ruimte)`
 
-### 📧 6. Gmail — Ongelezen
-Nieuwe profielreacties + sollicitaties samenvatten
+**Niveau-logica voor Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c:**
+- "Alle niveaus / elk leerjaar" → `Gymnasium` + `6`
+- "t/m Gymnasium" → `Gymnasium` + `6`
+- "t/m VWO" → `VWO` + `6`
+- "t/m HAVO" → `Havo` + `5`
+- "VWO t/m jaar 3/4" → `VWO` + `4`
+- "t/m VMBO" → `VMBO - TL` + `4`
+- "alleen basisschool" → `Basisschool` + `Groep 8`
+- Extra details per vak → ook in `Teaching_Level_Details__c`
+- Teaching_Level_Details__c is een textarea: altijd EERST bestaande inhoud ophalen en nieuwe info TOEVOEGEN (niet overschrijven)
+
+**Regel:** Elk antwoord verwerken. Als picklist niet matcht, laat picklist leeg maar vul string/textarea wel. Rapporteer per docent wat gevuld is en wat niet.
+
+### 6. Gmail — Ongelezen
+Profielreacties van docenten verwerken (zie email template sectie) + sollicitaties samenvatten.
+
+**Email profielreacties mappen:**
+- Telefoonnummer → `Phone` (formaat: +31XXXXXXXXX)
+- Geboortedatum → `Date_of_Birth__c`
+- Straat + huisnummer → `PersonMailingStreet`
+- Postcode → `PersonMailingPostalCode`
+- Stad → `PersonMailingCity`
+- Woon je in andere stad dan studie? Ja → studiestad in `PersonOtherCity`
+- Studie → `Study__c`
+- Instelling → `University__c`
+- IBAN → `IBAN__c`
+- Naam op bankpas → `NameOnBankCard__c`
+- Hoe bijles geven → `Teaching_Location__c` (zie Teaching_Location mapping)
+- Welke vakken → `Subjects__c`
+- Tot welk niveau → `Can_Teach_Until_Education_Level__c` (zie niveau-logica)
+- Tot welk leerjaar → `Can_Teach_Until_School_Year__c`
+- Examentraining ja/nee → `Can_Give_Exam_Training__c`
+- In welke vakken examentraining → `Exam_Training_Details__c` (TODO: veld aanmaken)
+- Basisschoolleerlingen → `CanTeachElementarySchool__c`
 
 ## AVG/GDPR BELEID
 
-- **Offboarded docenten:** persoonsgegevens wissen na 2 maanden, IBAN bewaren 7 jaar (fiscale bewaarplicht)
+- **Offboarded docenten:** persoonsgegevens wissen na 2 maanden, IBAN bewaren 7 jaar
 - **Not a Match / Not Interested:** alles verwijderen na 6 maanden
-- **Contract PDF:** verwijderen na offboarding (geen juridische waarde zonder naam)
+- **Contract PDF:** verwijderen na offboarding
 
 ## TODO BEHEER
 - Bij elke sessie: lees TODO.md aan het begin
 - Na elke sessie met wijzigingen: schrijf bijgewerkte TODO.md terug via git commit + push
-- Afgeronde taken verwijderen, nieuwe taken toevoegen
