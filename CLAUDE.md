@@ -97,7 +97,7 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c (TODO), Exam_Training_Details__c (TODO), Profile_Comments__c (TODO)
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
 **Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
@@ -107,6 +107,8 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 **Can_Teach_Until_Education_Level__c picklist:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
 
 **Can_Teach_Until_School_Year__c picklist:** Groep 1 t/m Groep 8 (basisschool) | 1 t/m 6 (voortgezet onderwijs)
+
+**Graduated__c picklist:** Studeer momenteel | Afgestudeerd
 
 **Niveaus en max leerjaren:**
 - Basisschool: Groep 1 t/m Groep 8
@@ -188,7 +190,7 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 | Tally vraag | SF veld | Type | Opmerking |
 |---|---|---|---|
 | email | PersonEmail (lookup) | — | Om docent record te vinden |
-| Studeer je momenteel of afgestudeerd? | `Graduated__c` | picklist | TODO: veld nog aanmaken |
+| Studeer je momenteel of afgestudeerd? | `Graduated__c` | picklist | "Studeer momenteel" / "Afgestudeerd" |
 | Wat heb je gestudeerd? | `Study__c` | string | Vrije tekst |
 | Bij welke instelling? | `University__c` | string | Vrije tekst |
 | — (als instelling in picklist past) | `University_HBO__c` / `University_WO__c` | picklist | Alleen vullen als matchend |
@@ -204,10 +206,10 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 | Welke vakken? | `Subjects__c` | multi-picklist | Engelstalige SF waarden gebruiken |
 | Niveau/leerjaar per vak | `Can_Teach_Until_Education_Level__c` + `Can_Teach_Until_School_Year__c` + `Teaching_Level_Details__c` | picklist + textarea | Zie niveau-logica hieronder |
 | Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
-| In welke vakken examentraining? | `Exam_Training_Details__c` | textarea | TODO: veld nog aanmaken |
+| In welke vakken examentraining? | `Exam_Training_Details__c` | textarea | |
 | Basisschoolleerlingen? | `CanTeachElementarySchool__c` | boolean | Ja=true, Nee=false |
-| Is er nog iets toe te voegen? | `Profile_Comments__c` | textarea | TODO: veld nog aanmaken |
-| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Toegevoegd 21 april 2026. Opslaan als YYYY-MM-DD. |
+| Is er nog iets toe te voegen? | `Profile_Comments__c` | textarea | Los van Comments_FromWebForm__c |
+| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Opslaan als YYYY-MM-DD |
 
 **Daarna altijd:** `Profile_Completed_Date__c` = vandaag.
 
@@ -221,19 +223,18 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 
 **Niveau-logica voor Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c:**
 - "Alle niveaus / elk leerjaar" → `Gymnasium` + `6`
-- "t/m Gymnasium" → `Gymnasium` + `6`
 - "t/m VWO" → `VWO` + `6`
 - "t/m HAVO" → `Havo` + `5`
 - "VWO t/m jaar 3/4" → `VWO` + `4`
 - "t/m VMBO" → `VMBO - TL` + `4`
 - "alleen basisschool" → `Basisschool` + `Groep 8`
 - Extra details per vak → ook in `Teaching_Level_Details__c`
-- Teaching_Level_Details__c is een textarea: altijd EERST bestaande inhoud ophalen en nieuwe info TOEVOEGEN (niet overschrijven)
+- Teaching_Level_Details__c: altijd EERST bestaande inhoud ophalen en nieuwe info TOEVOEGEN (niet overschrijven)
 
 **Regel:** Elk antwoord verwerken. Als picklist niet matcht, laat picklist leeg maar vul string/textarea wel. Rapporteer per docent wat gevuld is en wat niet.
 
 ### 6. Gmail — Ongelezen
-Profielreacties van docenten verwerken (zie email template sectie) + sollicitaties samenvatten.
+Profielreacties van docenten verwerken + sollicitaties samenvatten.
 
 **Email profielreacties mappen:**
 - Telefoonnummer → `Phone` (formaat: +31XXXXXXXXX)
@@ -241,7 +242,7 @@ Profielreacties van docenten verwerken (zie email template sectie) + sollicitati
 - Straat + huisnummer → `PersonMailingStreet`
 - Postcode → `PersonMailingPostalCode`
 - Stad → `PersonMailingCity`
-- Woon je in andere stad dan studie? Ja → studiestad in `PersonOtherCity`
+- Woon je in andere stad? Ja → studiestad in `PersonOtherCity`
 - Studie → `Study__c`
 - Instelling → `University__c`
 - IBAN → `IBAN__c`
@@ -251,7 +252,7 @@ Profielreacties van docenten verwerken (zie email template sectie) + sollicitati
 - Tot welk niveau → `Can_Teach_Until_Education_Level__c` (zie niveau-logica)
 - Tot welk leerjaar → `Can_Teach_Until_School_Year__c`
 - Examentraining ja/nee → `Can_Give_Exam_Training__c`
-- In welke vakken examentraining → `Exam_Training_Details__c` (TODO: veld aanmaken)
+- In welke vakken examentraining → `Exam_Training_Details__c`
 - Basisschoolleerlingen → `CanTeachElementarySchool__c`
 
 ## AVG/GDPR BELEID
