@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 22 april 2026
+Laatst bijgewerkt: 23 april 2026
 
 ---
 
@@ -13,6 +13,9 @@ Laatst bijgewerkt: 22 april 2026
 - **✅ GEDAAN: Bulk import On-boarded docenten naar MailerLite** (21 april 2026) — 104 docenten geïmporteerd
 - **✅ GEDAAN: MailerLite Scenario 13 — Name + Last name velden toegevoegd** (21 april 2026)
 - **✅ GEDAAN: Salesforce velden aangemaakt** (21 april 2026): `Graduated__c`, `Exam_Training_Details__c`, `Profile_Comments__c`
+- **✅ GEDAAN: Contract datums op layout** — staat al in Details tab, voldoende
+- **✅ GEDAAN: Teaching_Location__c geactiveerd voor Teacher Record Type** (23 april 2026)
+- **✅ GEDAAN: Profile_Completed_Date__c toegevoegd aan Teacher Path** (23 april 2026)
 
 ---
 
@@ -55,22 +58,12 @@ Laatst bijgewerkt: 22 april 2026
 ## 📧 MailerLite
 
 - **Update email sturen naar alle On-boarded docenten**: over waar Bright Panda mee
-  bezig is en naartoe wil werken, inclusief de Docent Gids. Inhoud wordt aangeleverd
-  door Raouf en Yasin. Versturen via MailerLite campagne naar groep "On-boarded".
+  bezig is en naartoe wil werken, inclusief de Docent Gids. Versturen via MailerLite
+  campagne naar groep "On-boarded". HTML blokken klaar (23 april 2026).
 
 - **Post-proefles email flow inrichten**.
 
 - **HTML design verwerken in post-proefles automation**.
-
----
-
-## 🗄️ Salesforce — Overig
-
-- **Contract_Start_Date__c en Contract_End_Date__c toevoegen aan Business Account Layout**.
-
-- **Teaching_Location__c beschikbaar maken voor Teacher Record Type** via klassieke URL.
-
-- **Profile_Completed_Date__c toevoegen aan Teacher Path key fields**.
 
 ---
 
