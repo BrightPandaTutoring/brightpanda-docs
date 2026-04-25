@@ -145,8 +145,8 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
 | 19 | Documentation Reminder Pending Onboarding (filter vóór iterator: Total number of bundles > 0) | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
-| 21 | Intake Flow: Contact Status (in opbouw) | 🔧 Nog te bouwen | — |
-| 22 | Daily Callbacks Slack 09:00 (in opbouw) | 🔧 Nog te bouwen | — |
+| 21 | Intake Flow: Contact Status | 🔧 Inactief (in opbouw) | 5442970 |
+| 22 | Daily Callbacks Slack 09:00 | 🔧 Nog te bouwen | — |
 
 ## KRITIEKE REGELS
 
