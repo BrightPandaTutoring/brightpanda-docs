@@ -23,8 +23,8 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
-**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN), teacher_invitation (verwijst naar tweede bericht voor contact ouder), teacher_intro_message_parent (kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
-**WhatsApp templates (wacht op goedkeuring):** pending_onboarding_tally_reminder, availability_conflict_teacher (opnieuw indienen met voorbeeldwaarden), availability_conflict_teacher_reminder (opnieuw indienen met voorbeeldwaarden)
+**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN), teacher_invitation (verwijst naar tweede bericht voor contact ouder), teacher_intro_message_parent (kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName), intake_parent_1st_attempt_no_answer (params: {{1}}=voornaam ouder, {{2}}=naam leerling)
+**WhatsApp templates (ingediend, wacht op goedkeuring):** intake_parent_2nd_attempt_no_answer, intake_parent_3rd_attempt_no_answer, pending_onboarding_tally_reminder, availability_conflict_teacher, availability_conflict_teacher_reminder
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
@@ -93,13 +93,15 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 
 **Teacher Lifecycle:** New → Interview Invited → Interview → Contracting → Pending Onboarding → On-boarded → Contract Expiring Soon → Renew → Offboarded → Not a Match → Not Interested
 
-**Student Lifecycle:** New → Enrollment → Matching Teacher → Trial Class → Client → Stopped - Never Converted → Stopped - Existing Client → Wrong Match → Churned
+**Student Lifecycle:** New → Intake → Matching Teacher → Trial Class → Pending Conversion → Client → Unreachable → Churned - Temporary → Churned - Finished
+
+**Contact_Status__c (Student):** Not Contacted | Called - 1st Attempt No Answer | Called - 2nd Attempt No Answer | Called - 3rd Attempt No Answer | Reached - Need to Call Back | Reached
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
 **Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
-**Student velden:** LifecycleStage__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
+**Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
 **Teaching_Location__c picklist waarden (exacte SF waarden):**
 Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + thuis) | Hybride (online + openbare ruimte) | Hybride (online + openbare ruimte + thuis)
@@ -119,9 +121,11 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 
 ## MAKE.COM SCENARIOS
 
+⚠️ **Altijd Make.com checken via MCP voor het aanmaken van een nieuw scenario om het juiste volgnummer te bepalen.**
+
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | ✅ Actief | 4729958 |
+| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | 🔧 Inactief | 4729958 |
 | 02 | Parent Timeslot Invitation | 🔧 Inactief (wacht op test) | 4740354 |
 | 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief (wacht op test) | 4783259 |
 | 04 | Teacher Timeslot Submission | 🔧 Inactief (wacht op test) | 4839158 |
@@ -130,14 +134,19 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 | 07 | Internal Alert Teacher No Response | 🔧 Inactief (wacht op test) | 4858555 |
 | 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief (wacht op test) | 4892054 |
 | 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief (wacht op test) | 4744104 |
-| 10 | Student New Registration → MailerLite + WhatsApp | ✅ Actief | 4969006 |
+| 10 | Student New Registration → MailerLite + WhatsApp + Slack #nieuwe-aanmeldingen | ✅ Actief | 4969006 |
 | 11 | Post-proefles flow | 🔧 Inactief (wacht op test) | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) — MailerLite modules bijgewerkt 21 april: Name + Last name velden toegevoegd | ✅ Actief | 5109244 |
+| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | 5109244 |
 | 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen, vult Contract_URL__c) | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
-| 17 | Auto On-boarded (dagelijks 08:00, checkt 3 velden: Profile_Completed_Date__c + Bsport_Account_Created__c + Documentation_Agreed__c) | ✅ Actief | - |
-| 19 | Documentation Reminder Pending Onboarding (filter vóór iterator: Total number of bundles > 0) | ✅ Actief | - |
+| 16 | Teacher Guide & Bsport Email After Account Creation | ✅ Actief | 5282459 |
+| 17 | Auto On-boarded (dagelijks 08:00, checkt 3 velden: Profile_Completed_Date__c + Bsport_Account_Created__c + Documentation_Agreed__c) | ✅ Actief | 5331760 |
+| 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
+| 19 | Documentation Reminder Pending Onboarding (filter vóór iterator: Total number of bundles > 0) | ✅ Actief | 5339372 |
+| 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
+| 21 | Intake Flow: Contact Status (in opbouw) | 🔧 Nog te bouwen | — |
+| 22 | Daily Callbacks Slack 09:00 (in opbouw) | 🔧 Nog te bouwen | — |
 
 ## KRITIEKE REGELS
 
@@ -154,11 +163,12 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
 12. **`salesforce:makeApiCall` in Make.com:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL opslaan in `Contract_URL__c`.
 13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`.
-14. **Sleutelwoorden:**
+14. **Nieuw scenario aanmaken:** ALTIJD eerst Make.com checken via MCP (scenarios_list) om het juiste volgnummer te bepalen.
+15. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting genereren → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → geef korte status → vraag wat ze willen doen
-15. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
+16. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
 
 ## DAGSTART ROUTINE
 
