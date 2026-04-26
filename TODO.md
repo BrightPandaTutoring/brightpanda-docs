@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 25 april 2026
+Laatst bijgewerkt: 26 april 2026
 
 ---
 
@@ -20,6 +20,11 @@ Laatst bijgewerkt: 25 april 2026
 - **✅ GEDAAN: Slack workspace aangemaakt** (25 april 2026) — Bright Panda workspace
 - **✅ GEDAAN: Slack verbonden in Make.com** (25 april 2026) — "Bright Panda Slack" connectie
 - **✅ GEDAAN: Scenario 10 uitgebreid met Slack module** (25 april 2026) → #nieuwe-aanmeldingen
+- **✅ GEDAAN: Scenario 21 — Intake Flow gebouwd** (26 april 2026) — 5 routes: 1st/2nd/3rd attempt, Reached - Need to Call Back, Reached
+- **✅ GEDAAN: Scenario 22 — Daily Callbacks + Nieuwe aanmeldingen Slack 09:00 gebouwd** (26 april 2026)
+- **✅ GEDAAN: Salesforce checkbox velden aangemaakt** (26 april 2026): `Intake_1st_Attempt_Sent_c__c`, `Intake_2nd_Attempt_Sent_c__c`, `Intake_3rd_Attempt_Sent_c__c`, `Intake_Reached_Callback_Sent__c`, `Intake_Reached_Sent__c`
+- **✅ GEDAAN: WhatsApp templates ingediend** (26 april 2026): `intake_parent_1st_attempt_no_answer` ✅, `intake_parent_2nd_attempt_no_answer` ✅, `intake_parent_3rd_attempt_no_answer_v3` ⏳ (marketing categorie)
+- **✅ GEDAAN: MailerLite automations aangemaakt** (26 april 2026): Intake 1st/2nd/3rd Attempt No Answer, Intake Reached
 
 ---
 
@@ -47,6 +52,8 @@ Laatst bijgewerkt: 25 april 2026
 
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen en verwerken in contracttekst.
 
+- **Scenario 21 + 22 testen** — end-to-end test uitvoeren met testrecord
+
 ---
 
 ## 🏢 Salesforce Enterprise upgrade
@@ -59,11 +66,9 @@ Laatst bijgewerkt: 25 april 2026
 ## 💬 Slack
 
 - **Resterende kanalen aanmaken** in Bright Panda workspace:
-  - #callbacks
   - #proeflessen
   - #pending-conversie
   - #escalaties
-- **Intake flow Slack berichten** bouwen in Make.com (dagelijks 09:00 overzicht #callbacks)
 - **Proefles voltooid alert** bouwen → #proeflessen
 - **Escalatie alerts** bouwen → #escalaties
 - **Pending conversie alerts** bouwen → #pending-conversie
@@ -72,19 +77,9 @@ Laatst bijgewerkt: 25 april 2026
 
 ## ⚙️ Make.com / Automations
 
-- **Intake flow bouwen (nieuw scenario)**:
-  - Trigger: Contact_Status__c wijziging op Student record
-  - Poging 1 → WhatsApp + email ouder + Slack delay 09:00 (#callbacks)
-  - Poging 2 → WhatsApp + email ouder (urgenter) + Slack delay 09:00 (#callbacks)
-  - Poging 3 → WhatsApp + email ouder (laatste) + LifecycleStage → Unreachable
-  - Reached - Need to Call Back → Salesforce Task + Slack delay 09:00
+- **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
 
-- **Scenario 21 bouwen — Tally "Aanvullende Profielinfo" → Salesforce automatisering**:
-  Trigger: Tally webhook voor formulier `tally.so/r/NpY9RW`. Let op: vaknamen NL → EN vertaaltabel nodig.
-
-- **Tally vaknamen NL → EN vertaling oplossen voor Scenario 21**.
-
-- **Scenario 1 polling vervangen door Salesforce webhook**.
+- **Scenario 21 polling vervangen door Salesforce webhook** (na Enterprise upgrade)
 
 - **Intern alert bouwen na proefles**.
 
@@ -106,6 +101,8 @@ Laatst bijgewerkt: 25 april 2026
 
 - **HTML design verwerken in post-proefles automation**.
 
+- **MailerLite email "Intake - Reached" aanmaken** — bevestigingsmail na succesvol contact met ouder
+
 ---
 
 ## 📱 WhatsApp / 360dialog
@@ -113,6 +110,8 @@ Laatst bijgewerkt: 25 april 2026
 - **WhatsApp tekst schrijven voor handmatige availability check**.
 
 - **`parent_timeslot_final` template aanpassen**: video → afbeelding in header.
+
+- **`intake_parent_3rd_attempt_no_answer_v3` goedkeuring afwachten** — ingediend als Marketing categorie
 
 ---
 
