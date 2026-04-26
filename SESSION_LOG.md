@@ -3,46 +3,56 @@
 
 ---
 
-## Laatste sessie: 19 april 2026
+## Laatste sessie: 26 april 2026
 
 ### Waar werd aan gewerkt
-- **Scenario 14 (DocuSeal Contract Signed)** uitgebreid met `Contract_URL__c` veld
-- **Scenario 19 (Documentation Reminder Pending Onboarding)** fix: filter toegevoegd vóór iterator om lege bundles te voorkomen
-- Nieuw Salesforce veld `Contract_URL__c` (URL, 500 chars) aangemaakt op Account object
-- Uitgebreid onderzoek gedaan naar PDF upload als ContentVersion in Salesforce — niet mogelijk op huidige licentie
+- **Scenario 21 — Intake Flow: Contact Status** volledig gebouwd (ID: 5442970)
+- **Scenario 22 — Daily Callbacks + Nieuwe aanmeldingen Slack 09:00** volledig gebouwd (ID: 5451841)
+- **WhatsApp templates** geschreven en ingediend bij Meta
+- **MailerLite automations** aangemaakt voor intake flow
+- **Salesforce checkbox velden** aangemaakt voor duplicate prevention
 
-### Belangrijkste beslissingen deze sessie
-- **PDF bestand uploaden naar Salesforce niet haalbaar**: zowel `salesforce:makeApiCall` (met en zonder absolute URL) als eigen Connected App geven problemen → tijdelijke oplossing: `Contract_URL__c` slaat DocuSeal PDF URL op
-- **Make.com iterator regel geformaliseerd**: altijd filter `Total number of bundles > 0` vóór iterator plaatsen om downstream errors bij 0 resultaten te voorkomen
-- **`salesforce:makeApiCall` regel geformaliseerd**: altijd absolute URL gebruiken, instance URL wordt niet automatisch toegevoegd
+### Belangrijkste beslissingen
+- **Watch Records (polling)** gekozen als trigger voor Scenario 21 — CDC vereist Enterprise Edition, Flows beperkt tot 5 op Professional Edition
+- **Checkbox velden per route** aangemaakt om dubbele berichten te voorkomen bij herhaalde record updates
+- **Slack berichten per ouder apart** zodat jullie per bericht kunnen reageren en aangeven wie het oppakt
+- **Scenario 22 Route 1** = nieuwe aanmeldingen (#nieuwe-aanmeldingen), **Route 2** = callbacks (#callbacks)
+- **Template 3 ingediend als Marketing** — Meta categoriseert emotionele/urgente templates als Marketing, acceptabel voor 3e poging
 
-### Key learnings toegevoegd aan CLAUDE.md
-- KRITIEKE REGEL 12: `salesforce:makeApiCall` vereist absolute URL, ContentVersion endpoint geeft nog steeds [404] door ontbrekende OAuth scopes
-- KRITIEKE REGEL 13: Make.com iterator met 0 bundles → altijd filter vooraf
-- Salesforce Connected App aanmaken vereist specifieke permissies — niet beschikbaar op huidige licentie
+### Scenario 21 — Intake Flow structuur
+- **Route 1** (1st Attempt No Answer): WhatsApp + MailerLite "Intake - 1st Attempt" + SF checkbox
+- **Route 2** (2nd Attempt No Answer): WhatsApp + MailerLite "Intake - 2nd Attempt No Answer" + SF checkbox
+- **Route 3** (3rd Attempt No Answer): WhatsApp + MailerLite "Intake - 3rd Attempt No Answer" + SF update (Unreachable + checkbox)
+- **Route 4** (Reached - Need to Call Back): SF checkbox + Slack direct naar #callbacks
+- **Route 5** (Reached): MailerLite "Intake - Reached" + SF checkbox
 
-### Scenarios geüpdate in CLAUDE.md
-- Scenario 14: beschrijving uitgebreid met "vult Contract_URL__c"
-- Scenario 17: toegevoegd aan tabel (Auto On-boarded, dagelijks 08:00)
-- Scenario 19: toegevoegd aan tabel (Documentation Reminder, met filter)
+### WhatsApp templates status
+- `intake_parent_1st_attempt_no_answer` ✅ Goedgekeurd (Utility)
+- `intake_parent_2nd_attempt_no_answer` ✅ Goedgekeurd (Utility)
+- `intake_parent_3rd_attempt_no_answer_v3` ⏳ Ingediend (Marketing categorie)
 
-### Wachten op externe actie
-- Template `pending_onboarding_tally_reminder` → wachten op Meta goedkeuring (Scenario 15)
-- Templates `availability_conflict_teacher` + `_reminder` → opnieuw indienen met voorbeeldwaarden
-- Templates `teacher_invitation` + `teacher_intro_message_parent` → wachten op Meta goedkeuring (Scenario 1)
+### Nieuwe Salesforce velden
+- `Intake_1st_Attempt_Sent_c__c`, `Intake_2nd_Attempt_Sent_c__c`, `Intake_3rd_Attempt_Sent_c__c`
+- `Intake_Reached_Callback_Sent__c`, `Intake_Reached_Sent__c`
+- Let op: API namen hebben dubbele `_c__c` suffix door fout bij aanmaken — werkt wel
+
+### Wachten op
+- `intake_parent_3rd_attempt_no_answer_v3` Meta goedkeuring
+- Scenario 21 + 22 end-to-end test uitvoeren
+- MailerLite email "Intake - Reached" nog schrijven en automation aanmaken
 
 ### Eerstvolgende acties
-1. End-to-end onboarding test met echte docent (geen testrecord meer)
-2. Student Path guidance teksten in Salesforce instellen voor alle lifecycle stages
-3. Scenario 1 testen zodra templates goedgekeurd zijn
-4. Scenario 13 — Interview Invited WhatsApp testen
-5. Licentie-upgrade onderzoeken voor PDF upload naar Salesforce (of alternatieve opslag: Google Drive / Dropbox / S3)
+1. End-to-end test Scenario 21 + 22 uitvoeren met testrecord
+2. MailerLite email "Intake - Reached" schrijven en automation aanmaken
+3. Slack kanalen #proeflessen, #pending-conversie, #escalaties aanmaken + scenarios bouwen
+4. Student Lifecycle stages toevoegen in Salesforce (Intake, Pending Conversion, Unreachable etc.)
+5. Contact_Status__c waarden + kleuren instellen in Salesforce
 
 ### Let op / context
-- Scenarios 1-9 + 11 staan op **inactief** in Make.com (Raouf zet ze pas live na test)
-- Scenario 10, 12, 13, 14, 15, 17, 19 zijn **actief**
-- Nieuw veld `Contract_URL__c` staat nu in Teacher velden in CLAUDE.md
-- Test op 19 april: Raouf Angudi Teacher record gebruikt voor Scenario 19 test, daarna weer op On-boarded gezet
+- Scenario 21 draait elke 15 minuten (polling) — niet real-time
+- Salesforce Professional Edition: max 5 Flows, geen CDC
+- Scenario 22 draait dagelijks om 09:00 (Europe/Amsterdam)
+- Scenarios 1-9, 11 staan nog op inactief in Make.com
 
 ### Volledige to-do lijst
 Zie `TODO.md` in deze repo voor de actuele lijst per categorie.
