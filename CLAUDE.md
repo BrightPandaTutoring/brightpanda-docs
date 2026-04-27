@@ -103,8 +103,18 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 
 **Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
 
-**Teaching_Location__c picklist waarden (exacte SF waarden):**
-Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + thuis) | Hybride (online + openbare ruimte) | Hybride (online + openbare ruimte + thuis)
+**Teaching_Location__c picklist — EXACTE SF waarden (geen "Beide", geen "Hybrid"):**
+- `Online`
+- `Fysiek (thuis)`
+- `Fysiek (openbare ruimte)`
+- `Fysiek (openbare ruimte + thuis)`
+- `Hybride (online + openbare ruimte)`
+- `Hybride (online + openbare ruimte + thuis)`
+
+**PreferredLanguage__c picklist — voertaal bijles (EXACTE SF waarden, in het Engels):**
+- `Dutch`
+- `English`
+- `Both / No Preference`
 
 **Can_Teach_Until_Education_Level__c picklist:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
 
@@ -164,11 +174,13 @@ Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + t
 12. **`salesforce:makeApiCall` in Make.com:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL opslaan in `Contract_URL__c`.
 13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`.
 14. **Nieuw scenario aanmaken:** ALTIJD eerst Make.com checken via MCP (scenarios_list) om het juiste volgnummer te bepalen.
-15. **Sleutelwoorden:**
+15. **Teaching_Location__c:** Heeft GEEN waarde "Beide", "Both" of "Hybrid". Altijd één van de 6 exacte Nederlandse SF-waarden gebruiken (zie picklist hierboven). Tally antwoord "Hybride (online + openbare ruimte + aan huis)" = `Hybride (online + openbare ruimte + thuis)`.
+16. **PreferredLanguage__c:** Dit is het veld voor de voertaal van de bijles (NL/EN/Beide). Waarden zijn Engelstalig: `Dutch` / `English` / `Both / No Preference`. Niet te verwarren met een apart Teaching_Language__c veld — dat bestaat niet.
+17. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting genereren → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → geef korte status → vraag wat ze willen doen
-16. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
+18. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
 
 ## DAGSTART ROUTINE
 
@@ -210,9 +222,9 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 | Tweede studie (bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
 | Woon je in andere stad dan studie? | `PersonOtherCity` | string | Alleen invullen bij Ja: studiestad invullen |
 | Wat is je IBAN? | `IBAN__c` | string | Verplicht |
-| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam (niet banknaam) |
-| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | Zie Teaching_Location mapping hieronder |
-| In welke taal geef je bijles? | `PreferredLanguage__c` | picklist | "Dutch" / "English" / "Both / No Preference" |
+| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam (niet banknaam!) |
+| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | Zie Teaching_Location mapping hieronder — GEEN "Beide" gebruiken |
+| In welke taal geef je bijles? | `PreferredLanguage__c` | picklist | "Dutch" / "English" / "Both / No Preference" — Engelstalige waarden! |
 | Welke vakken? | `Subjects__c` | multi-picklist | Engelstalige SF waarden gebruiken |
 | Niveau/leerjaar per vak | `Can_Teach_Until_Education_Level__c` + `Can_Teach_Until_School_Year__c` + `Teaching_Level_Details__c` | picklist + textarea | Zie niveau-logica hieronder |
 | Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
@@ -223,13 +235,20 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 
 **Daarna altijd:** `Profile_Completed_Date__c` = vandaag.
 
-**Teaching_Location__c mapping (Tally optie → SF waarde):**
-- A. Online → `Online`
-- B. Fysiek (thuis bij de leerling) → `Fysiek (thuis)`
-- C. Fysiek (openbare ruimte) → `Fysiek (openbare ruimte)`
-- D. Fysiek (openbare ruimte + thuis bij de leerling) → `Fysiek (openbare ruimte + thuis)`
-- E. Hybride (online + openbare ruimte + thuis) → `Hybride (online + openbare ruimte + thuis)`
-- F. Hybride (online + openbare ruimte) → `Hybride (online + openbare ruimte)`
+**Teaching_Location__c mapping (Tally optie → exacte SF waarde):**
+- "Online" → `Online`
+- "Fysiek (thuis bij de leerling)" → `Fysiek (thuis)`
+- "Fysiek (openbare ruimte)" → `Fysiek (openbare ruimte)`
+- "Fysiek (openbare ruimte + thuis bij de leerling)" → `Fysiek (openbare ruimte + thuis)`
+- "Hybride (online + openbare ruimte + thuis)" of "aan huis" → `Hybride (online + openbare ruimte + thuis)`
+- "Hybride (online + openbare ruimte)" → `Hybride (online + openbare ruimte)`
+- ⚠️ "Beide" of "Both" bestaat NIET als waarde — altijd naar bovenstaande opties mappen
+
+**PreferredLanguage__c mapping (Tally optie → exacte SF waarde):**
+- "Alleen Nederlands / Dutch only" → `Dutch`
+- "Alleen Engels / English only" → `English`
+- "Beide / Both" → `Both / No Preference`
+- ⚠️ Waarden zijn Engelstalig in Salesforce — nooit Nederlandse waarden opslaan
 
 **Niveau-logica voor Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c:**
 - "Alle niveaus / elk leerjaar" → `Gymnasium` + `6`
