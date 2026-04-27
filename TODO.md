@@ -23,11 +23,13 @@ Laatst bijgewerkt: 27 april 2026
 - **✅ GEDAAN: Scenario 21 — Intake Flow gebouwd** (26 april 2026) — 5 routes: 1st/2nd/3rd attempt, Reached - Need to Call Back, Reached
 - **✅ GEDAAN: Scenario 22 — Daily Callbacks + Nieuwe aanmeldingen Slack 09:00 gebouwd** (26 april 2026)
 - **✅ GEDAAN: Salesforce checkbox velden aangemaakt** (26 april 2026): `Intake_1st_Attempt_Sent_c__c`, `Intake_2nd_Attempt_Sent_c__c`, `Intake_3rd_Attempt_Sent_c__c`, `Intake_Reached_Callback_Sent__c`, `Intake_Reached_Sent__c`
-- **✅ GEDAAN: WhatsApp templates ingediend** (26 april 2026): `intake_parent_1st_attempt_no_answer` ✅, `intake_parent_2nd_attempt_no_answer` ✅, `intake_parent_3rd_attempt_no_answer_v3` ✅ (goedgekeurd als Marketing categorie)
+- **✅ GEDAAN: WhatsApp templates ingediend + goedgekeurd** (26-27 april 2026): alle intake templates goedgekeurd, incl. `intake_parent_3rd_attempt_no_answer_v3` (Marketing categorie)
 - **✅ GEDAAN: MailerLite automations aangemaakt** (26 april 2026): Intake 1st/2nd/3rd Attempt No Answer, Intake Reached
 - **✅ GEDAAN: Email campagne "Docenten Update — April 2026" verstuurd** (27 april 2026) — via MailerLite naar groep "On-boarded"
 - **✅ GEDAAN: Student Lifecycle stages toegevoegd in Salesforce** (27 april 2026): Intake, Pending Conversion, Unreachable, Churned - Finished, Churned - Temporary — Enrollment gedeactiveerd
 - **✅ GEDAAN: Contact_Status__c waarden + kleuren ingesteld** (27 april 2026): Not Contacted (grijs), Called 1st/2nd/3rd Attempt No Answer (geel/oranje/rood), Reached - Need to Call Back (blauw), Reached (groen)
+- **✅ GEDAAN: `parent_timeslot_final` template aangepast** (27 april 2026) — video → afbeelding in header
+- **✅ GEDAAN: `intake_parent_3rd_attempt_no_answer_v3` goedgekeurd** (27 april 2026) — Marketing categorie
 
 ---
 
@@ -93,8 +95,6 @@ Laatst bijgewerkt: 27 april 2026
 ## 📱 WhatsApp / 360dialog
 
 - **WhatsApp tekst schrijven voor handmatige availability check**.
-
-- **`parent_timeslot_final` template aanpassen**: video → afbeelding in header.
 
 ---
 
