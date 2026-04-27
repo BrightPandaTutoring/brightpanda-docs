@@ -47,6 +47,7 @@ Laatst bijgewerkt: 27 april 2026
 
 - **Salesforce gesprek opvolgen**: bevestiging Enterprise upgrade + 50% korting voor 2-3 jaar contract
 - **Vragen bevestigen**: Change Data Capture beschikbaar? ContentVersion API toegang? Picklist via Metadata API?
+- **Na upgrade: Webex App koppelen aan Salesforce** — via AppExchange installeren → bellen vanuit SF records + automatische call logging per leerling/ouder. Vereist Enterprise Edition. Webex Basis licentie (via KPN EEN) is voldoende.
 
 ---
 
