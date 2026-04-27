@@ -92,12 +92,6 @@ Laatst bijgewerkt: 27 april 2026
 
 ---
 
-## 📱 WhatsApp / 360dialog
-
-- **WhatsApp tekst schrijven voor handmatige availability check**.
-
----
-
 ## 👤 Docenten opvolging
 
 - **Ashna Rajaram opvolgen**: studie, instelling, IBAN, naam op bankpas, max niveau, max leerjaar, examentraining voorkeur, basisschool voorkeur nog niet ingevuld.
