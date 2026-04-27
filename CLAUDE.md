@@ -13,7 +13,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Anthropic API:** Model: claude-opus-4-6 | Endpoint: https://api.anthropic.com/v1/messages
 
-**DocuSeal:** Endpoint: https://api.docuseal.eu/submissions | Template ID: 485548 | API Key: kF6DXM8V8AEJcRhXshwE1RxdvarDx9NHwuYjd9FnZz3 | Veldnamen ALTIJD lowercase | Velden readonly (docent tekent alleen) | Reminders: 3, 7 en 15 dagen | Email templates: signature request, reminder, document copy, completed notification
+**DocuSeal:** Endpoint: https://api.docuseal.eu/submissions | Template ID: 485548 | API Key: kF6DXM8V8AEJcRhXshwE1RxdvarDx9NHwuYjd9FnZz3 | Veldnamen ALTIJD lowercase | Velden readonly (docent tekent alleen) | Reminders: 3, 7 en 15 dagen
 
 **TinyURL:** Token: azYv7XXfVtOTugtEc5Yep12MaN24vz0fRObVwYMHjfcxNKcT1VHDEAqCPnji | Branded domain: go.brightpanda.nl | Output in Make.com: MODULE.data.data.tiny_url
 
@@ -23,27 +23,61 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Google Calendar (docent inplannen):** https://calendar.app.google/ArBhdKvAnLR924Xa6
 
-**WhatsApp templates (goedgekeurd):** interview_invitation_confirmation (params: {{1}} en {{2}} = voornaam docent NL + EN), teacher_invitation (verwijst naar tweede bericht voor contact ouder), teacher_intro_message_parent (kant-en-klare doorstuurtekst voor docent → ouder, params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName), intake_parent_1st_attempt_no_answer (params: {{1}}=voornaam ouder, {{2}}=naam leerling)
-**WhatsApp templates (ingediend, wacht op goedkeuring):** intake_parent_2nd_attempt_no_answer, intake_parent_3rd_attempt_no_answer, pending_onboarding_tally_reminder, availability_conflict_teacher, availability_conflict_teacher_reminder
-
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
-**Docent Gids:** `docs/docent-gids/nl.md` (NL) en `docs/docent-gids/en.md` (EN). Workflow: bij tekst aanpassen → haal op uit repo → pas aan → push terug → genereer nieuwe PDF.
+**Huiskleuren Bright Panda:**
+- Donkerblauw: #1d467f (primaire kleur)
+- Lichtblauw achtergrond: #f4f8fd
+- Amber accent: #f59e0c
+
+**WhatsApp templates (goedgekeurd):**
+- `interview_invitation_confirmation` (params: {{1}} en {{2}} = voornaam docent NL + EN)
+- `teacher_invitation`
+- `teacher_intro_message_parent` (params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
+- `intake_parent_1st_attempt_no_answer` ✅ Utility (params: {{1}}=voornaam ouder, {{2}}=naam leerling) — via 071-3031901 + 06-13689666
+- `intake_parent_2nd_attempt_no_answer` ✅ Utility (params: {{1}}=voornaam ouder, {{2}}=naam leerling)
+
+**WhatsApp templates (ingediend, wacht op goedkeuring):**
+- `intake_parent_3rd_attempt_no_answer_v3` — Marketing categorie (geaccepteerd), params: {{1}}=naam leerling, {{2}}=naam leerling
+- `pending_onboarding_tally_reminder`
+- `availability_conflict_teacher`
+- `availability_conflict_teacher_reminder`
+
+**Slack workspace:** Bright Panda
+**Slack kanalen:**
+- #nieuwe-aanmeldingen ✅ (nieuwe student aanmeldingen via Scenario 10 + dagelijks overzicht Scenario 22)
+- #callbacks ✅ (dagelijks overzicht callbacks + direct alert Reached - Need to Call Back)
+- #onboarding-bsport ✅ (dagelijks overzicht docenten klaar voor Bsport account aanmaak)
+- #proeflessen — nog aan te maken
+- #pending-conversie — nog aan te maken
+- #escalaties — nog aan te maken
+
+**MailerLite groepen (intake flow):**
+- Intake - 1st Attempt No Answer (automation + email aangemaakt)
+- Intake - 2nd Attempt No Answer (automation + email aangemaakt)
+- Intake - 3rd Attempt No Answer (automation + email aangemaakt)
+- Intake - Reached (groep aangemaakt, email nog te schrijven)
+
+**Progress bar email design (in ontwikkeling):**
+5 stappen vanuit klantperspectief: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
+- Voltooide stappen: blauwe cirkel (#1d467f) met wit vinkje
+- Actieve stap: pulserende amber cirkel (#f59e0c)
+- Toekomstige stappen: grijs
+- Per stap een geruststelling tekst (titel + subtekst)
+- Plan: exporteren als GIF per email fase → uploaden in MailerLite
 
 **Repo structuur:**
 - `/CLAUDE.md` — instructies (dit bestand) — single source of truth
 - `/TODO.md` — actuele to-do lijst
-- `/SESSION_LOG.md` — laatste sessie samenvatting (overschrijven bij elke "Afsluiten")
-- `/README.md` — repo overzicht
-- `/docs/docent-gids/` — Docent Gids bestanden (nl.md, en.md)
-- `/docs/make/` — technische detail-documentatie per Make.com scenario
-- `/docs/archive-website-content/` — oud archief
+- `/SESSION_LOG.md` — laatste sessie samenvatting
+- `/docs/docent-gids/` — nl.md + en.md
+- `/docs/make/` — technische Make.com documentatie
+- `/docs/mailerlite/` — html-reference.html (huiskleuren + email templates)
 
 ## EMAIL TEMPLATES
 
 ### Aanvulling profiel (handmatig, eerste keer)
 Onderwerp: `Aanvulling profiel — Bright Panda Bijles`
-Gebruik wanneer: docent staat op On-boarded maar heeft het Tally profielformulier nog niet ingevuld, en dit is de eerste keer dat ze het verzoek ontvangen.
 
 ```
 Hoi [Voornaam],
@@ -70,20 +104,38 @@ Kopieer dit bericht, plak het hieronder in deze chat en vul alle velden in. Stuu
    D. Fysiek (openbare ruimte + thuis bij de leerling)
    E. Hybride (online + openbare ruimte + thuis)
    F. Hybride (online + openbare ruimte)
-• Welke vakken kun je geven? (zie de volledige vakkenlijst onderaan dit bericht):
+• Welke vakken kun je geven?:
 • Tot welk niveau kun je lesgeven? (VMBO / HAVO / VWO / Gymnasium):
-• Tot welk leerjaar? (bijv. t/m klas 4, 5 of 6):
-• Kun je examentraining geven in vakken waar je je prettig bij voelt? (ja/nee):
+• Tot welk leerjaar?:
+• Kun je examentraining geven? (ja/nee):
 • Zo ja, in welke vakken:
-• Vind je het leuk om aan basisschoolleerlingen bijles te geven in bijvoorbeeld taal, rekenen of Cito-toetsvoorbereiding? (ja/nee):
+• Basisschoolleerlingen bijles? (ja/nee):
 
 Alvast bedankt!
 Team Bright Panda
-
----
-Alle vakken die wij aanbieden:
-Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologie, Nederlands, Engels, Frans, Duits, Spaans, Latijn, Grieks, Arabisch, Chinees, Italiaans, Russisch, Turks, Informatica, Aardrijkskunde, Geschiedenis, Economie, Bedrijfseconomie, Filosofie, Maatschappijleer, Muziek, Kunst, CKV, Cito Toets, Coderen, Rekenen
 ```
+
+### Intake emails (via MailerLite automations)
+Variabelen: {$name} = ouder, {$student_name} = leerling
+Telefoonnummers altijd dikgedrukt in emails.
+
+**1st Attempt No Answer:**
+- Subject: "We hebben je niet kunnen bereiken"
+- NL header: "We hebben je geprobeerd te bereiken 📞"
+- EN header: "We tried to reach you 📞"
+
+**2nd Attempt No Answer:**
+- Subject: "We hebben je nogmaals niet kunnen bereiken"
+- NL header: "We hebben je opnieuw geprobeerd te bereiken ⚠️"
+- EN header: "We tried to reach you again ⚠️"
+
+**3rd Attempt No Answer:**
+- Subject NL: "Heb je de bijles voor {$student_name} opgegeven?"
+- Subject EN: "Have you given up on finding a tutor for {$student_name}?"
+- NL header: "Heb je de bijles opgegeven? 😢"
+- EN header: "Have you given up? 😢"
+
+**Reached:** nog te schrijven — punten: je hebt de juiste keuze gemaakt, wij handelen het van hier, progress bar tonen
 
 ## SALESFORCE
 
@@ -95,15 +147,28 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 
 **Student Lifecycle:** New → Intake → Matching Teacher → Trial Class → Pending Conversion → Client → Unreachable → Churned - Temporary → Churned - Finished
 
-**Contact_Status__c (Student):** Not Contacted | Called - 1st Attempt No Answer | Called - 2nd Attempt No Answer | Called - 3rd Attempt No Answer | Reached - Need to Call Back | Reached
+**Contact_Status__c (Student) — LET OP: waarden hebben een komma:**
+- Not Contacted
+- Called - 1st Attempt, No Answer
+- Called - 2nd Attempt, No Answer
+- Called - 3rd Attempt, No Answer
+- Reached - Need to Call Back
+- Reached
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
+**Intake flow checkbox velden (Student) — LET OP: API namen hebben dubbele _c__c door fout bij aanmaken, werkt wel:**
+- `Intake_1st_Attempt_Sent_c__c` — wordt true na versturen 1e belpoging WhatsApp + email
+- `Intake_2nd_Attempt_Sent_c__c` — wordt true na versturen 2e belpoging WhatsApp + email
+- `Intake_3rd_Attempt_Sent_c__c` — wordt true na versturen 3e belpoging WhatsApp + email
+- `Intake_Reached_Callback_Sent__c` — wordt true na Slack alert Reached - Need to Call Back
+- `Intake_Reached_Sent__c` — wordt true na versturen Reached MailerLite email
+
 **Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
-**Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c
+**Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c, Intake_1st_Attempt_Sent_c__c, Intake_2nd_Attempt_Sent_c__c, Intake_3rd_Attempt_Sent_c__c, Intake_Reached_Callback_Sent__c, Intake_Reached_Sent__c
 
-**Teaching_Location__c picklist — EXACTE SF waarden (geen "Beide", geen "Hybrid"):**
+**Teaching_Location__c picklist — EXACTE SF waarden:**
 - `Online`
 - `Fysiek (thuis)`
 - `Fysiek (openbare ruimte)`
@@ -111,84 +176,92 @@ Wiskunde A, Wiskunde B, Wiskunde C, Wiskunde D, Natuurkunde, Scheikunde, Biologi
 - `Hybride (online + openbare ruimte)`
 - `Hybride (online + openbare ruimte + thuis)`
 
-**PreferredLanguage__c picklist — voertaal bijles (EXACTE SF waarden, in het Engels):**
-- `Dutch`
-- `English`
-- `Both / No Preference`
+**PreferredLanguage__c picklist (Engelstalige waarden):**
+- `Dutch` | `English` | `Both / No Preference`
 
-**Can_Teach_Until_Education_Level__c picklist:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
+**Can_Teach_Until_Education_Level__c:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
 
-**Can_Teach_Until_School_Year__c picklist:** Groep 1 t/m Groep 8 (basisschool) | 1 t/m 6 (voortgezet onderwijs)
+**Can_Teach_Until_School_Year__c:** Groep 1 t/m Groep 8 | 1 t/m 6
 
-**Graduated__c picklist:** Studeer momenteel | Afgestudeerd
-
-**Niveaus en max leerjaren:**
-- Basisschool: Groep 1 t/m Groep 8
-- VMBO: leerjaar 1 t/m 4
-- HAVO: leerjaar 1 t/m 5
-- VWO: leerjaar 1 t/m 6
-- Gymnasium: leerjaar 1 t/m 6
+**Graduated__c:** Studeer momenteel | Afgestudeerd
 
 ## MAKE.COM SCENARIOS
 
-⚠️ **Altijd Make.com checken via MCP voor het aanmaken van een nieuw scenario om het juiste volgnummer te bepalen.**
+⚠️ **Altijd Make.com checken via MCP voor het aanmaken van een nieuw scenario.**
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation (2 berichten: teacher_invitation + 180s sleep + teacher_intro_message_parent) | 🔧 Inactief | 4729958 |
-| 02 | Parent Timeslot Invitation | 🔧 Inactief (wacht op test) | 4740354 |
-| 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief (wacht op test) | 4783259 |
-| 04 | Teacher Timeslot Submission | 🔧 Inactief (wacht op test) | 4839158 |
-| 05 | Availability Conflict Reminder (elke 4u) | 🔧 Inactief (wacht op test) | 4840663 |
-| 06 | Teacher Availability Reminder (elke 2u) | 🔧 Inactief (wacht op test) | 4842456 |
-| 07 | Internal Alert Teacher No Response | 🔧 Inactief (wacht op test) | 4858555 |
-| 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief (wacht op test) | 4892054 |
-| 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief (wacht op test) | 4744104 |
+| 01 | Teacher Invitation | 🔧 Inactief | 4729958 |
+| 02 | Parent Timeslot Invitation | 🔧 Inactief | 4740354 |
+| 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief | 4783259 |
+| 04 | Teacher Timeslot Submission | 🔧 Inactief | 4839158 |
+| 05 | Availability Conflict Reminder (elke 4u) | 🔧 Inactief | 4840663 |
+| 06 | Teacher Availability Reminder (elke 2u) | 🔧 Inactief | 4842456 |
+| 07 | Internal Alert Teacher No Response | 🔧 Inactief | 4858555 |
+| 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief | 4892054 |
+| 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief | 4744104 |
 | 10 | Student New Registration → MailerLite + WhatsApp + Slack #nieuwe-aanmeldingen | ✅ Actief | 4969006 |
-| 11 | Post-proefles flow | 🔧 Inactief (wacht op test) | 5015744 |
+| 11 | Post-proefles flow | 🔧 Inactief | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation (Contracting + Renew routes, Contract_Sent__c check) | ✅ Actief | 5109244 |
-| 14 | DocuSeal Contract Signed (velden readonly, reminders 3/7/15 dagen, vult Contract_URL__c) | ✅ Actief | 5133318 |
+| 13 | Docent Lifecycle Automation | ✅ Actief | 5109244 |
+| 14 | DocuSeal Contract Signed | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
 | 16 | Teacher Guide & Bsport Email After Account Creation | ✅ Actief | 5282459 |
-| 17 | Auto On-boarded (dagelijks 08:00, checkt 3 velden: Profile_Completed_Date__c + Bsport_Account_Created__c + Documentation_Agreed__c) | ✅ Actief | 5331760 |
+| 17 | Auto On-boarded (dagelijks 08:00) | ✅ Actief | 5331760 |
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
-| 19 | Documentation Reminder Pending Onboarding (filter vóór iterator: Total number of bundles > 0) | ✅ Actief | 5339372 |
+| 19 | Documentation Reminder Pending Onboarding | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
-| 21 | Intake Flow: Contact Status | 🔧 Inactief (in opbouw) | 5442970 |
-| 22 | Daily Callbacks Slack 09:00 | 🔧 Nog te bouwen | — |
+| 21 | Intake Flow: Contact Status (5 routes, gebouwd 26 apr) | 🔧 Inactief (wacht op test) | 5442970 |
+| 22 | Daily Overzichten Slack 09:00 (3 routes: nieuwe aanmeldingen, callbacks, bsport) | 🔧 Inactief (wacht op test) | 5451841 |
+| 23 | Post-proefles flow: Trial Completed + Pending Conversion alerts | 🔧 Nog te bouwen | — |
+
+**Scenario 21 — Intake Flow structuur:**
+- Trigger: Watch Records (Account, By Updated Time, limit 10)
+- Filter voor router: RecordTypeId = 012KB000000ojZGYAY
+- Route 1: Contact_Status__c = 'Called - 1st Attempt, No Answer' AND Intake_1st_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update checkbox
+- Route 2: Contact_Status__c = 'Called - 2nd Attempt, No Answer' AND Intake_2nd_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update checkbox
+- Route 3: Contact_Status__c = 'Called - 3rd Attempt, No Answer' AND Intake_3rd_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update (checkbox + Unreachable)
+- Route 4: Contact_Status__c = 'Reached - Need to Call Back' AND Intake_Reached_Callback_Sent__c = false → SF Update checkbox + Slack #callbacks direct
+- Route 5: Contact_Status__c = 'Reached' AND Intake_Reached_Sent__c = false → MailerLite + SF Update checkbox
+
+**Scenario 22 — Daily Overzichten structuur:**
+- Trigger: dagelijks 09:00
+- Route 1 (module 18): SELECT Id, Name, ParentSName__c, ParentSPhone__c, Subjects__c, EducationLevel__c, CreatedDate FROM Account WHERE RecordTypeId = '012KB000000ojZGYAY' AND LifecycleStage__c = 'New' → Slack #nieuwe-aanmeldingen
+- Route 2 (module 15): SELECT Id, Name, ParentSName__c, ParentSPhone__c, Contact_Status__c, Subjects__c FROM Account WHERE RecordTypeId = '012KB000000ojZGYAY' AND Contact_Status__c IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
+- Route 3 (module 21): SELECT Id, Name, Phone, PersonEmail, Pending_Onboarding_Date__c FROM Account WHERE RecordTypeId = '012KB000000ojZLYAY' AND LifecycleStage__c = 'Pending Onboarding' AND Bsport_Account_Created__c = false AND Profile_Completed_Date__c != null → Slack #onboarding-bsport
 
 ## KRITIEKE REGELS
 
-1. **Scenario verwijderen:** ALTIJD eerst bevestiging vragen — nooit direct uitvoeren
-2. **Make.com API:** Alleen voor schedule/activeren/deactiveren. Module inhoud met variabelen ALTIJD handmatig in Make.com UI
-3. **Checkboxes in router filters:** Text operator met "true"/"false", niet Boolean
+1. **Scenario verwijderen:** ALTIJD eerst bevestiging vragen
+2. **Make.com API:** Alleen schedule/activeren/deactiveren. Module inhoud ALTIJD handmatig in UI
+3. **Checkboxes in router filters:** Text operator "true"/"false", niet Boolean
 4. **360dialog telefoonnummer:** replace(Phone; "+"; "")
 5. **MailerLite merge tags:** {$field_name} met dollarteken
 6. **DocuSeal velden:** Altijd lowercase
 7. **TinyURL output:** MODULE.data.data.tiny_url (dubbele .data)
-8. **Salesforce picklists:** Handmatig inschakelen via klassieke URL voor Person Account record types
+8. **Salesforce picklists:** Handmatig via klassieke URL voor Person Account record types
 9. **newline in Make.com:** Gebruik keyword `newline`, niet char(10)
 10. **API keys:** Altijd copy-pasten, nooit handmatig typen
 11. **Trial_Lesson_Date__c:** Opslaan zonder Z suffix
-12. **`salesforce:makeApiCall` in Make.com:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL opslaan in `Contract_URL__c`.
-13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`.
-14. **Nieuw scenario aanmaken:** ALTIJD eerst Make.com checken via MCP (scenarios_list) om het juiste volgnummer te bepalen.
-15. **Teaching_Location__c:** Heeft GEEN waarde "Beide", "Both" of "Hybrid". Altijd één van de 6 exacte Nederlandse SF-waarden gebruiken (zie picklist hierboven). Tally antwoord "Hybride (online + openbare ruimte + aan huis)" = `Hybride (online + openbare ruimte + thuis)`.
-16. **PreferredLanguage__c:** Dit is het veld voor de voertaal van de bijles (NL/EN/Beide). Waarden zijn Engelstalig: `Dutch` / `English` / `Both / No Preference`. Niet te verwarren met een apart Teaching_Language__c veld — dat bestaat niet.
-17. **Sleutelwoorden:**
-    - **"Afsluiten"**: samenvatting genereren → SESSION_LOG.md overschrijven → commit + push
+12. **salesforce:makeApiCall:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL in Contract_URL__c
+13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`
+14. **Nieuw scenario aanmaken:** ALTIJD eerst Make.com checken via MCP (scenarios_list)
+15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer' (niet zonder komma!)
+16. **Intake checkbox API namen:** hebben dubbele _c__c suffix (fout bij aanmaken) — werkt wel, niet wijzigen
+17. **Watch Records pikt nieuwe SF velden pas op na Run once** — als een veld niet verschijnt in filter: typ handmatig of run once met testrecord
+18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid". Altijd exacte Nederlandse SF-waarden
+19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
+20. **Salesforce Professional Edition:** max 5 Flows, geen CDC (Change Data Capture) — Watch Records is de enige triggeroptie
+21. **Sleutelwoorden:**
+    - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
-    - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → geef korte status → vraag wat ze willen doen
-18. **SESSION_LOG.md:** Bij "Afsluiten" volledig overschrijven (niet aanvullen).
+    - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
 
 ## DAGSTART ROUTINE
 
-Wanneer Raouf of Yasin "dagstart" typt:
+Wanneer "dagstart" getypt wordt:
 
-# ☀️🐼 Dagstart Bright Panda — [datum van vandaag]
-
-Voer uit in volgorde:
+**# ☀️🐼 Dagstart Bright Panda — [datum]**
 
 ### 1. Google Calendar — events vandaag
 
@@ -207,89 +280,35 @@ Voer uit in volgorde:
 ### 5. Gmail — Tally submissions
 Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent — Aanvullende Profielinfo"`
 
-**Tally → Salesforce veldmapping (volledig, 21 april 2026):**
+**Tally → Salesforce veldmapping:**
+| Tally vraag | SF veld | Type |
+|---|---|---|
+| email | PersonEmail (lookup) | — |
+| Studeer je momenteel of afgestudeerd? | Graduated__c | picklist |
+| Wat heb je gestudeerd? | Study__c | string |
+| Bij welke instelling? | University__c | string |
+| Opleidingsniveau? | HBO_WO__c | picklist |
+| Tweede studie? | Follow2ndStudy__c + X2nd_* | boolean + picklist |
+| IBAN | IBAN__c | string |
+| Naam op bankpas | NameOnBankCard__c | string |
+| Hoe bijles geven? | Teaching_Location__c | picklist |
+| Voertaal bijles? | PreferredLanguage__c | picklist |
+| Welke vakken? | Subjects__c | multi-picklist |
+| Niveau/leerjaar | Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c + Teaching_Level_Details__c | picklist + textarea |
+| Examentraining? | Can_Give_Exam_Training__c | boolean |
+| Basisschool? | CanTeachElementarySchool__c | boolean |
+| Opmerkingen | Profile_Comments__c | textarea |
+| Geboortedatum | Date_of_Birth__c | date |
 
-| Tally vraag | SF veld | Type | Opmerking |
-|---|---|---|---|
-| email | PersonEmail (lookup) | — | Om docent record te vinden |
-| Studeer je momenteel of afgestudeerd? | `Graduated__c` | picklist | "Studeer momenteel" / "Afgestudeerd" |
-| Wat heb je gestudeerd? | `Study__c` | string | Vrije tekst |
-| Bij welke instelling? | `University__c` | string | Vrije tekst |
-| — (als instelling in picklist past) | `University_HBO__c` / `University_WO__c` | picklist | Alleen vullen als matchend |
-| Wat is je opleidingsniveau? | `HBO_WO__c` | picklist | "HBO (Bacherlor)" / "WO Bachelor" / "WO Master" |
-| — (als studie in picklist past) | `HBO_Bachelor__c` / `WO_Bachelor__c` / `WO_Master__c` | picklist | Alleen vullen als matchend |
-| Volg je een tweede studie? | `Follow2ndStudy__c` | boolean | Ja=true, Nee=false |
-| Tweede studie (bij Ja) | `X2nd_Study_HBO_WO__c` + `X2nd_*` velden | picklist | Zelfde logica als boven |
-| Woon je in andere stad dan studie? | `PersonOtherCity` | string | Alleen invullen bij Ja: studiestad invullen |
-| Wat is je IBAN? | `IBAN__c` | string | Verplicht |
-| Naam op bankpas? | `NameOnBankCard__c` | string | Persoonlijke naam (niet banknaam!) |
-| Hoe kun je bijles geven? | `Teaching_Location__c` | picklist | Zie Teaching_Location mapping hieronder — GEEN "Beide" gebruiken |
-| In welke taal geef je bijles? | `PreferredLanguage__c` | picklist | "Dutch" / "English" / "Both / No Preference" — Engelstalige waarden! |
-| Welke vakken? | `Subjects__c` | multi-picklist | Engelstalige SF waarden gebruiken |
-| Niveau/leerjaar per vak | `Can_Teach_Until_Education_Level__c` + `Can_Teach_Until_School_Year__c` + `Teaching_Level_Details__c` | picklist + textarea | Zie niveau-logica hieronder |
-| Kun je examentraining geven? | `Can_Give_Exam_Training__c` | boolean | Ja=true, Nee=false |
-| In welke vakken examentraining? | `Exam_Training_Details__c` | textarea | |
-| Basisschoolleerlingen? | `CanTeachElementarySchool__c` | boolean | Ja=true, Nee=false |
-| Is er nog iets toe te voegen? | `Profile_Comments__c` | textarea | Los van Comments_FromWebForm__c |
-| Wat is je geboortedatum? | `Date_of_Birth__c` | date | Opslaan als YYYY-MM-DD |
-
-**Daarna altijd:** `Profile_Completed_Date__c` = vandaag.
-
-**Teaching_Location__c mapping (Tally optie → exacte SF waarde):**
-- "Online" → `Online`
-- "Fysiek (thuis bij de leerling)" → `Fysiek (thuis)`
-- "Fysiek (openbare ruimte)" → `Fysiek (openbare ruimte)`
-- "Fysiek (openbare ruimte + thuis bij de leerling)" → `Fysiek (openbare ruimte + thuis)`
-- "Hybride (online + openbare ruimte + thuis)" of "aan huis" → `Hybride (online + openbare ruimte + thuis)`
-- "Hybride (online + openbare ruimte)" → `Hybride (online + openbare ruimte)`
-- ⚠️ "Beide" of "Both" bestaat NIET als waarde — altijd naar bovenstaande opties mappen
-
-**PreferredLanguage__c mapping (Tally optie → exacte SF waarde):**
-- "Alleen Nederlands / Dutch only" → `Dutch`
-- "Alleen Engels / English only" → `English`
-- "Beide / Both" → `Both / No Preference`
-- ⚠️ Waarden zijn Engelstalig in Salesforce — nooit Nederlandse waarden opslaan
-
-**Niveau-logica voor Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c:**
-- "Alle niveaus / elk leerjaar" → `Gymnasium` + `6`
-- "t/m VWO" → `VWO` + `6`
-- "t/m HAVO" → `Havo` + `5`
-- "VWO t/m jaar 3/4" → `VWO` + `4`
-- "t/m VMBO" → `VMBO - TL` + `4`
-- "alleen basisschool" → `Basisschool` + `Groep 8`
-- Extra details per vak → ook in `Teaching_Level_Details__c`
-- Teaching_Level_Details__c: altijd EERST bestaande inhoud ophalen en nieuwe info TOEVOEGEN (niet overschrijven)
-
-**Regel:** Elk antwoord verwerken. Als picklist niet matcht, laat picklist leeg maar vul string/textarea wel. Rapporteer per docent wat gevuld is en wat niet.
+Daarna altijd: Profile_Completed_Date__c = vandaag.
 
 ### 6. Gmail — Ongelezen
-Profielreacties van docenten verwerken + sollicitaties samenvatten.
-
-**Email profielreacties mappen:**
-- Telefoonnummer → `Phone` (formaat: +31XXXXXXXXX)
-- Geboortedatum → `Date_of_Birth__c`
-- Straat + huisnummer → `PersonMailingStreet`
-- Postcode → `PersonMailingPostalCode`
-- Stad → `PersonMailingCity`
-- Woon je in andere stad? Ja → studiestad in `PersonOtherCity`
-- Studie → `Study__c`
-- Instelling → `University__c`
-- IBAN → `IBAN__c`
-- Naam op bankpas → `NameOnBankCard__c`
-- Hoe bijles geven → `Teaching_Location__c` (zie Teaching_Location mapping)
-- Welke vakken → `Subjects__c`
-- Tot welk niveau → `Can_Teach_Until_Education_Level__c` (zie niveau-logica)
-- Tot welk leerjaar → `Can_Teach_Until_School_Year__c`
-- Examentraining ja/nee → `Can_Give_Exam_Training__c`
-- In welke vakken examentraining → `Exam_Training_Details__c`
-- Basisschoolleerlingen → `CanTeachElementarySchool__c`
+Profielreacties docenten verwerken + sollicitaties samenvatten.
 
 ## AVG/GDPR BELEID
-
-- **Offboarded docenten:** persoonsgegevens wissen na 2 maanden, IBAN bewaren 7 jaar
-- **Not a Match / Not Interested:** alles verwijderen na 6 maanden
-- **Contract PDF:** verwijderen na offboarding
+- Offboarded: persoonsgegevens wissen na 2 maanden, IBAN bewaren 7 jaar
+- Not a Match / Not Interested: alles verwijderen na 6 maanden
 
 ## TODO BEHEER
 - Bij elke sessie: lees TODO.md aan het begin
-- Na elke sessie met wijzigingen: schrijf bijgewerkte TODO.md terug via git commit + push
+- Na sessie met wijzigingen: schrijf TODO.md terug via git commit + push
