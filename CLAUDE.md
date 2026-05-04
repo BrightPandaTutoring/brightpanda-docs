@@ -34,7 +34,7 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 - `interview_invitation_confirmation` (params: {{1}} en {{2}} = voornaam docent NL + EN)
 - `teacher_invitation`
 - `teacher_intro_message_parent` (params: {{1}}=ParentSPhone__c, {{2}}=ParentSName__c, {{3}}=docent FirstName, {{4}}=student FirstName)
-- `intake_parent_1st_attempt_no_answer` ✅ Utility (params: {{1}}=voornaam ouder, {{2}}=naam leerling) — via 071-3031901 + 06-13689666
+- `intake_parent_1st_attempt_no_answer` ✅ Utility (params: {{1}}=voornaam ouder, {{2}}=naam leerling)
 - `intake_parent_2nd_attempt_no_answer` ✅ Utility (params: {{1}}=voornaam ouder, {{2}}=naam leerling)
 
 **WhatsApp templates (ingediend, wacht op goedkeuring):**
@@ -45,24 +45,27 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **Slack workspace:** Bright Panda
 **Slack kanalen:**
-- #nieuwe-aanmeldingen ✅ (nieuwe student aanmeldingen via Scenario 10 + dagelijks overzicht Scenario 22)
-- #callbacks ✅ (dagelijks overzicht callbacks + direct alert Reached - Need to Call Back)
-- #onboarding-bsport ✅ (dagelijks overzicht docenten klaar voor Bsport account aanmaak)
+- #nieuwe-aanmeldingen ✅
+- #callbacks ✅
+- #onboarding-bsport ✅
+- #pending-conversie ✅
 - #proeflessen — nog aan te maken
-- #pending-conversie — nog aan te maken
 - #escalaties — nog aan te maken
 
-**MailerLite groepen (intake flow):**
-- Intake - 1st Attempt No Answer (automation + email aangemaakt)
-- Intake - 2nd Attempt No Answer (automation + email aangemaakt)
-- Intake - 3rd Attempt No Answer (automation + email aangemaakt)
-- Intake - Reached (groep aangemaakt, email nog te schrijven)
+**MailerLite groepen (student flow):**
+- Intake - 1st Attempt No Answer
+- Intake - 2nd Attempt No Answer
+- Intake - 3rd Attempt No Answer
+- Intake - Reached (email nog te schrijven)
+- Pending Conversion - Day 2 (ID: 186074783780177824)
+- Pending Conversion - Day 5 (ID: 186074791205144311)
+- Pending Conversion - Day 9 (ID: 186074799441708427)
+- Actieve Klanten (ID: 182829305032606767)
 
 **Progress bar email design (in ontwikkeling):**
-5 stappen vanuit klantperspectief: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
+5 stappen: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
 - Voltooide stappen: blauwe cirkel (#1d467f) met wit vinkje
 - Actieve stap: pulserende amber cirkel (#f59e0c)
-- Toekomstige stappen: grijs
 - Per stap een geruststelling tekst (titel + subtekst)
 - Plan: exporteren als GIF per email fase → uploaden in MailerLite
 
@@ -117,24 +120,10 @@ Team Bright Panda
 
 ### Intake emails (via MailerLite automations)
 Variabelen: {$name} = ouder, {$student_name} = leerling
-Telefoonnummers altijd dikgedrukt in emails.
 
-**1st Attempt No Answer:**
-- Subject: "We hebben je niet kunnen bereiken"
-- NL header: "We hebben je geprobeerd te bereiken 📞"
-- EN header: "We tried to reach you 📞"
-
-**2nd Attempt No Answer:**
-- Subject: "We hebben je nogmaals niet kunnen bereiken"
-- NL header: "We hebben je opnieuw geprobeerd te bereiken ⚠️"
-- EN header: "We tried to reach you again ⚠️"
-
-**3rd Attempt No Answer:**
-- Subject NL: "Heb je de bijles voor {$student_name} opgegeven?"
-- Subject EN: "Have you given up on finding a tutor for {$student_name}?"
-- NL header: "Heb je de bijles opgegeven? 😢"
-- EN header: "Have you given up? 😢"
-
+**1st Attempt:** Subject: "We hebben je niet kunnen bereiken" | Header: "We hebben je geprobeerd te bereiken 📞"
+**2nd Attempt:** Subject: "We hebben je nogmaals niet kunnen bereiken" | Header: "We hebben je opnieuw geprobeerd te bereiken ⚠️"
+**3rd Attempt:** Subject: "Heb je de bijles voor {$student_name} opgegeven?" | Header: "Heb je de bijles opgegeven? 😢"
 **Reached:** nog te schrijven — punten: je hebt de juiste keuze gemaakt, wij handelen het van hier, progress bar tonen
 
 ## SALESFORCE
@@ -148,36 +137,25 @@ Telefoonnummers altijd dikgedrukt in emails.
 **Student Lifecycle:** New → Intake → Matching Teacher → Trial Class → Pending Conversion → Client → Unreachable → Churned - Temporary → Churned - Finished
 
 **Contact_Status__c (Student) — LET OP: waarden hebben een komma:**
-- Not Contacted
-- Called - 1st Attempt, No Answer
-- Called - 2nd Attempt, No Answer
-- Called - 3rd Attempt, No Answer
-- Reached - Need to Call Back
-- Reached
+- Not Contacted | Called - 1st Attempt, No Answer | Called - 2nd Attempt, No Answer | Called - 3rd Attempt, No Answer | Reached - Need to Call Back | Reached
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
+**Student Teacher Matching Status__c:** Active | (andere waarden)
+
 **Intake flow checkbox velden (Student) — LET OP: API namen hebben dubbele _c__c door fout bij aanmaken, werkt wel:**
-- `Intake_1st_Attempt_Sent_c__c` — wordt true na versturen 1e belpoging WhatsApp + email
-- `Intake_2nd_Attempt_Sent_c__c` — wordt true na versturen 2e belpoging WhatsApp + email
-- `Intake_3rd_Attempt_Sent_c__c` — wordt true na versturen 3e belpoging WhatsApp + email
-- `Intake_Reached_Callback_Sent__c` — wordt true na Slack alert Reached - Need to Call Back
-- `Intake_Reached_Sent__c` — wordt true na versturen Reached MailerLite email
+- `Intake_1st_Attempt_Sent_c__c` | `Intake_2nd_Attempt_Sent_c__c` | `Intake_3rd_Attempt_Sent_c__c`
+- `Intake_Reached_Callback_Sent__c` | `Intake_Reached_Sent__c`
+
+**Pending_Conversion_Date__c** — datum waarop student naar Pending Conversion is gegaan (gevuld door Scenario 23)
 
 **Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
-**Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c, Intake_1st_Attempt_Sent_c__c, Intake_2nd_Attempt_Sent_c__c, Intake_3rd_Attempt_Sent_c__c, Intake_Reached_Callback_Sent__c, Intake_Reached_Sent__c
+**Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c, Intake_1st_Attempt_Sent_c__c, Intake_2nd_Attempt_Sent_c__c, Intake_3rd_Attempt_Sent_c__c, Intake_Reached_Callback_Sent__c, Intake_Reached_Sent__c, Pending_Conversion_Date__c
 
-**Teaching_Location__c picklist — EXACTE SF waarden:**
-- `Online`
-- `Fysiek (thuis)`
-- `Fysiek (openbare ruimte)`
-- `Fysiek (openbare ruimte + thuis)`
-- `Hybride (online + openbare ruimte)`
-- `Hybride (online + openbare ruimte + thuis)`
+**Teaching_Location__c:** Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + thuis) | Hybride (online + openbare ruimte) | Hybride (online + openbare ruimte + thuis)
 
-**PreferredLanguage__c picklist (Engelstalige waarden):**
-- `Dutch` | `English` | `Both / No Preference`
+**PreferredLanguage__c:** Dutch | English | Both / No Preference
 
 **Can_Teach_Until_Education_Level__c:** Basisschool | VMBO - BBL | VMBO - GL | VMBO - KBL | VMBO - TL | Havo | VWO | Gymnasium
 
@@ -211,24 +189,39 @@ Telefoonnummers altijd dikgedrukt in emails.
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
 | 19 | Documentation Reminder Pending Onboarding | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
-| 21 | Intake Flow: Contact Status (5 routes, gebouwd 26 apr) | 🔧 Inactief (wacht op test) | 5442970 |
-| 22 | Daily Overzichten Slack 09:00 (3 routes: nieuwe aanmeldingen, callbacks, bsport) | 🔧 Inactief (wacht op test) | 5451841 |
-| 23 | Post-proefles flow: Trial Completed + Pending Conversion alerts | 🔧 Nog te bouwen | — |
+| 21 | Intake Flow: Contact Status (5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
+| 22 | Daily Overzichten Slack 09:00 (4 routes: nieuwe aanmeldingen, callbacks, bsport, pending conversie) | 🔧 Inactief (wacht op test) | 5451841 |
+| 23 | Active Matching → Pending (Student_Teacher_Matching Status=Active + student in Trial Class → Pending Conversion + datum) | 🔧 Inactief | 5495257 |
+| 24 | Pending Conversion Reminders (dagelijks 10:00, MailerLite op dag 2/5/9) | 🔧 Inactief | 5496102 |
+| 25 | Client Welkomstmail (Watch Records → LifecycleStage = Client → MailerLite groep "Actieve Klanten") | 🔧 Inactief | 5497116 |
+| 26 | Rejection Follow-up Email (Watch Records → Router 6 routes → MailerLite + SF Update) | 🔧 Inactief | 5500907 |
 
-**Scenario 21 — Intake Flow structuur:**
-- Trigger: Watch Records (Account, By Updated Time, limit 10)
-- Filter voor router: RecordTypeId = 012KB000000ojZGYAY
-- Route 1: Contact_Status__c = 'Called - 1st Attempt, No Answer' AND Intake_1st_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update checkbox
-- Route 2: Contact_Status__c = 'Called - 2nd Attempt, No Answer' AND Intake_2nd_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update checkbox
-- Route 3: Contact_Status__c = 'Called - 3rd Attempt, No Answer' AND Intake_3rd_Attempt_Sent_c__c = false → HTTP WhatsApp + MailerLite + SF Update (checkbox + Unreachable)
-- Route 4: Contact_Status__c = 'Reached - Need to Call Back' AND Intake_Reached_Callback_Sent__c = false → SF Update checkbox + Slack #callbacks direct
-- Route 5: Contact_Status__c = 'Reached' AND Intake_Reached_Sent__c = false → MailerLite + SF Update checkbox
+**Scenario 21 — Intake Flow routes:**
+- Route 1: Called - 1st Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
+- Route 2: Called - 2nd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
+- Route 3: Called - 3rd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF Update (Unreachable + checkbox)
+- Route 4: Reached - Need to Call Back + checkbox false → SF checkbox true + Slack #callbacks direct
+- Route 5: Reached + checkbox false → MailerLite + SF checkbox true
 
-**Scenario 22 — Daily Overzichten structuur:**
-- Trigger: dagelijks 09:00
-- Route 1 (module 18): SELECT Id, Name, ParentSName__c, ParentSPhone__c, Subjects__c, EducationLevel__c, CreatedDate FROM Account WHERE RecordTypeId = '012KB000000ojZGYAY' AND LifecycleStage__c = 'New' → Slack #nieuwe-aanmeldingen
-- Route 2 (module 15): SELECT Id, Name, ParentSName__c, ParentSPhone__c, Contact_Status__c, Subjects__c FROM Account WHERE RecordTypeId = '012KB000000ojZGYAY' AND Contact_Status__c IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
-- Route 3 (module 21): SELECT Id, Name, Phone, PersonEmail, Pending_Onboarding_Date__c FROM Account WHERE RecordTypeId = '012KB000000ojZLYAY' AND LifecycleStage__c = 'Pending Onboarding' AND Bsport_Account_Created__c = false AND Profile_Completed_Date__c != null → Slack #onboarding-bsport
+**Scenario 22 — Daily Overzichten routes:**
+- Route 1 (mod 18): LifecycleStage = 'New' → Slack #nieuwe-aanmeldingen
+- Route 2 (mod 15): Contact_Status IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
+- Route 3 (mod 21): Pending Onboarding + Bsport niet aangemaakt + profiel ingevuld → Slack #onboarding-bsport
+- Route 4 (mod 23): Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie (toont dagen in status)
+
+**Scenario 23 — Active Matching → Pending:**
+- Trigger: Watch Records op Student_Teacher_Matching__c
+- Filter: Status__c = 'Active' → Get Student Account → Filter: LifecycleStage = 'Trial Class'
+- Update: LifecycleStage = 'Pending Conversion' + Pending_Conversion_Date__c = now
+
+**Scenario 24 — Pending Conversion Reminders:**
+- Dagelijks 10:00 | Filter: Total bundles > 0
+- Dag 2: MailerLite groep "Pending Conversion - Day 2" (ID: 186074783780177824)
+- Dag 5: MailerLite groep "Pending Conversion - Day 5" (ID: 186074791205144311)
+- Dag 9: MailerLite groep "Pending Conversion - Day 9" (ID: 186074799441708427)
+
+**Scenario 25 — Client Welkomstmail:**
+- Watch Records → LifecycleStage = 'Client' AND RecordTypeId = Student → MailerLite groep "Actieve Klanten" (ID: 182829305032606767)
 
 ## KRITIEKE REGELS
 
@@ -246,12 +239,12 @@ Telefoonnummers altijd dikgedrukt in emails.
 12. **salesforce:makeApiCall:** Altijd absolute URL. ContentVersion geeft [404] — workaround: PDF URL in Contract_URL__c
 13. **Make.com iterator met 0 resultaten:** Altijd filter vóór iterator op `Total number of bundles > 0`
 14. **Nieuw scenario aanmaken:** ALTIJD eerst Make.com checken via MCP (scenarios_list)
-15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer' (niet zonder komma!)
-16. **Intake checkbox API namen:** hebben dubbele _c__c suffix (fout bij aanmaken) — werkt wel, niet wijzigen
-17. **Watch Records pikt nieuwe SF velden pas op na Run once** — als een veld niet verschijnt in filter: typ handmatig of run once met testrecord
-18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid". Altijd exacte Nederlandse SF-waarden
+15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer'
+16. **Intake checkbox API namen:** dubbele _c__c suffix — werkt wel, niet wijzigen
+17. **Watch Records pikt nieuwe SF velden pas op na Run once**
+18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid" — exacte Nederlandse SF-waarden
 19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
-20. **Salesforce Professional Edition:** max 5 Flows, geen CDC (Change Data Capture) — Watch Records is de enige triggeroptie
+20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
 21. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
