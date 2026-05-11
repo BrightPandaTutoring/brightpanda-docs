@@ -149,11 +149,13 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 
 **Pending_Conversion_Date__c** — datum waarop student naar Pending Conversion is gegaan (gevuld door Scenario 23)
 
-**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, Teaching_Location__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
+**Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, PreferenceLocation__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
 **Student velden:** LifecycleStage__c, Contact_Status__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c, Teacher_Invited_At__c, Teacher_Reminder_Sent__c, Teacher_Escalation_Sent__c, Available_Timeslots__c, ParentSName__c, ParentSEmail__c, ParentSPhone__c, Pro_Student_sign_up__c, Subjects__c, Education_Level__c, SchoolYear__c, ReferredToBPVia__c, Intake_1st_Attempt_Sent_c__c, Intake_2nd_Attempt_Sent_c__c, Intake_3rd_Attempt_Sent_c__c, Intake_Reached_Callback_Sent__c, Intake_Reached_Sent__c, Pending_Conversion_Date__c
 
-**Teaching_Location__c:** Online | Fysiek (thuis) | Fysiek (openbare ruimte) | Fysiek (openbare ruimte + thuis) | Hybride (online + openbare ruimte) | Hybride (online + openbare ruimte + thuis)
+**PreferenceLocation__c (ACTIEF — gebruik dit veld):** No Preference | Online | In-person (at home) | In-person (public space) | In-person (at home + public space) | Hybrid (online + at home) | Hybrid (online + public space) | Hybrid (online + at home + public space)
+
+**Teaching_Location__c:** DEPRECATED — niet meer vullen. Bij updates: leeg maken (null).
 
 **PreferredLanguage__c:** Dutch | English | Both / No Preference
 
@@ -242,7 +244,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer'
 16. **Intake checkbox API namen:** dubbele _c__c suffix — werkt wel, niet wijzigen
 17. **Watch Records pikt nieuwe SF velden pas op na Run once**
-18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid" — exacte Nederlandse SF-waarden gebruiken
+18. **Teaching_Location__c is DEPRECATED** — nooit meer vullen vanuit Tally. Bij verwerken van profiel: Teaching_Location__c leeg maken (null). Gebruik `PreferenceLocation__c` met Engelstalige waarden.
 19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
 20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
 21. **Comments_FromWebForm__c:** komt van het aanmeldformulier — NOOIT vullen vanuit Tally profielformulier. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
@@ -276,44 +278,44 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 
 **Tally → Salesforce veldmapping (tally.so/r/NpY9RW) — verwerk ALLE velden, sla er geen over:**
 
-| Tally vraag | SF veld | Type |
+| Tally vraag | SF veld | Regels |
 |---|---|---|
 | email | PersonEmail (lookup) | — |
 | Studeer je momenteel of afgestudeerd? | `Graduated__c` | `Studeer momenteel` / `Afgestudeerd` |
-| Wat heb je gestudeerd? | `Study__c` | string — als instelling niet in picklist: `"[Studie] — [Instelling]"` |
-| Bij welke instelling? | `University_WO__c` of `University_HBO__c` | picklist — zie instelling mapping hieronder |
+| Wat heb je gestudeerd? | `Study__c` | Exact overnemen. Als instelling niet in picklist: `"[Studie] — [Instelling]"` |
+| Bij welke instelling? | `University_WO__c` of `University_HBO__c` | Zie instelling mapping hieronder |
 | Opleidingsniveau? | `HBO_WO__c` | `HBO (Bacherlor)` / `WO Bachelor` / `WO Master` |
-| Tweede studie? | `Follow2ndStudy__c` + `X2nd_*` velden | boolean + picklist |
-| IBAN | `IBAN__c` | normaliseer: verwijder spaties, hoofdletters. NL = 18 tekens |
-| Naam op bankpas | `NameOnBankCard__c` | exact overnemen zoals op de pas staat |
-| Hoe bijles geven? | `Teaching_Location__c` | zie locatie mapping hieronder — NOOIT "Beide"/"Both" |
+| Tweede studie? | `Follow2ndStudy__c` + `X2nd_*` velden | true/false |
+| IBAN | `IBAN__c` | Normaliseer: verwijder spaties, hoofdletters. NL = 18 tekens |
+| Naam op bankpas | `NameOnBankCard__c` | Exact overnemen zoals op de pas staat |
+| Hoe bijles geven? | `PreferenceLocation__c` | Zie locatie mapping hieronder |
 | Voertaal bijles? | `PreferredLanguage__c` | `Dutch` / `English` / `Both / No Preference` |
-| Welke vakken? | `Subjects__c` | zie vakken mapping hieronder — semicolon-separated, Engelstalige SF-waarden |
-| Niveau/leerjaar per vak | `Teaching_Level_Details__c` | exact overnemen |
-| Hoogste niveau overall | `Can_Teach_Until_Education_Level__c` | afleiden: HAVO→`Havo` / VWO→`VWO` / Gymnasium→`Gymnasium` |
+| Welke vakken? | `Subjects__c` | Zie vakken mapping hieronder — semicolon-separated, Engelstalige SF-waarden |
+| Niveau/leerjaar per vak | `Teaching_Level_Details__c` | Exact overnemen |
+| Hoogste niveau overall | `Can_Teach_Until_Education_Level__c` | Afleiden: HAVO→`Havo` / VWO→`VWO` / Gymnasium→`Gymnasium` |
 | Hoogste leerjaar overall | `Can_Teach_Until_School_Year__c` | VMBO=4 / HAVO=5 / VWO=6 / basisschool=`Groep 8` |
 | Examentraining? | `Can_Give_Exam_Training__c` | boolean |
-| Examentraining vakken/niveau | `Exam_Training_Details__c` | exact overnemen als ingevuld |
+| Examentraining vakken/niveau | `Exam_Training_Details__c` | Exact overnemen als ingevuld |
 | Basisschool? | `CanTeachElementarySchool__c` | boolean |
 | Geboortedatum | `Date_of_Birth__c` | YYYY-MM-DD |
-| Opmerkingen / Is er nog iets? | `Profile_Comments__c` | exact overnemen. "No" of leeg → leeg laten |
+| Opmerkingen / Is er nog iets? | `Profile_Comments__c` | Exact overnemen. "No" of leeg → leeg laten |
 
-Daarna altijd: `Profile_Completed_Date__c` = datum van de submission.
+Daarna altijd: `Profile_Completed_Date__c` = datum van de submission + `Teaching_Location__c` = null (leeg maken).
 
-**⚠️ Nooit vullen vanuit dit formulier:** `Comments_FromWebForm__c` (alleen van aanmeldformulier)
+**⚠️ Nooit vullen vanuit dit formulier:** `Comments_FromWebForm__c` (alleen van aanmeldformulier), `Teaching_Location__c` (deprecated)
 
-**Locatie mapping Teaching_Location__c:**
+**Locatie mapping PreferenceLocation__c (Engelstalige SF-waarden):**
 | Tally antwoord | SF waarde |
 |---|---|
 | Online | `Online` |
-| Fysiek (thuis bij de leerling) | `Fysiek (thuis)` |
-| Fysiek (openbare ruimte) | `Fysiek (openbare ruimte)` |
-| Fysiek (openbare ruimte + thuis) | `Fysiek (openbare ruimte + thuis)` |
-| Hybride (online + openbare ruimte) | `Hybride (online + openbare ruimte)` |
-| Hybride (online + openbare ruimte + aan huis/thuis) | `Hybride (online + openbare ruimte + thuis)` |
+| Fysiek (thuis bij de leerling) | `In-person (at home)` |
+| Fysiek (openbare ruimte) | `In-person (public space)` |
+| Fysiek (openbare ruimte + thuis) | `In-person (at home + public space)` |
+| Hybride (online + openbare ruimte) | `Hybrid (online + public space)` |
+| Hybride (online + openbare ruimte + aan huis/thuis) | `Hybrid (online + at home + public space)` |
 
 **Vakken mapping (NL → SF Engelstalige picklist-waarden):**
-Wiskunde A→`Mathematics A` | Wiskunde B→`Mathematics B` | Wiskunde C→`Mathematics C` | Wiskunde D→`Mathematics D` | Wiskunde (zonder letter) → ⚠️ NAVRAGEN A/B/C/D | Nederlands→`Dutch` | Engels→`English` | Duits→`German` | Frans→`French` | Spaans→`Spanish` | Biologie→`Biology` | Scheikunde→`Chemistry` | Natuurkunde→`Physics` | Geschiedenis→`History` | Aardrijkskunde→`Geography` | Economie→`Economics` | Bedrijfseconomie→`Business Economics` | Informatica→`Computer Science` | Filosofie→`Philosophy` | Maatschappijleer→`Social Studies` | Kunst/CKV→`Cultural & Artistic Education (CKV)` | Muziek→`Music` | Rekenen/Cito→`Cito Test` | Grieks→`Greek` | Latijn→`Latin` | Coding/Programmeren→`Coding` | Chinees→`Chinese` | Arabisch→`Arabic`
+Wiskunde A→`Mathematics A` | Wiskunde B→`Mathematics B` | Wiskunde C→`Mathematics C` | Wiskunde D→`Mathematics D` | Wiskunde (zonder letter)→⚠️ NAVRAGEN A/B/C/D | Nederlands→`Dutch` | Engels→`English` | Duits→`German` | Frans→`French` | Spaans→`Spanish` | Biologie→`Biology` | Scheikunde→`Chemistry` | Natuurkunde→`Physics` | Geschiedenis→`History` | Aardrijkskunde→`Geography` | Economie→`Economics` | Bedrijfseconomie→`Business Economics` | Informatica→`Computer Science` | Filosofie→`Philosophy` | Maatschappijleer→`Social Studies` | Kunst/CKV→`Cultural & Artistic Education (CKV)` | Muziek→`Music` | Rekenen/Cito→`Cito Test` | Grieks→`Greek` | Latijn→`Latin` | Coding/Programmeren→`Coding` | Chinees→`Chinese` | Arabisch→`Arabic`
 
 Vak niet in lijst → vermelden in `Profile_Comments__c` + flaggen.
 
