@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 27 april 2026
+Laatst bijgewerkt: 11 mei 2026
 
 ---
 
@@ -27,9 +27,15 @@ Laatst bijgewerkt: 27 april 2026
 - **✅ GEDAAN: MailerLite automations aangemaakt** (26 april 2026): Intake 1st/2nd/3rd Attempt No Answer, Intake Reached
 - **✅ GEDAAN: Email campagne "Docenten Update — April 2026" verstuurd** (27 april 2026) — via MailerLite naar groep "On-boarded"
 - **✅ GEDAAN: Student Lifecycle stages toegevoegd in Salesforce** (27 april 2026): Intake, Pending Conversion, Unreachable, Churned - Finished, Churned - Temporary — Enrollment gedeactiveerd
-- **✅ GEDAAN: Contact_Status__c waarden + kleuren ingesteld** (27 april 2026): Not Contacted (grijs), Called 1st/2nd/3rd Attempt No Answer (geel/oranje/rood), Reached - Need to Call Back (blauw), Reached (groen)
+- **✅ GEDAAN: Contact_Status__c waarden + kleuren ingesteld** (27 april 2026)
 - **✅ GEDAAN: `parent_timeslot_final` template aangepast** (27 april 2026) — video → afbeelding in header
 - **✅ GEDAAN: `intake_parent_3rd_attempt_no_answer_v3` goedgekeurd** (27 april 2026) — Marketing categorie
+- **✅ GEDAAN: Salesforce Enterprise upgrade bevestigd** — gesprek gevoerd, 50% korting afgesproken
+- **✅ GEDAAN: Webex gekoppeld aan Salesforce** — na Enterprise upgrade
+- **✅ GEDAAN: Slack kanalen aangemaakt** — #proeflessen, #pending-conversie, #escalaties
+- **✅ GEDAAN: Proefles voltooid alert → #proeflessen** gebouwd
+- **✅ GEDAAN: Pending conversie alerts → #pending-conversie** gebouwd
+- **✅ GEDAAN: TinyURL short links aangemaakt**
 
 ---
 
@@ -43,23 +49,9 @@ Laatst bijgewerkt: 27 april 2026
 
 ---
 
-## 🏢 Salesforce Enterprise upgrade
-
-- **Salesforce gesprek opvolgen**: bevestiging Enterprise upgrade + 50% korting voor 2-3 jaar contract
-- **Vragen bevestigen**: Change Data Capture beschikbaar? ContentVersion API toegang? Picklist via Metadata API?
-- **Na upgrade: Webex App koppelen aan Salesforce** — via AppExchange installeren → bellen vanuit SF records + automatische call logging per leerling/ouder. Vereist Enterprise Edition. Webex Basis licentie (via KPN EEN) is voldoende.
-
----
-
 ## 💬 Slack
 
-- **Resterende kanalen aanmaken** in Bright Panda workspace:
-  - #proeflessen
-  - #pending-conversie
-  - #escalaties
-- **Proefles voltooid alert** bouwen → #proeflessen
-- **Escalatie alerts** bouwen → #escalaties
-- **Pending conversie alerts** bouwen → #pending-conversie
+- **Escalatie alert bouwen** → #escalaties
 
 ---
 
@@ -74,10 +66,6 @@ Laatst bijgewerkt: 27 april 2026
 - **Salesforce status updaten na versturen `parent_timeslot_final`**.
 
 - **Re-engagement flow bouwen voor No Show matchings**.
-
-- **TinyURL short links aanmaken** voor picker links (Scenario 2, 5, 6, escalatie).
-
-- **Escalatie scenario controleren**.
 
 - **AVG/GDPR data verwijdering automatiseren** (2 scenarios).
 
