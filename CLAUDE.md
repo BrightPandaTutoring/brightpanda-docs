@@ -242,10 +242,11 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer'
 16. **Intake checkbox API namen:** dubbele _c__c suffix — werkt wel, niet wijzigen
 17. **Watch Records pikt nieuwe SF velden pas op na Run once**
-18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid" — exacte Nederlandse SF-waarden
+18. **Teaching_Location__c:** GEEN "Beide", "Both" of "Hybrid" — exacte Nederlandse SF-waarden gebruiken
 19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
 20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
-21. **Sleutelwoorden:**
+21. **Comments_FromWebForm__c:** komt van het aanmeldformulier — NOOIT vullen vanuit Tally profielformulier. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
+22. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
@@ -273,27 +274,53 @@ Wanneer "dagstart" getypt wordt:
 ### 5. Gmail — Tally submissions
 Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent — Aanvullende Profielinfo"`
 
-**Tally → Salesforce veldmapping:**
+**Tally → Salesforce veldmapping (tally.so/r/NpY9RW) — verwerk ALLE velden, sla er geen over:**
+
 | Tally vraag | SF veld | Type |
 |---|---|---|
 | email | PersonEmail (lookup) | — |
-| Studeer je momenteel of afgestudeerd? | Graduated__c | picklist |
-| Wat heb je gestudeerd? | Study__c | string |
-| Bij welke instelling? | University__c | string |
-| Opleidingsniveau? | HBO_WO__c | picklist |
-| Tweede studie? | Follow2ndStudy__c + X2nd_* | boolean + picklist |
-| IBAN | IBAN__c | string |
-| Naam op bankpas | NameOnBankCard__c | string |
-| Hoe bijles geven? | Teaching_Location__c | picklist |
-| Voertaal bijles? | PreferredLanguage__c | picklist |
-| Welke vakken? | Subjects__c | multi-picklist |
-| Niveau/leerjaar | Can_Teach_Until_Education_Level__c + Can_Teach_Until_School_Year__c + Teaching_Level_Details__c | picklist + textarea |
-| Examentraining? | Can_Give_Exam_Training__c | boolean |
-| Basisschool? | CanTeachElementarySchool__c | boolean |
-| Opmerkingen | Profile_Comments__c | textarea |
-| Geboortedatum | Date_of_Birth__c | date |
+| Studeer je momenteel of afgestudeerd? | `Graduated__c` | `Studeer momenteel` / `Afgestudeerd` |
+| Wat heb je gestudeerd? | `Study__c` | string — als instelling niet in picklist: `"[Studie] — [Instelling]"` |
+| Bij welke instelling? | `University_WO__c` of `University_HBO__c` | picklist — zie instelling mapping hieronder |
+| Opleidingsniveau? | `HBO_WO__c` | `HBO (Bacherlor)` / `WO Bachelor` / `WO Master` |
+| Tweede studie? | `Follow2ndStudy__c` + `X2nd_*` velden | boolean + picklist |
+| IBAN | `IBAN__c` | normaliseer: verwijder spaties, hoofdletters. NL = 18 tekens |
+| Naam op bankpas | `NameOnBankCard__c` | exact overnemen zoals op de pas staat |
+| Hoe bijles geven? | `Teaching_Location__c` | zie locatie mapping hieronder — NOOIT "Beide"/"Both" |
+| Voertaal bijles? | `PreferredLanguage__c` | `Dutch` / `English` / `Both / No Preference` |
+| Welke vakken? | `Subjects__c` | zie vakken mapping hieronder — semicolon-separated, Engelstalige SF-waarden |
+| Niveau/leerjaar per vak | `Teaching_Level_Details__c` | exact overnemen |
+| Hoogste niveau overall | `Can_Teach_Until_Education_Level__c` | afleiden: HAVO→`Havo` / VWO→`VWO` / Gymnasium→`Gymnasium` |
+| Hoogste leerjaar overall | `Can_Teach_Until_School_Year__c` | VMBO=4 / HAVO=5 / VWO=6 / basisschool=`Groep 8` |
+| Examentraining? | `Can_Give_Exam_Training__c` | boolean |
+| Examentraining vakken/niveau | `Exam_Training_Details__c` | exact overnemen als ingevuld |
+| Basisschool? | `CanTeachElementarySchool__c` | boolean |
+| Geboortedatum | `Date_of_Birth__c` | YYYY-MM-DD |
+| Opmerkingen / Is er nog iets? | `Profile_Comments__c` | exact overnemen. "No" of leeg → leeg laten |
 
-Daarna altijd: Profile_Completed_Date__c = vandaag.
+Daarna altijd: `Profile_Completed_Date__c` = datum van de submission.
+
+**⚠️ Nooit vullen vanuit dit formulier:** `Comments_FromWebForm__c` (alleen van aanmeldformulier)
+
+**Locatie mapping Teaching_Location__c:**
+| Tally antwoord | SF waarde |
+|---|---|
+| Online | `Online` |
+| Fysiek (thuis bij de leerling) | `Fysiek (thuis)` |
+| Fysiek (openbare ruimte) | `Fysiek (openbare ruimte)` |
+| Fysiek (openbare ruimte + thuis) | `Fysiek (openbare ruimte + thuis)` |
+| Hybride (online + openbare ruimte) | `Hybride (online + openbare ruimte)` |
+| Hybride (online + openbare ruimte + aan huis/thuis) | `Hybride (online + openbare ruimte + thuis)` |
+
+**Vakken mapping (NL → SF Engelstalige picklist-waarden):**
+Wiskunde A→`Mathematics A` | Wiskunde B→`Mathematics B` | Wiskunde C→`Mathematics C` | Wiskunde D→`Mathematics D` | Wiskunde (zonder letter) → ⚠️ NAVRAGEN A/B/C/D | Nederlands→`Dutch` | Engels→`English` | Duits→`German` | Frans→`French` | Spaans→`Spanish` | Biologie→`Biology` | Scheikunde→`Chemistry` | Natuurkunde→`Physics` | Geschiedenis→`History` | Aardrijkskunde→`Geography` | Economie→`Economics` | Bedrijfseconomie→`Business Economics` | Informatica→`Computer Science` | Filosofie→`Philosophy` | Maatschappijleer→`Social Studies` | Kunst/CKV→`Cultural & Artistic Education (CKV)` | Muziek→`Music` | Rekenen/Cito→`Cito Test` | Grieks→`Greek` | Latijn→`Latin` | Coding/Programmeren→`Coding` | Chinees→`Chinese` | Arabisch→`Arabic`
+
+Vak niet in lijst → vermelden in `Profile_Comments__c` + flaggen.
+
+**Instelling mapping:**
+- WO-universiteit (UvA, VU, EUR, TU Delft, etc.) → `University_WO__c`
+- HBO-hogeschool (HvA, Hogeschool Rotterdam, etc.) → `University_HBO__c`
+- Niet in picklist → schrijf `"[Studie] — [Instelling]"` in `Study__c`, laat University-veld leeg, flag naar Raouf
 
 ### 6. Gmail — Ongelezen
 Profielreacties docenten verwerken + sollicitaties samenvatten.
