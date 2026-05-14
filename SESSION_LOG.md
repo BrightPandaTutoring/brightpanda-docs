@@ -1,58 +1,74 @@
 # Bright Panda — Session Log
-*Doel van dit bestand: bij elke nieuwe Claude chat (Claude.ai of Claude Code) als eerste lezen om te weten waar Raouf en Yasin gebleven waren. Wordt bijgewerkt bij elke "Afsluiten".*
+*Doel van dit bestand: bij elke nieuwe Claude chat als eerste lezen. Wordt bijgewerkt bij elke "Afsluiten".*
 
 ---
 
-## Laatste sessie: 26 april 2026
+## Laatste sessie: 14 mei 2026
 
 ### Waar werd aan gewerkt
-- **Scenario 21 — Intake Flow: Contact Status** volledig gebouwd (ID: 5442970)
-- **Scenario 22 — Daily Callbacks + Nieuwe aanmeldingen Slack 09:00** volledig gebouwd (ID: 5451841)
-- **WhatsApp templates** geschreven en ingediend bij Meta
-- **MailerLite automations** aangemaakt voor intake flow
-- **Salesforce checkbox velden** aangemaakt voor duplicate prevention
+1. **Brand identity gedocumenteerd** — Montserrat font, kleuren (#1d467f, #f59e0c, #f4f8fd, #1D2930), tone of voice
+2. **Salesforce KPI Reports** — 9 reports aangemaakt via Analytics REST API
+3. **Salesforce Dashboards** — 3 dashboards gebouwd en op Home pagina gezet
+4. **Claude Design** — progress bar prototype uitgewerkt, brand info ingevoerd
+5. **Volledige student flow geanalyseerd** — gaps geïdentificeerd
 
-### Belangrijkste beslissingen
-- **Watch Records (polling)** gekozen als trigger voor Scenario 21 — CDC vereist Enterprise Edition, Flows beperkt tot 5 op Professional Edition
-- **Checkbox velden per route** aangemaakt om dubbele berichten te voorkomen bij herhaalde record updates
-- **Slack berichten per ouder apart** zodat jullie per bericht kunnen reageren en aangeven wie het oppakt
-- **Scenario 22 Route 1** = nieuwe aanmeldingen (#nieuwe-aanmeldingen), **Route 2** = callbacks (#callbacks)
-- **Template 3 ingediend als Marketing** — Meta categoriseert emotionele/urgente templates als Marketing, acceptabel voor 3e poging
+### KPI Reports aangemaakt (via Analytics REST API)
+| Report | ID |
+|---|---|
+| [KPI] Student Funnel Overview | 00OP800000AfCPFMA3 |
+| [KPI] New Registrations This Month | 00OP800000Af40JMAR |
+| [KPI] Unreachable Contact Status | 00OP800000AfDLJMA3 |
+| [KPI] Rejection Reason Breakdown | 00OP800000AfDMvMAN |
+| [KPI] Pending Conversion Days | 00OP800000AfCgzMAF |
+| [KPI] Trial Completed Awaiting Followup | 00OP800000AfDQ9MAN |
+| [KPI] Open Actions Bsport To Create | 00OP800000AfEajMAF |
+| [KPI] Conversion Rates Summary | 00OP800000AfDRlMAN |
+| [KPI] Monthly Registration Trend | 00OP800000AfOBtMAN |
 
-### Scenario 21 — Intake Flow structuur
-- **Route 1** (1st Attempt No Answer): WhatsApp + MailerLite "Intake - 1st Attempt" + SF checkbox
-- **Route 2** (2nd Attempt No Answer): WhatsApp + MailerLite "Intake - 2nd Attempt No Answer" + SF checkbox
-- **Route 3** (3rd Attempt No Answer): WhatsApp + MailerLite "Intake - 3rd Attempt No Answer" + SF update (Unreachable + checkbox)
-- **Route 4** (Reached - Need to Call Back): SF checkbox + Slack direct naar #callbacks
-- **Route 5** (Reached): MailerLite "Intake - Reached" + SF checkbox
+**Kritieke fix toegepast op alle reports:** `standardDateFilter` was automatisch op `CUSTOM startDate=vandaag` gezet door de API — gefixed naar `CUSTOM 2020-01-01 t/m 2027-12-31` zodat alle historische data zichtbaar is. Scope gezet op `organization`.
 
-### WhatsApp templates status
-- `intake_parent_1st_attempt_no_answer` ✅ Goedgekeurd (Utility)
-- `intake_parent_2nd_attempt_no_answer` ✅ Goedgekeurd (Utility)
-- `intake_parent_3rd_attempt_no_answer_v3` ⏳ Ingediend (Marketing categorie)
+### Dashboards gebouwd
+- **Student Funnel & Growth** — Monthly Trend, Funnel Overview, New Registrations, Unreachable, Rejection
+- **Speed & Quality KPIs** — Pending Conversion Days, Trial Completed, Conversion Rates
+- **Open Acties Team** — Bsport To Create, Pending Conversion Days
 
-### Nieuwe Salesforce velden
-- `Intake_1st_Attempt_Sent_c__c`, `Intake_2nd_Attempt_Sent_c__c`, `Intake_3rd_Attempt_Sent_c__c`
-- `Intake_Reached_Callback_Sent__c`, `Intake_Reached_Sent__c`
-- Let op: API namen hebben dubbele `_c__c` suffix door fout bij aanmaken — werkt wel
+### Salesforce Home pagina
+- Lightning App Builder → `Bright Panda Home` aangemaakt (Home Template One Region)
+- Alle 3 dashboards toegevoegd als componenten
+- Geactiveerd als App Default voor Sales app
+- Dashboards verplaatst naar `Home Page Dashboards` folder zodat ze vindbaar zijn
 
-### Wachten op
-- `intake_parent_3rd_attempt_no_answer_v3` Meta goedkeuring
-- Scenario 21 + 22 end-to-end test uitvoeren
-- MailerLite email "Intake - Reached" nog schrijven en automation aanmaken
+### Student flow analyse
+Volledige flow doorgelopen — gaps geïdentificeerd:
+- Scenario 1 trigger klopt niet — moet `Start_Process__c` veld gebruiken
+- Geen "Docent gevonden" email naar ouder
+- Geen No Show flow
+- Geen Unreachable re-engagement
+- Geen churn win-back
+- Slack #proeflessen en #escalaties nog te bouwen
+
+### Matching Teacher beslissing
+- Huidig: Scenario 1 triggert op `Trial_Lesson_Status__c` leeg — klopt niet
+- Nieuw: `Start_Process__c` checkbox aanmaken op `Student_Teacher_Matching__c`
+- Scenario 1 splitsen in 2 routes: Route 1 = email ouder, Route 2 = WhatsApp docent
+- Nog te bouwen!
+
+### Progress bar design
+- 5 stappen: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
+- Prototype gebouwd in claude.ai/design (High Fidelity)
+- Brand: Montserrat, #1d467f blauw, #f59e0c amber
+- Plan: GIF exporteren via ScreenToGif → uploaden in MailerLite
 
 ### Eerstvolgende acties
-1. End-to-end test Scenario 21 + 22 uitvoeren met testrecord
-2. MailerLite email "Intake - Reached" schrijven en automation aanmaken
-3. Slack kanalen #proeflessen, #pending-conversie, #escalaties aanmaken + scenarios bouwen
-4. Student Lifecycle stages toevoegen in Salesforce (Intake, Pending Conversion, Unreachable etc.)
-5. Contact_Status__c waarden + kleuren instellen in Salesforce
+1. `Start_Process__c` veld aanmaken op Student_Teacher_Matching__c
+2. Scenario 1 aanpassen + nieuw scenario "Docent gevonden" email bouwen
+3. Progress bar GIF exporteren en in emails verwerken
+4. Pending Conversion emails schrijven (dag 2, 5, 9)
+5. Client welkomstmail schrijven
+6. Scenario 21 + 22 end-to-end testen
 
-### Let op / context
-- Scenario 21 draait elke 15 minuten (polling) — niet real-time
-- Salesforce Professional Edition: max 5 Flows, geen CDC
-- Scenario 22 draait dagelijks om 09:00 (Europe/Amsterdam)
-- Scenarios 1-9, 11 staan nog op inactief in Make.com
-
-### Volledige to-do lijst
-Zie `TODO.md` in deze repo voor de actuele lijst per categorie.
+### Let op
+- KPI Reports hebben `standardDateFilter CUSTOM 2020-2027` — elk jaar updaten naar 2028 etc.
+- Dashboard scope is `organization` — alle gebruikers zien alle data
+- Formula velden nog handmatig aanmaken in Setup voor tijdberekeningen
+- Rejection_Reason__c is nog leeg — chart toont pas data als gevuld
