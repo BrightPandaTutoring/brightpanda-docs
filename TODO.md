@@ -1,51 +1,58 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 11 mei 2026
+Laatst bijgewerkt: 14 mei 2026
 
 ---
 
 ## ✅ Afgerond (recent)
 - **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026)
 - **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**
-- **✅ GEDAAN: Bijenkorf boekje verwerkt in H2 Gedragscode**
-- **✅ GEDAAN: Tally akkoord-formulier gebouwd** (tally.so/r/aQDq1B)
-- **✅ GEDAAN: Scenario 17 — Auto On-boarded gebouwd**
-- **✅ GEDAAN: Geboortedatum toegevoegd aan Tally profielformulier** (21 april 2026) → `Date_of_Birth__c`
-- **✅ GEDAAN: Bulk import On-boarded docenten naar MailerLite** (21 april 2026) — 104 docenten geïmporteerd
-- **✅ GEDAAN: MailerLite Scenario 13 — Name + Last name velden toegevoegd** (21 april 2026)
-- **✅ GEDAAN: Salesforce velden aangemaakt** (21 april 2026): `Graduated__c`, `Exam_Training_Details__c`, `Profile_Comments__c`
-- **✅ GEDAAN: Contract datums op layout** — staat al in Details tab, voldoende
-- **✅ GEDAAN: Teaching_Location__c geactiveerd voor Teacher Record Type** (23 april 2026)
-- **✅ GEDAAN: Profile_Completed_Date__c toegevoegd aan Teacher Path** (23 april 2026)
-- **✅ GEDAAN: Email campagne "Docenten Update — April 2026" HTML klaar** (25 april 2026) — NL + EN blokken klaar voor MailerLite
-- **✅ GEDAAN: Slack workspace aangemaakt** (25 april 2026) — Bright Panda workspace
-- **✅ GEDAAN: Slack verbonden in Make.com** (25 april 2026) — "Bright Panda Slack" connectie
-- **✅ GEDAAN: Scenario 10 uitgebreid met Slack module** (25 april 2026) → #nieuwe-aanmeldingen
-- **✅ GEDAAN: Scenario 21 — Intake Flow gebouwd** (26 april 2026) — 5 routes: 1st/2nd/3rd attempt, Reached - Need to Call Back, Reached
+- **✅ GEDAAN: Scenario 21 — Intake Flow gebouwd** (26 april 2026)
 - **✅ GEDAAN: Scenario 22 — Daily Callbacks + Nieuwe aanmeldingen Slack 09:00 gebouwd** (26 april 2026)
-- **✅ GEDAAN: Salesforce checkbox velden aangemaakt** (26 april 2026): `Intake_1st_Attempt_Sent_c__c`, `Intake_2nd_Attempt_Sent_c__c`, `Intake_3rd_Attempt_Sent_c__c`, `Intake_Reached_Callback_Sent__c`, `Intake_Reached_Sent__c`
-- **✅ GEDAAN: WhatsApp templates ingediend + goedgekeurd** (26-27 april 2026): alle intake templates goedgekeurd, incl. `intake_parent_3rd_attempt_no_answer_v3` (Marketing categorie)
 - **✅ GEDAAN: MailerLite automations aangemaakt** (26 april 2026): Intake 1st/2nd/3rd Attempt No Answer, Intake Reached
-- **✅ GEDAAN: Email campagne "Docenten Update — April 2026" verstuurd** (27 april 2026) — via MailerLite naar groep "On-boarded"
-- **✅ GEDAAN: Student Lifecycle stages toegevoegd in Salesforce** (27 april 2026): Intake, Pending Conversion, Unreachable, Churned - Finished, Churned - Temporary — Enrollment gedeactiveerd
-- **✅ GEDAAN: Contact_Status__c waarden + kleuren ingesteld** (27 april 2026)
-- **✅ GEDAAN: `parent_timeslot_final` template aangepast** (27 april 2026) — video → afbeelding in header
-- **✅ GEDAAN: `intake_parent_3rd_attempt_no_answer_v3` goedgekeurd** (27 april 2026) — Marketing categorie
-- **✅ GEDAAN: Salesforce Enterprise upgrade bevestigd** — gesprek gevoerd, 50% korting afgesproken
-- **✅ GEDAAN: Webex gekoppeld aan Salesforce** — na Enterprise upgrade
-- **✅ GEDAAN: Slack kanalen aangemaakt** — #proeflessen, #pending-conversie, #escalaties
-- **✅ GEDAAN: Proefles voltooid alert → #proeflessen** gebouwd
-- **✅ GEDAAN: Pending conversie alerts → #pending-conversie** gebouwd
-- **✅ GEDAAN: TinyURL short links aangemaakt**
+- **✅ GEDAAN: Brand identity gedocumenteerd** (13 mei 2026) — Montserrat font, kleuren, tone of voice
+- **✅ GEDAAN: 9 Salesforce KPI Reports aangemaakt** (14 mei 2026)
+- **✅ GEDAAN: 3 Salesforce Dashboards gebouwd** (14 mei 2026): Student Funnel & Growth, Speed & Quality KPIs, Open Acties Team
+- **✅ GEDAAN: Salesforce Home pagina ingericht** (14 mei 2026) — Bright Panda Home via Lightning App Builder met dashboards
 
 ---
 
 ## 🔴 Hoge prioriteit
 
-- **Student Path guidance teksten instellen in Salesforce** — IN UITVOERING 20 april 2026.
-
-- **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen en verwerken in contracttekst.
-
 - **Scenario 21 + 22 testen** — end-to-end test uitvoeren met testrecord
+
+- **Scenario 1 aanpassen** — trigger wijzigen naar `Start_Process__c` veld (besluit sessie 14 mei). Veld nog aanmaken op Student_Teacher_Matching__c object. Nieuw scenario bouwen voor "Docent gevonden" email naar ouder met progress bar.
+
+- **Student Path guidance teksten instellen in Salesforce**
+
+- **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen
+
+---
+
+## 📊 Salesforce Dashboards
+
+- **Formula velden aanmaken** voor tijdberekeningen:
+  - `Days_in_Pending_Conversion__c` → `IF(ISBLANK(Pending_Conversion_Date__c), 0, TODAY() - Pending_Conversion_Date__c)`
+  - `Days_Since_Registration__c` → `TODAY() - DATEVALUE(CreatedDate)`
+- **Rejection_Reason__c gaan vullen** zodat Rejection Reason chart data toont
+- **Dashboard 2 uitbreiden** zodra meer data beschikbaar is
+
+---
+
+## 🎨 Email Design (Progress Bar)
+
+- **Progress bar verder uitwerken in claude.ai/design** — prototype klaar, nog uit te werken in High Fidelity
+- **Progress bar als GIF exporteren** en in alle intake emails verwerken (via ScreenToGif of Canva)
+- **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
+- **Pending Conversion emails schrijven** — dag 2, 5, 9 (automations aangemaakt, emails nog leeg)
+- **Client welkomstmail schrijven** — automation aangemaakt (Scenario 25), email nog leeg
+
+---
+
+## 🔧 Matching Teacher flow
+
+- **`Start_Process__c` checkbox veld aanmaken** op Student_Teacher_Matching__c
+- **Scenario 1 trigger aanpassen** → van `Trial_Lesson_Status__c` leeg naar `Start_Process__c = true`
+- **Nieuw scenario bouwen** — "Docent gevonden" notificatie naar ouder (MailerLite email + progress bar stap 3)
 
 ---
 
@@ -58,26 +65,18 @@ Laatst bijgewerkt: 11 mei 2026
 ## ⚙️ Make.com / Automations
 
 - **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
-
 - **Scenario 21 polling vervangen door Salesforce webhook** (na Enterprise upgrade)
-
-- **Intern alert bouwen na proefles**.
-
-- **Salesforce status updaten na versturen `parent_timeslot_final`**.
-
-- **Re-engagement flow bouwen voor No Show matchings**.
-
-- **AVG/GDPR data verwijdering automatiseren** (2 scenarios).
+- **Re-engagement flow bouwen voor No Show matchings**
+- **AVG/GDPR data verwijdering automatiseren** (2 scenarios)
 
 ---
 
 ## 📧 MailerLite
 
-- **Post-proefles email flow inrichten**.
-
-- **HTML design verwerken in post-proefles automation**.
-
-- **MailerLite email "Intake - Reached" aanmaken** — bevestigingsmail na succesvol contact met ouder
+- **Post-proefles email flow inrichten**
+- **Pending Conversion emails schrijven** (dag 2, 5, 9)
+- **Client welkomstmail schrijven**
+- **MailerLite email "Intake - Reached" aanmaken**
 
 ---
 
@@ -89,10 +88,10 @@ Laatst bijgewerkt: 11 mei 2026
 
 ## 🔒 GDPR / Compliance
 
-- **Verwerkersovereenkomst (DPA) afsluiten met Tally**.
+- **Verwerkersovereenkomst (DPA) afsluiten met Tally**
 
 ---
 
 ## 📬 Overig
 
-- **Gmail inbox info@brightpanda.nl opruimen via Cowork**.
+- **Gmail inbox info@brightpanda.nl opruimen via Cowork**
