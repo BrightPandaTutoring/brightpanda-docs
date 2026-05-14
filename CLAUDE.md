@@ -25,10 +25,38 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 
 **GitHub (documentatie):** https://github.com/BrightPandaTutoring/brightpanda-docs
 
-**Huiskleuren Bright Panda:**
-- Donkerblauw: #1d467f (primaire kleur)
-- Lichtblauw achtergrond: #f4f8fd
-- Amber accent: #f59e0c
+## BRAND IDENTITY
+
+**Over Bright Panda:**
+Bright Panda Bijles is een Nederlands bijlesbureau dat middelbare scholieren koppelt aan gekwalificeerde bijlesdocenten van topuniversiteiten (UvA, TU Delft, Universiteit Leiden). Persoonlijke bijles aan huis en online voor alle middelbare schoolvakken. Missie: betere cijfers én meer zelfvertrouwen door de juiste match.
+
+**Tone of voice:** warm, toegankelijk en professioneel. Informeel (je/jij) maar betrouwbaar. Enthousiast en resultaatgericht zonder opdringerig te zijn.
+
+**Huiskleuren:**
+- Donkerblauw: `#1d467f` (primaire kleur)
+- Amber/goud: `#f59e0c` (accent)
+- Lichtblauw achtergrond: `#f4f8fd`
+- Crème: `#fffbf0`
+- Donker tekst (headings): `#1D2930`
+- Body tekst: `#555555`
+- Border: `#e2e8f0`
+
+**Typografie:**
+- Font family: **Montserrat** (brand font, gebruikt op website en in Figma)
+- Email-safe alternatief: Verdana (voor emailclients die Montserrat niet ondersteunen)
+- Heading: Montserrat Bold 700, kleur `#1D2930`
+- Body: Montserrat Regular 400, kleur `#555555`
+- Letter spacing headings: -0.36px
+- Border radius: 4px
+
+**Website:** gebouwd in Webflow
+
+**Progress bar email design (in ontwikkeling via claude.ai/design):**
+5 stappen vanuit klantperspectief: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
+- Voltooide stappen: blauwe cirkel (`#1d467f`) met wit vinkje
+- Actieve stap: pulserende amber cirkel (`#f59e0c`)
+- Per stap een geruststelling tekst (titel + subtekst)
+- Plan: exporteren als GIF per email fase → uploaden in MailerLite als afbeelding
 
 **WhatsApp templates (goedgekeurd):**
 - `interview_invitation_confirmation` (params: {{1}} en {{2}} = voornaam docent NL + EN)
@@ -61,13 +89,6 @@ Je helpt Raouf en Yasin Angudi (info@brightpanda.nl) dagelijks met Make.com auto
 - Pending Conversion - Day 5 (ID: 186074791205144311)
 - Pending Conversion - Day 9 (ID: 186074799441708427)
 - Actieve Klanten (ID: 182829305032606767)
-
-**Progress bar email design (in ontwikkeling):**
-5 stappen: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
-- Voltooide stappen: blauwe cirkel (#1d467f) met wit vinkje
-- Actieve stap: pulserende amber cirkel (#f59e0c)
-- Per stap een geruststelling tekst (titel + subtekst)
-- Plan: exporteren als GIF per email fase → uploaden in MailerLite
 
 **Repo structuur:**
 - `/CLAUDE.md` — instructies (dit bestand) — single source of truth
@@ -209,7 +230,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 - Route 1 (mod 18): LifecycleStage = 'New' → Slack #nieuwe-aanmeldingen
 - Route 2 (mod 15): Contact_Status IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
 - Route 3 (mod 21): Pending Onboarding + Bsport niet aangemaakt + profiel ingevuld → Slack #onboarding-bsport
-- Route 4 (mod 23): Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie (toont dagen in status)
+- Route 4 (mod 23): Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie
 
 **Scenario 23 — Active Matching → Pending:**
 - Trigger: Watch Records op Student_Teacher_Matching__c
@@ -244,11 +265,12 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 15. **Contact_Status__c waarden hebben een komma:** 'Called - 1st Attempt, No Answer'
 16. **Intake checkbox API namen:** dubbele _c__c suffix — werkt wel, niet wijzigen
 17. **Watch Records pikt nieuwe SF velden pas op na Run once**
-18. **Teaching_Location__c is DEPRECATED** — nooit meer vullen vanuit Tally. Bij verwerken van profiel: Teaching_Location__c leeg maken (null). Gebruik `PreferenceLocation__c` met Engelstalige waarden.
+18. **Teaching_Location__c is DEPRECATED** — nooit meer vullen. Gebruik `PreferenceLocation__c` met Engelstalige waarden.
 19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
 20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
-21. **Comments_FromWebForm__c:** komt van het aanmeldformulier — NOOIT vullen vanuit Tally profielformulier. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
-22. **Sleutelwoorden:**
+21. **Comments_FromWebForm__c:** alleen van aanmeldformulier — NOOIT vanuit Tally. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
+22. **Brand font is Montserrat** — niet Verdana. Voor emails: Montserrat via Google Fonts importeren, Verdana als fallback
+23. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
@@ -282,47 +304,30 @@ Zoek: `from:notifications@tally.so subject:"New Tally Form Submission for Docent
 |---|---|---|
 | email | PersonEmail (lookup) | — |
 | Studeer je momenteel of afgestudeerd? | `Graduated__c` | `Studeer momenteel` / `Afgestudeerd` |
-| Wat heb je gestudeerd? | `Study__c` | Exact overnemen. Als instelling niet in picklist: `"[Studie] — [Instelling]"` |
-| Bij welke instelling? | `University_WO__c` of `University_HBO__c` | Zie instelling mapping hieronder |
+| Wat heb je gestudeerd? | `Study__c` | Exact overnemen |
+| Bij welke instelling? | `University_WO__c` of `University_HBO__c` | Zie instelling mapping |
 | Opleidingsniveau? | `HBO_WO__c` | `HBO (Bacherlor)` / `WO Bachelor` / `WO Master` |
 | Tweede studie? | `Follow2ndStudy__c` + `X2nd_*` velden | true/false |
-| IBAN | `IBAN__c` | Normaliseer: verwijder spaties, hoofdletters. NL = 18 tekens |
-| Naam op bankpas | `NameOnBankCard__c` | Exact overnemen zoals op de pas staat |
-| Hoe bijles geven? | `PreferenceLocation__c` | Zie locatie mapping hieronder |
+| IBAN | `IBAN__c` | Normaliseer: verwijder spaties, hoofdletters |
+| Naam op bankpas | `NameOnBankCard__c` | Exact overnemen |
+| Hoe bijles geven? | `PreferenceLocation__c` | Zie locatie mapping |
 | Voertaal bijles? | `PreferredLanguage__c` | `Dutch` / `English` / `Both / No Preference` |
-| Welke vakken? | `Subjects__c` | Zie vakken mapping hieronder — semicolon-separated, Engelstalige SF-waarden |
+| Welke vakken? | `Subjects__c` | Semicolon-separated, Engelstalige SF-waarden |
 | Niveau/leerjaar per vak | `Teaching_Level_Details__c` | Exact overnemen |
-| Hoogste niveau overall | `Can_Teach_Until_Education_Level__c` | Afleiden: HAVO→`Havo` / VWO→`VWO` / Gymnasium→`Gymnasium` |
-| Hoogste leerjaar overall | `Can_Teach_Until_School_Year__c` | VMBO=4 / HAVO=5 / VWO=6 / basisschool=`Groep 8` |
+| Hoogste niveau overall | `Can_Teach_Until_Education_Level__c` | HAVO→`Havo` / VWO→`VWO` / Gymnasium→`Gymnasium` |
+| Hoogste leerjaar overall | `Can_Teach_Until_School_Year__c` | VMBO=4 / HAVO=5 / VWO=6 |
 | Examentraining? | `Can_Give_Exam_Training__c` | boolean |
-| Examentraining vakken/niveau | `Exam_Training_Details__c` | Exact overnemen als ingevuld |
+| Examentraining vakken | `Exam_Training_Details__c` | Exact overnemen |
 | Basisschool? | `CanTeachElementarySchool__c` | boolean |
 | Geboortedatum | `Date_of_Birth__c` | YYYY-MM-DD |
-| Opmerkingen / Is er nog iets? | `Profile_Comments__c` | Exact overnemen. "No" of leeg → leeg laten |
+| Opmerkingen | `Profile_Comments__c` | Exact overnemen |
 
-Daarna altijd: `Profile_Completed_Date__c` = datum van de submission + `Teaching_Location__c` = null (leeg maken).
+Daarna altijd: `Profile_Completed_Date__c` = datum submission + `Teaching_Location__c` = null.
 
-**⚠️ Nooit vullen vanuit dit formulier:** `Comments_FromWebForm__c` (alleen van aanmeldformulier), `Teaching_Location__c` (deprecated)
+**Locatie mapping PreferenceLocation__c:**
+Online→`Online` | Fysiek thuis→`In-person (at home)` | Fysiek openbaar→`In-person (public space)` | Fysiek openbaar+thuis→`In-person (at home + public space)` | Hybride online+openbaar→`Hybrid (online + public space)` | Hybride online+openbaar+thuis→`Hybrid (online + at home + public space)`
 
-**Locatie mapping PreferenceLocation__c (Engelstalige SF-waarden):**
-| Tally antwoord | SF waarde |
-|---|---|
-| Online | `Online` |
-| Fysiek (thuis bij de leerling) | `In-person (at home)` |
-| Fysiek (openbare ruimte) | `In-person (public space)` |
-| Fysiek (openbare ruimte + thuis) | `In-person (at home + public space)` |
-| Hybride (online + openbare ruimte) | `Hybrid (online + public space)` |
-| Hybride (online + openbare ruimte + aan huis/thuis) | `Hybrid (online + at home + public space)` |
-
-**Vakken mapping (NL → SF Engelstalige picklist-waarden):**
-Wiskunde A→`Mathematics A` | Wiskunde B→`Mathematics B` | Wiskunde C→`Mathematics C` | Wiskunde D→`Mathematics D` | Wiskunde (zonder letter)→⚠️ NAVRAGEN A/B/C/D | Nederlands→`Dutch` | Engels→`English` | Duits→`German` | Frans→`French` | Spaans→`Spanish` | Biologie→`Biology` | Scheikunde→`Chemistry` | Natuurkunde→`Physics` | Geschiedenis→`History` | Aardrijkskunde→`Geography` | Economie→`Economics` | Bedrijfseconomie→`Business Economics` | Informatica→`Computer Science` | Filosofie→`Philosophy` | Maatschappijleer→`Social Studies` | Kunst/CKV→`Cultural & Artistic Education (CKV)` | Muziek→`Music` | Rekenen/Cito→`Cito Test` | Grieks→`Greek` | Latijn→`Latin` | Coding/Programmeren→`Coding` | Chinees→`Chinese` | Arabisch→`Arabic`
-
-Vak niet in lijst → vermelden in `Profile_Comments__c` + flaggen.
-
-**Instelling mapping:**
-- WO-universiteit (UvA, VU, EUR, TU Delft, etc.) → `University_WO__c`
-- HBO-hogeschool (HvA, Hogeschool Rotterdam, etc.) → `University_HBO__c`
-- Niet in picklist → schrijf `"[Studie] — [Instelling]"` in `Study__c`, laat University-veld leeg, flag naar Raouf
+**Vakken mapping:** Wiskunde A→`Mathematics A` | B→`Mathematics B` | C→`Mathematics C` | D→`Mathematics D` | Wiskunde zonder letter→⚠️ NAVRAGEN | Nederlands→`Dutch` | Engels→`English` | Duits→`German` | Frans→`French` | Spaans→`Spanish` | Biologie→`Biology` | Scheikunde→`Chemistry` | Natuurkunde→`Physics` | Geschiedenis→`History` | Aardrijkskunde→`Geography` | Economie→`Economics` | Bedrijfseconomie→`Business Economics` | Informatica→`Computer Science` | Filosofie→`Philosophy` | Maatschappijleer→`Social Studies` | Kunst/CKV→`Cultural & Artistic Education (CKV)` | Muziek→`Music` | Rekenen/Cito→`Cito Test` | Grieks→`Greek` | Latijn→`Latin` | Coding→`Coding` | Chinees→`Chinese` | Arabisch→`Arabic`
 
 ### 6. Gmail — Ongelezen
 Profielreacties docenten verwerken + sollicitaties samenvatten.
