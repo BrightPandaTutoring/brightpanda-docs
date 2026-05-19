@@ -192,32 +192,33 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation | 🔧 Inactief | 4729958 |
-| 02 | Parent Timeslot Invitation | 🔧 Inactief | 4740354 |
-| 03 | Trial Lesson Scheduled & Availability Conflict | 🔧 Inactief | 4783259 |
-| 04 | Teacher Timeslot Submission | 🔧 Inactief | 4839158 |
+| 01 | Teacher Invitation (polling elke 15 min) | 🔧 Inactief | 4729958 |
+| 02 | Parent Timeslot Invitation (webhook) | 🔧 Inactief | 4740354 |
+| 03 | Trial Lesson Scheduled & Availability Conflict (webhook) | 🔧 Inactief | 4783259 |
+| 04 | Teacher Timeslot Submission (webhook) | 🔧 Inactief | 4839158 |
 | 05 | Availability Conflict Reminder (elke 4u) | 🔧 Inactief | 4840663 |
 | 06 | Teacher Availability Reminder (elke 2u) | 🔧 Inactief | 4842456 |
-| 07 | Internal Alert Teacher No Response | 🔧 Inactief | 4858555 |
-| 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief | 4892054 |
-| 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief | 4744104 |
-| 10 | Student New Registration → MailerLite + WhatsApp + Slack #nieuwe-aanmeldingen | ✅ Actief | 4969006 |
+| 07 | Internal Alert Teacher No Response (elke 15 min) | 🔧 Inactief | 4858555 |
+| 08 | Lesson Date Reminder (elke 15 min) | 🔧 Inactief | 4892054 |
+| 09 | Parent Timeslot Reminders & Escalatie (elke 15 min) | 🔧 Inactief | 4744104 |
+| 10 | Student New Registration → MailerLite + WhatsApp + Slack (webhook) | ✅ Actief | 4969006 |
 | 11 | Post-proefles flow (event-driven via Salesforce Flow, 70 min na Trial_Lesson_Date__c) | ✅ Actief | 5015744 |
-| 12 | Docent New Registration | ✅ Actief | 5223712 |
-| 13 | Docent Lifecycle Automation | ✅ Actief | 5109244 |
-| 14 | DocuSeal Contract Signed | ✅ Actief | 5133318 |
+| 12 | Docent New Registration (Watch Records, elke 1u) | ✅ Actief | 5223712 |
+| 13 | Docent Lifecycle Automation (Watch Records, elke 1u) | ✅ Actief | 5109244 |
+| 14 | DocuSeal Contract Signed (webhook) | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
-| 16 | Teacher Guide & Bsport Email After Account Creation | ✅ Actief | 5282459 |
-| 17 | Auto On-boarded (dagelijks 08:00) — TO-DO: omzetten naar event-driven webhook | ✅ Actief | 5331760 |
+| 16 | Teacher Guide & Bsport Email After Account Creation (Watch Records, elke 6u) | ✅ Actief | 5282459 |
+| 17 | Auto On-boarded (dagelijks 08:00) — TO-DO: omzetten naar event-driven | ✅ Actief | 5331760 |
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
-| 19 | Documentation Reminder Pending Onboarding | ✅ Actief | 5339372 |
+| 19 | Documentation Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
-| 21 | Intake Flow: Contact Status (5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
-| 22 | Daily Overzichten Slack 09:00 (4 routes) | 🔧 Inactief (wacht op test) | 5451841 |
-| 23 | Active Matching → Pending Conversion | 🔧 Inactief | 5495257 |
+| 21 | Intake Flow: Contact Status (Watch Records, elke 15 min, 5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
+| 22 | Daily Callbacks Slack 09:00 (dagelijks, 5 routes) | 🔧 Inactief (wacht op test) | 5451841 |
+| 23 | Active Matching → Pending Conversion (Watch Records, elke 15 min) | 🔧 Inactief | 5495257 |
 | 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
-| 25 | Client Welkomstmail | 🔧 Inactief | 5497116 |
-| 26 | Rejection Follow-up Email | 🔧 Inactief | 5500907 |
+| 25 | Client Welkomstmail (Watch Records, elke 15 min) | 🔧 Inactief | 5497116 |
+| 26 | Intake Rejection Follow-up Email (Watch Records, elke 15 min, 6 routes) | 🔧 Inactief | 5500907 |
+| 27 | Trial Rejection Follow-up Email (Watch Records, elke 15 min) | 🔧 Inactief | 5663018 |
 
 **Scenario 21 — Intake Flow routes:**
 - Route 1: Called - 1st Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
@@ -226,11 +227,12 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 - Route 4: Reached - Need to Call Back + checkbox false → SF checkbox true + Slack #callbacks direct
 - Route 5: Reached + checkbox false → MailerLite + SF checkbox true
 
-**Scenario 22 — Daily Overzichten routes:**
-- Route 1 (mod 18): LifecycleStage = 'New' → Slack #nieuwe-aanmeldingen
-- Route 2 (mod 15): Contact_Status IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
-- Route 3 (mod 21): Pending Onboarding + Bsport niet aangemaakt + profiel ingevuld → Slack #onboarding-bsport
-- Route 4 (mod 23): Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie
+**Scenario 22 — Daily Callbacks Slack routes:**
+- Route 1: LifecycleStage = 'New' → Slack #nieuwe-aanmeldingen
+- Route 2: Contact_Status IN ('Called - 1st Attempt, No Answer', 'Called - 2nd Attempt, No Answer', 'Reached - Need to Call Back') → Slack #callbacks
+- Route 3: Pending Onboarding + Bsport niet aangemaakt + profiel ingevuld → Slack #onboarding-bsport
+- Route 4: Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie
+- Route 5: Dagelijks overzicht (5e route in Make)
 
 **Scenario 23 — Active Matching → Pending:**
 - Trigger: Watch Records op Student_Teacher_Matching__c
