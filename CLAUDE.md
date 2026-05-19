@@ -202,22 +202,22 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 | 08 | Lesson Date Reminder (48h/24h/2h) | 🔧 Inactief | 4892054 |
 | 09 | Parent Timeslot Reminders & Escalatie | 🔧 Inactief | 4744104 |
 | 10 | Student New Registration → MailerLite + WhatsApp + Slack #nieuwe-aanmeldingen | ✅ Actief | 4969006 |
-| 11 | Post-proefles flow | 🔧 Inactief | 5015744 |
+| 11 | Post-proefles flow (event-driven via Salesforce Flow, 70 min na Trial_Lesson_Date__c) | ✅ Actief | 5015744 |
 | 12 | Docent New Registration | ✅ Actief | 5223712 |
 | 13 | Docent Lifecycle Automation | ✅ Actief | 5109244 |
 | 14 | DocuSeal Contract Signed | ✅ Actief | 5133318 |
 | 15 | Tally Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5269100 |
 | 16 | Teacher Guide & Bsport Email After Account Creation | ✅ Actief | 5282459 |
-| 17 | Auto On-boarded (dagelijks 08:00) | ✅ Actief | 5331760 |
+| 17 | Auto On-boarded (dagelijks 08:00) — TO-DO: omzetten naar event-driven webhook | ✅ Actief | 5331760 |
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
 | 19 | Documentation Reminder Pending Onboarding | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
 | 21 | Intake Flow: Contact Status (5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
-| 22 | Daily Overzichten Slack 09:00 (4 routes: nieuwe aanmeldingen, callbacks, bsport, pending conversie) | 🔧 Inactief (wacht op test) | 5451841 |
-| 23 | Active Matching → Pending (Student_Teacher_Matching Status=Active + student in Trial Class → Pending Conversion + datum) | 🔧 Inactief | 5495257 |
-| 24 | Pending Conversion Reminders (dagelijks 10:00, MailerLite op dag 2/5/9) | 🔧 Inactief | 5496102 |
-| 25 | Client Welkomstmail (Watch Records → LifecycleStage = Client → MailerLite groep "Actieve Klanten") | 🔧 Inactief | 5497116 |
-| 26 | Rejection Follow-up Email (Watch Records → Router 6 routes → MailerLite + SF Update) | 🔧 Inactief | 5500907 |
+| 22 | Daily Overzichten Slack 09:00 (4 routes) | 🔧 Inactief (wacht op test) | 5451841 |
+| 23 | Active Matching → Pending Conversion | 🔧 Inactief | 5495257 |
+| 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
+| 25 | Client Welkomstmail | 🔧 Inactief | 5497116 |
+| 26 | Rejection Follow-up Email | 🔧 Inactief | 5500907 |
 
 **Scenario 21 — Intake Flow routes:**
 - Route 1: Called - 1st Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
