@@ -1,13 +1,13 @@
 # Scenario 11 — Post-Proefles Flow
 
-**Laatste update:** 10 april 2026
-**Status:** ✅ Werkend — ⚠️ tijdzone tijdelijk hardcoded (+01:00 wintertijd)
+**Laatste update:** 19 mei 2026
+**Status:** ✅ Werkend — event-driven via Salesforce Flow
 
 ---
 
 ## Doel
 
-Detecteert automatisch wanneer een proefles heeft plaatsgevonden (60-75 minuten na `Trial_Lesson_Date__c`) en:
+Wordt automatisch getriggerd 70 minuten nadat de proefles heeft plaatsgevonden en:
 1. Zet status op `Trial Lesson Completed`
 2. Stuurt bevestiging naar ouder en docent
 3. Stuurt intern alert naar Raouf, Yasin en zakelijk nummer
@@ -15,23 +15,103 @@ Detecteert automatisch wanneer een proefles heeft plaatsgevonden (60-75 minuten 
 
 ---
 
+## Architectuur
+
+```
+Status wijzigt naar Trial Lesson Scheduled in Salesforce
+        ↓
+Record-Triggered Flow (Post-Proefles Flow Trigger)
+        ↓
+Wacht 70 minuten na Trial_Lesson_Date__c
+        ↓
+Vul Request Body (Assignment)
+        ↓
+HTTP Callout → Make.com Webhook (Stuur Post Proefles naar Make)
+        ↓
+Scenario 11 triggert direct
+```
+
+---
+
 ## Trigger
 
 | Eigenschap | Waarde |
 |-----------|--------|
-| Type | Schedule |
-| Interval | Elke 15 minuten |
+| Type | Salesforce Record-Triggered Flow + Custom Webhook |
+| Salesforce Flow | Post-Proefles Flow Trigger |
+| Webhook URL | `https://hook.eu1.make.com/pk888u999ewnnksom71zqatslfyhow8z` |
+| Timing | 70 minuten na `Trial_Lesson_Date__c` |
+
+> **Vervangt:** de oude polling trigger (elke 15 minuten, 96 onnodige runs per dag).
 
 ---
 
-## Module Volgorde
+## Salesforce Flow configuratie
+
+**Flow naam:** Post-Proefles Flow Trigger
+**Type:** Record-Triggered Flow
+**Object:** Student Teacher Matching
+**Trigger:** A record is created or updated
+**Condition:** `Trial_Lesson_Status__c` Equals `Trial Lesson Scheduled`
+**When to Run:** Only when a record is updated to meet the condition requirements
+**Optimize for:** Actions and Related Records
+
+### Scheduled Path: 70 minuten na proefles
+
+| Instelling | Waarde |
+|---|---|
+| Time Source | Student Teacher Matching: Trial Lesson Date |
+| Offset Number | 70 |
+| Offset Options | Minutes After |
+
+### Assignment: Vul Request Body
+
+Vult de `RequestBodyPostProefles` variabele (Apex-Defined, type `ExternalService__MakePostProeflesWebhook_SendPostProeflesToMake_IN_body`) met:
+
+| Variable | Waarde |
+|---|---|
+| RequestBodyPostProefles > Id | `{!$Record.Id}` |
+| RequestBodyPostProefles > Student__c | `{!$Record.Student__c}` |
+| RequestBodyPostProefles > Teacher__c | `{!$Record.Teacher__c}` |
+| RequestBodyPostProefles > Trial_Lesson_Date__c | `{!$Record.Trial_Lesson_Date__c}` |
+| RequestBodyPostProefles > Trial_Lesson_Status__c | `{!$Record.Trial_Lesson_Status__c}` |
+
+### Action: Stuur Post Proefles naar Make
+
+**External Service:** MakePostProeflesWebhook
+**Operation:** SendPostProeflesToMake
+**Body:** `RequestBodyPostProefles`
+
+---
+
+## Salesforce Setup configuratie
+
+### External Service
+- **Name:** MakePostProeflesWebhook
+- **Named Credential:** MakeNewStudentWebhook (hergebruikt van scenario 10)
+- **OpenAPI schema:** zie onderaan dit document
+
+### Permission Set
+- **Name:** Make Webhook Access (hergebruikt van scenario 10)
+- **Toegewezen aan:** Raouf Angudi
+
+---
+
+## Make.com Scenario 11 configuratie
+
+**Trigger:** Custom Webhook (module 17)
+**Webhook URL:** `https://hook.eu1.make.com/pk888u999ewnnksom71zqatslfyhow8z`
+
+### Module volgorde
 
 ```
-[1]  Salesforce → Search Records SOQL
+[17] Custom Webhook (trigger)
         ↓
-[2]  Salesforce → Get a Record (Teacher Account) [Ignore error handler]
+[18] Webhook Response → {"accepted": true} + Content-Type: application/json
         ↓
-[3]  Salesforce → Get a Record (Student Account) [Ignore error handler]
+[2]  Salesforce → Get a Record (Teacher Account)
+        ↓
+[3]  Salesforce → Get a Record (Student Account)
         ↓
 [4]  Salesforce → Update a Record (Trial_Lesson_Status__c = Trial Lesson Completed)
         ↓
@@ -48,150 +128,98 @@ Detecteert automatisch wanneer een proefles heeft plaatsgevonden (60-75 minuten 
 [15] HTTP POST → 360dialog (trial_lesson_completed_teacher → docent)
 ```
 
+### Webhook data (module 17)
+
+| Veld | Inhoud |
+|---|---|
+| `17.Id` | Matching record ID |
+| `17.Student__c` | Student record ID |
+| `17.Teacher__c` | Teacher record ID |
+| `17.Trial_Lesson_Date__c` | Datum en tijd proefles |
+| `17.Trial_Lesson_Status__c` | `Trial Lesson Scheduled` |
+
+### Webhook Response (module 18)
+
+Status: `200`
+Body: `{"accepted": true}`
+Custom Headers: `Content-Type` = `application/json`
+
 ---
-
-## Module 1 — SOQL
-
-```sql
-SELECT Id, Name, Teacher__c, Student__c, Trial_Lesson_Status__c, Trial_Lesson_Date__c
-FROM Student_Teacher_Matching__c
-WHERE Trial_Lesson_Status__c = 'Trial Lesson Scheduled'
-AND Trial_Lesson_Date__c < {{formatDate(addMinutes(now; -60); "YYYY-MM-DDTHH:mm:ss"; "Europe/Amsterdam")}}+01:00
-AND Trial_Lesson_Date__c > {{formatDate(addMinutes(now; -75); "YYYY-MM-DDTHH:mm:ss"; "Europe/Amsterdam")}}+01:00
-```
-
-> ⚠️ **Tijdzone tijdelijk hardcoded:** `+01:00` is wintertijd (CET). In zomertijd (CEST, +02:00) klopt dit niet — de les wordt dan 1 uur te laat gedetecteerd.
-> **Fix:** `{{formatDate(addMinutes(now; -60); "YYYY-MM-DDTHH:mm:ssZ"; "Europe/Amsterdam")}}` — testen na zomertijd overgang.
-
-**Logica:** Detecteert lessen die 60-75 minuten geleden begonnen zijn. Tijdvenster van 15 minuten matcht het scenario-interval.
 
 ## Module 2 — Get Teacher Account
-- **Record ID:** `{{1.Teacher__c}}`
-- **Output:** `{{2.FirstName}}`, `{{2.Phone}}`
-- **Ignore error handler:** ✅ (voorkomt crash bij ontbrekend account)
+- **Record ID:** `{{17.Teacher__c}}`
 
 ## Module 3 — Get Student Account
-- **Record ID:** `{{1.Student__c}}`
-- **Output:** `{{3.FirstName}}`, `{{3.ParentsName__c}}`, `{{3.ParentSPhone__c}}`, `{{3.ParentSEmail__c}}`
-- **Ignore error handler:** ✅
-
----
+- **Record ID:** `{{17.Student__c}}`
 
 ## Module 4 — Salesforce Update
-
-- **Record ID:** `{{1.Id}}`
+- **Record ID:** `{{17.Id}}`
 - `Trial_Lesson_Status__c` = `Trial Lesson Completed`
 
 ---
 
-## Module 5 — trial_lesson_completed_parent
+## Slack module — Interne alert
 
 ```json
 {
-  "messaging_product": "whatsapp",
-  "to": "{{3.ParentSPhone__c}}",
-  "type": "template",
-  "template": {
-    "name": "trial_lesson_completed_parent",
-    "language": {"code": "nl"},
-    "components": [{
-      "type": "body",
-      "parameters": [
-        {"type": "text", "text": "{{3.ParentsName__c}}"},
-        {"type": "text", "text": "{{3.FirstName}}"},
-        {"type": "text", "text": "{{2.FirstName}}"}
+  "blocks": [
+    {
+      "type": "header",
+      "text": {"type": "plain_text", "text": "Proefles afgerond — bel de ouder op!"}
+    },
+    {
+      "type": "section",
+      "fields": [
+        {"type": "mrkdwn", "text": "*Leerling:* {{3.FirstName}} {{3.LastName}}"},
+        {"type": "mrkdwn", "text": "*Ouder:* {{3.ParentSName__c}}"},
+        {"type": "mrkdwn", "text": "*Telefoon:* {{3.ParentSPhone__c}}"},
+        {"type": "mrkdwn", "text": "*Docent:* {{2.FirstName}} {{2.LastName}}"},
+        {"type": "mrkdwn", "text": "*Vakken:* {{3.Subjects__c}}"},
+        {"type": "mrkdwn", "text": "*Datum:* {{formatDate(17.Trial_Lesson_Date__c; \"DD-MM-YYYY\")}}"}
       ]
-    }]
-  }
-}
-```
-
-| Parameter | Variabele | Inhoud |
-|-----------|-----------|--------|
-| `{{1}}` | `{{3.ParentsName__c}}` | Naam ouder |
-| `{{2}}` | `{{3.FirstName}}` | Voornaam leerling |
-| `{{3}}` | `{{2.FirstName}}` | Voornaam docent |
-
----
-
-## Module 7 — MailerLite Update
-
-- **Actie:** Create/Update Subscriber
-- **Email:** `{{3.ParentSEmail__c}}`
-- **Groep:** `Proefles Afgelopen`
-
-> ⚠️ Scenario crashte tijdens test omdat `ParentSEmail__c` leeg was in testmatching. Fix: zorg dat testrecords volledig zijn, of voeg error handler toe.
-
----
-
-## Modules 10, 11, 12 — Interne Alerts
-
-**Template:** `internal_alert_trial_lesson_completed` (5 params)
-
-| Module | Naar | Nummer |
-|--------|------|--------|
-| 10 | Raouf | `31630892143` |
-| 11 | Yasin | `31623325599` |
-| 12 | Zakelijk | `31613689666` |
-
-```json
-{
-  "messaging_product": "whatsapp",
-  "to": "{{NUMMER}}",
-  "type": "template",
-  "template": {
-    "name": "internal_alert_trial_lesson_completed",
-    "language": {"code": "nl"},
-    "components": [{
-      "type": "body",
-      "parameters": [
-        {"type": "text", "text": "{{3.FirstName}}"},
-        {"type": "text", "text": "{{2.FirstName}}"},
-        {"type": "text", "text": "{{1.Name}}"},
-        {"type": "text", "text": "{{formatDate(1.Trial_Lesson_Date__c; \"DD-MM-YYYY\"; \"Europe/Amsterdam\")}}"},
-        {"type": "text", "text": "{{formatDate(1.Trial_Lesson_Date__c; \"HH:mm\"; \"Europe/Amsterdam\")}}"}
-      ]
-    }]
-  }
+    }
+  ]
 }
 ```
 
 ---
 
-## Module 15 — trial_lesson_completed_teacher
+## OpenAPI Schema (MakePostProeflesWebhook)
 
 ```json
 {
-  "messaging_product": "whatsapp",
-  "to": "{{2.Phone}}",
-  "type": "template",
-  "template": {
-    "name": "trial_lesson_completed_teacher",
-    "language": {"code": "nl"},
-    "components": [{
-      "type": "body",
-      "parameters": [
-        {"type": "text", "text": "{{2.FirstName}}"},
-        {"type": "text", "text": "{{3.FirstName}}"}
-      ]
-    }]
+  "openapi": "3.0.1",
+  "info": {"title": "MakePostProeflesWebhook", "description": ""},
+  "servers": [{"url": "https://hook.eu1.make.com"}],
+  "paths": {
+    "/pk888u999ewnnksom71zqatslfyhow8z": {
+      "post": {
+        "operationId": "SendPostProeflesToMake",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Id": {"type": "string"},
+                  "Student__c": {"type": "string"},
+                  "Teacher__c": {"type": "string"},
+                  "Trial_Lesson_Date__c": {"type": "string"},
+                  "Trial_Lesson_Status__c": {"type": "string"}
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "2XX": {"description": "", "content": {"text/plain": {"schema": {"type": "string"}}}}
+        }
+      }
+    }
   }
 }
 ```
-
-| Parameter | Variabele | Inhoud |
-|-----------|-----------|--------|
-| `{{1}}` | `{{2.FirstName}}` | Voornaam docent |
-| `{{2}}` | `{{3.FirstName}}` | Voornaam leerling |
-
-> Template heeft een **phone button** — docent kan direct bellen.
-
----
-
-## Openstaande Verbeteringen
-
-> ⚠️ **Tijdzone fix:** `+01:00` vervangen door dynamische tijdzone. Fix na zomertijd overgang testen.
-> ⚠️ **ParentSEmail__c:** Error handler toevoegen bij lege emailadressen voor MailerLite module.
 
 ---
 
@@ -202,3 +230,4 @@ AND Trial_Lesson_Date__c > {{formatDate(addMinutes(now; -75); "YYYY-MM-DDTHH:mm:
 | [Scenario 8](scenario-08-lesson-date-reminder.md) | Reminders 48u/24u/2u vóór de proefles |
 | [Scenario 3b](scenario-3b-ouder-tijdslot-verwerking.md) | Zet status op Trial Lesson Scheduled |
 | [Scenario 4](scenario-04-teacher-timeslot-submission.md) | Alternatieve weg naar Trial Lesson Scheduled |
+| [salesforce-flow-webhook-integratie.md](salesforce-flow-webhook-integratie.md) | Patroon voor Salesforce Flow naar Make.com webhook |
