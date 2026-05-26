@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 14 mei 2026
+Laatst bijgewerkt: 26 mei 2026
 
 ---
 
@@ -86,6 +86,18 @@ Laatst bijgewerkt: 14 mei 2026
 
 ---
 
+## 📈 Groei & Marketing
+
+- **Marketingpositionering uitwerken** — inspelen op de emotie van de klant om hogere lesprijs te rechtvaardigen en sterkere merkbeleving te creëren
+
+- **Vergoedingsframework uitwerken voor docenten** — duidelijke richtlijnen voor aankomend schooljaar: wat bieden we docenten, hoe blijven we competitief op de markt én eerlijk richting docent
+
+- **Financieel plan maken** — volledige kostenanalyse: waar gaat het geld naartoe, welke kosten kunnen omlaag, waar laten we kansen liggen, en hoe verbeteren we dit radicaal voor aankomend schooljaar
+
+- **TutorCruncher evalueren als Bsport-vervanger** — demo aanvragen, specifiek uitvragen: iDEAL/GoCardless voor NL-klanten, Salesforce-koppeling via API/webhooks, upsell pakketten (lessenkaarten/subscriptions), Nederlandse interface, split payroll docenten
+
+---
+
 ## 🔒 GDPR / Compliance
 
 - **Verwerkersovereenkomst (DPA) afsluiten met Tally**
@@ -95,3 +107,4 @@ Laatst bijgewerkt: 14 mei 2026
 ## 📬 Overig
 
 - **Gmail inbox info@brightpanda.nl opruimen via Cowork**
+- **Gmail logo aanpassen** — pulserende versie van het Bright Panda logo instellen als Gmail-profielfoto / verzendlogo (betere merkbeleving bij uitgaande mail)
