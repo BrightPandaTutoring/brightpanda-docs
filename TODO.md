@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 26 mei 2026
+Laatst bijgewerkt: 28 mei 2026
 
 ---
 
@@ -13,6 +13,7 @@ Laatst bijgewerkt: 26 mei 2026
 - **✅ GEDAAN: 9 Salesforce KPI Reports aangemaakt** (14 mei 2026)
 - **✅ GEDAAN: 3 Salesforce Dashboards gebouwd** (14 mei 2026): Student Funnel & Growth, Speed & Quality KPIs, Open Acties Team
 - **✅ GEDAAN: Salesforce Home pagina ingericht** (14 mei 2026) — Bright Panda Home via Lightning App Builder met dashboards
+- **✅ GEDAAN: TutorCruncher gekozen als Bsport-vervanger** (28 mei 2026) — beslissing genomen na grondige analyse en demo call. Nederlandse interface bevestigd mogelijk. Trial account actief.
 
 ---
 
@@ -25,6 +26,35 @@ Laatst bijgewerkt: 26 mei 2026
 - **Student Path guidance teksten instellen in Salesforce**
 
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen
+
+---
+
+## 🚀 TutorCruncher migratie (nieuw — hoge prioriteit)
+
+Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce blijft het CRM.
+
+### Fase 1 — Setup & inrichting
+- **Nederlandse interface instellen** — uitvragen bij TutorCruncher hoe dit exact werkt (custom CSS of taalbestand)
+- **Subjects/vakken aanmaken** in TutorCruncher — zelfde structuur als Salesforce `Subjects__c`
+- **Tariefstructuur instellen** — charge rate (ouder) en tutor rate (docent) per vak/niveau
+- **Ad Hoc Charge categorieën aanmaken** — registratiekosten, examentraining, extra vak, Pro service
+
+### Fase 2 — Make.com integratie bouwen
+- **Scenario A:** Salesforce lifecycle → "Trial Class" → automatisch Job aanmaken in TutorCruncher (docent + leerling + tarief)
+- **Scenario B:** TutorCruncher webhook "Les voltooid" → Salesforce `Trial_Lesson_Status__c` bijwerken
+- **Scenario C:** TutorCruncher webhook "Betaling ontvangen" → Salesforce record bijwerken
+- **Scenario D:** Maandelijks einde maand → GET /payment-orders/ → alle docenten automatisch uitbetalen via API
+
+### Fase 3 — Upsell bouwen
+- **Lessenkaarten (Packages) activeren** — bijv. 10 lessen pakket met korting, zichtbaar in ouder-portal
+- **Post-proefles upsell flow** — Make.com + MailerLite email na proefles met pakket-keuze
+- **Ad Hoc Charge via API** — extra dienst toevoegen aan factuur vanuit Salesforce trigger
+
+### Fase 4 — Migratie & go-live
+- **Bestaande actieve leerlingen overzetten** naar TutorCruncher
+- **Docenten uitnodigen** voor hun eigen TutorCruncher portal login
+- **Bsport opzeggen** zodra TutorCruncher volledig draait
+- **Geschatte doorlooptijd:** 3–4 weken parttime
 
 ---
 
@@ -93,8 +123,6 @@ Laatst bijgewerkt: 26 mei 2026
 - **Vergoedingsframework uitwerken voor docenten** — duidelijke richtlijnen voor aankomend schooljaar: wat bieden we docenten, hoe blijven we competitief op de markt én eerlijk richting docent
 
 - **Financieel plan maken** — volledige kostenanalyse: waar gaat het geld naartoe, welke kosten kunnen omlaag, waar laten we kansen liggen, en hoe verbeteren we dit radicaal voor aankomend schooljaar
-
-- **TutorCruncher evalueren als Bsport-vervanger** — demo aanvragen, specifiek uitvragen: iDEAL/GoCardless voor NL-klanten, Salesforce-koppeling via API/webhooks, upsell pakketten (lessenkaarten/subscriptions), Nederlandse interface, split payroll docenten
 
 ---
 
