@@ -45,28 +45,30 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 **Docentuitbetaling**
 6. Kunnen we instellen dat alle docenten automatisch worden uitbetaald op de 1e van de maand, ongeacht wanneer de ouder betaald heeft?
 7. Werkt de Pay Run functie via een exportbestand voor de bank, of kan dit volledig automatisch via de API?
-8. Ontvangen docenten automatisch een maandelijks overzicht (PDF) van hun gewerkte lessen en verdiensten?
-9. Hoe werkt docentuitbetaling als een ouder nog niet betaald heeft — wordt de docent dan toch uitbetaald op de 1e?
+8. Ontvangen docenten automatisch een maandelijks overzicht (PDF) van hun gewerkte lessen en verdiensten op de 1e van de maand?
+9. Bevat de automatische PDF alle benodigde informatie: datum per les, leerling, duur, verdienste per les en totaalbedrag?
+10. Kan dit maandoverzicht ook worden verstuurd als een branded Bright Panda email via MailerLite, of alleen als standaard TutorCruncher PDF?
+11. Hoe werkt docentuitbetaling als een ouder nog niet betaald heeft — wordt de docent dan toch uitbetaald op de 1e?
 
 **Nederlandse interface**
-10. Hoe werkt het instellen van een Nederlandse interface exact — is het custom CSS, een taalbestand, of iets anders?
-11. Kunnen ouders en docenten de portal volledig in het Nederlands zien, inclusief emails en facturen?
+12. Hoe werkt het instellen van een Nederlandse interface exact — is het custom CSS, een taalbestand, of iets anders?
+13. Kunnen ouders en docenten de portal volledig in het Nederlands zien, inclusief emails en facturen?
 
 **Upsell & extra diensten**
-12. Kunnen we bij het aankopen van een pakket automatisch een upsell tonen (bijv. examentraining toevoegen)?
-13. Kunnen we Ad Hoc Charges automatisch toevoegen via de API vanuit Make.com wanneer een ouder akkoord gaat met een extra dienst?
-14. Werken lessenkaarten (packages) samen met de docentuitbetaling, of moet dat apart worden afgehandeld?
+14. Kunnen we bij het aankopen van een pakket automatisch een upsell tonen (bijv. examentraining toevoegen)?
+15. Kunnen we Ad Hoc Charges automatisch toevoegen via de API vanuit Make.com wanneer een ouder akkoord gaat met een extra dienst?
+16. Werken lessenkaarten (packages) samen met de docentuitbetaling, of moet dat apart worden afgehandeld?
 
 **Integratie**
-15. Kunnen we Salesforce als primair CRM houden en TutorCruncher puur gebruiken als operationeel platform voor roostering en betaling?
-16. Welke webhooks zijn beschikbaar voor real-time synchronisatie met Salesforce via Make.com?
-17. Werkt de API ook met Nederlandse IBAN-nummers voor docentuitbetaling, of is Telleroo verplicht?
-18. Is er een Zapier-integratie beschikbaar naast de directe API?
+17. Kunnen we Salesforce als primair CRM houden en TutorCruncher puur gebruiken als operationeel platform voor roostering en betaling?
+18. Welke webhooks zijn beschikbaar voor real-time synchronisatie met Salesforce via Make.com?
+19. Werkt de API ook met Nederlandse IBAN-nummers voor docentuitbetaling, of is Telleroo verplicht?
+20. Is er een Zapier-integratie beschikbaar naast de directe API?
 
 **Overig**
-19. Wat zijn de transactiekosten voor SEPA-betalingen vanuit Nederland specifiek?
-20. Hoelang duurt gemiddeld de migratie van een bestaand platform met 110+ docenten en actieve leerlingen?
-21. Is er ondersteuning beschikbaar in het Nederlands?
+21. Wat zijn de transactiekosten voor SEPA-betalingen vanuit Nederland specifiek?
+22. Hoelang duurt gemiddeld de migratie van een bestaand platform met 110+ docenten en actieve leerlingen?
+23. Is er ondersteuning beschikbaar in het Nederlands?
 
 ---
 
@@ -81,7 +83,7 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 - **Scenario A:** Salesforce lifecycle → "Trial Class" → automatisch Job aanmaken in TutorCruncher (docent + leerling + tarief)
 - **Scenario B:** TutorCruncher webhook "Les voltooid" → Salesforce `Trial_Lesson_Status__c` bijwerken
 - **Scenario C:** TutorCruncher webhook "Betaling ontvangen" → Salesforce record bijwerken
-- **Scenario D:** Maandelijks op de 1e → GET /payment-orders/ → alle docenten automatisch uitbetalen via API
+- **Scenario D:** Maandelijks op de 1e → GET /payment-orders/ → alle docenten automatisch uitbetalen via API + maandoverzicht versturen
 
 ### Fase 3 — Upsell bouwen
 - **Lessenkaarten (Packages) activeren** — Small/Medium/Large/XL zichtbaar in ouder-portal
