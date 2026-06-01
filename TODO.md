@@ -1,5 +1,5 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 28 mei 2026
+Laatst bijgewerkt: 1 juni 2026
 
 ---
 
@@ -88,6 +88,7 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 
 ## 💬 Slack
 
+- **Persoonlijk Slack account aanmaken voor Raouf** (eigen email, bv. raouf@brightpanda.nl) → joinen in Brightpanda workspace → User ID doorgeven zodat @mention in Make scenario 10 toegevoegd kan worden → dan krijgt Raouf ook badge notificaties bij nieuwe aanmeldingen
 - **Escalatie alert bouwen** → #escalaties
 
 ---
