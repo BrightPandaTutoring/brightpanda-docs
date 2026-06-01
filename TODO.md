@@ -29,24 +29,62 @@ Laatst bijgewerkt: 1 juni 2026
 
 ---
 
-## 🚀 TutorCruncher migratie (nieuw — hoge prioriteit)
+## 🚀 TutorCruncher migratie (hoge prioriteit)
 
 Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce blijft het CRM.
+
+### 📋 Demovragenlijst — uitvragen tijdens demo call
+
+**Urenpakketten & abonnementen**
+1. Kunnen we urenpakketten instellen (Small/Medium/Large/XL) waarbij de ouder vooraf betaalt en het tegoed over meerdere maanden opmaakt?
+2. Worden de uren per les automatisch afgetrokken van het tegoed van de ouder?
+3. Krijgt de ouder automatisch een melding als zijn tegoed bijna op is, zodat hij kan bijkopen?
+4. Kan een ouder een abonnement hebben waarbij hij maandelijks automatisch betaalt en uren krijgt bijgeschreven?
+5. Kan een ouder tussendoor wisselen van pakket (bijv. van Medium naar Large)?
+
+**Docentuitbetaling**
+6. Kunnen we instellen dat alle docenten automatisch worden uitbetaald op de 1e van de maand, ongeacht wanneer de ouder betaald heeft?
+7. Werkt de Pay Run functie via een exportbestand voor de bank, of kan dit volledig automatisch via de API?
+8. Ontvangen docenten automatisch een maandelijks overzicht (PDF) van hun gewerkte lessen en verdiensten?
+9. Hoe werkt docentuitbetaling als een ouder nog niet betaald heeft — wordt de docent dan toch uitbetaald op de 1e?
+
+**Nederlandse interface**
+10. Hoe werkt het instellen van een Nederlandse interface exact — is het custom CSS, een taalbestand, of iets anders?
+11. Kunnen ouders en docenten de portal volledig in het Nederlands zien, inclusief emails en facturen?
+
+**Upsell & extra diensten**
+12. Kunnen we bij het aankopen van een pakket automatisch een upsell tonen (bijv. examentraining toevoegen)?
+13. Kunnen we Ad Hoc Charges automatisch toevoegen via de API vanuit Make.com wanneer een ouder akkoord gaat met een extra dienst?
+14. Werken lessenkaarten (packages) samen met de docentuitbetaling, of moet dat apart worden afgehandeld?
+
+**Integratie**
+15. Kunnen we Salesforce als primair CRM houden en TutorCruncher puur gebruiken als operationeel platform voor roostering en betaling?
+16. Welke webhooks zijn beschikbaar voor real-time synchronisatie met Salesforce via Make.com?
+17. Werkt de API ook met Nederlandse IBAN-nummers voor docentuitbetaling, of is Telleroo verplicht?
+18. Is er een Zapier-integratie beschikbaar naast de directe API?
+
+**Overig**
+19. Wat zijn de transactiekosten voor SEPA-betalingen vanuit Nederland specifiek?
+20. Hoelang duurt gemiddeld de migratie van een bestaand platform met 110+ docenten en actieve leerlingen?
+21. Is er ondersteuning beschikbaar in het Nederlands?
+
+---
 
 ### Fase 1 — Setup & inrichting
 - **Nederlandse interface instellen** — uitvragen bij TutorCruncher hoe dit exact werkt (custom CSS of taalbestand)
 - **Subjects/vakken aanmaken** in TutorCruncher — zelfde structuur als Salesforce `Subjects__c`
 - **Tariefstructuur instellen** — charge rate (ouder) en tutor rate (docent) per vak/niveau
+- **Urenpakketten instellen** — Small/Medium/Large/XL als Proforma Invoice templates
 - **Ad Hoc Charge categorieën aanmaken** — registratiekosten, examentraining, extra vak, Pro service
 
 ### Fase 2 — Make.com integratie bouwen
 - **Scenario A:** Salesforce lifecycle → "Trial Class" → automatisch Job aanmaken in TutorCruncher (docent + leerling + tarief)
 - **Scenario B:** TutorCruncher webhook "Les voltooid" → Salesforce `Trial_Lesson_Status__c` bijwerken
 - **Scenario C:** TutorCruncher webhook "Betaling ontvangen" → Salesforce record bijwerken
-- **Scenario D:** Maandelijks einde maand → GET /payment-orders/ → alle docenten automatisch uitbetalen via API
+- **Scenario D:** Maandelijks op de 1e → GET /payment-orders/ → alle docenten automatisch uitbetalen via API
 
 ### Fase 3 — Upsell bouwen
-- **Lessenkaarten (Packages) activeren** — bijv. 10 lessen pakket met korting, zichtbaar in ouder-portal
+- **Lessenkaarten (Packages) activeren** — Small/Medium/Large/XL zichtbaar in ouder-portal
 - **Post-proefles upsell flow** — Make.com + MailerLite email na proefles met pakket-keuze
 - **Ad Hoc Charge via API** — extra dienst toevoegen aan factuur vanuit Salesforce trigger
 
