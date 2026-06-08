@@ -1,74 +1,44 @@
-# Bright Panda — Session Log
-*Doel van dit bestand: bij elke nieuwe Claude chat als eerste lezen. Wordt bijgewerkt bij elke "Afsluiten".*
+# SESSION LOG — Bright Panda
 
----
+> Laatste sessie-samenvatting. Wordt bij "Afsluiten" volledig overschreven.
 
-## Laatste sessie: 14 mei 2026
+## Datum: 8 juni 2026
 
-### Waar werd aan gewerkt
-1. **Brand identity gedocumenteerd** — Montserrat font, kleuren (#1d467f, #f59e0c, #f4f8fd, #1D2930), tone of voice
-2. **Salesforce KPI Reports** — 9 reports aangemaakt via Analytics REST API
-3. **Salesforce Dashboards** — 3 dashboards gebouwd en op Home pagina gezet
-4. **Claude Design** — progress bar prototype uitgewerkt, brand info ingevoerd
-5. **Volledige student flow geanalyseerd** — gaps geïdentificeerd
+## Waar aan gewerkt
+Strategiesessie **financieel plan** om winst- en revenue-doelen te behalen. Doel: meeting structureren + documenteren zodat Claude wekelijks/maandelijks kan ondersteunen, inclusief KPI's. Resultaat vastgelegd in nieuwe map **`docs/financieel-plan/`**:
+- `README.md` — hoofdplan: 4 hefbomen, KPI-dashboard, meetfundament, operationele kosten, quick wins, openstaande getallen
+- `maand-review.md` — maandelijkse review-template
+- `week-check.md` — wekelijkse check-template
 
-### KPI Reports aangemaakt (via Analytics REST API)
-| Report | ID |
-|---|---|
-| [KPI] Student Funnel Overview | 00OP800000AfCPFMA3 |
-| [KPI] New Registrations This Month | 00OP800000Af40JMAR |
-| [KPI] Unreachable Contact Status | 00OP800000AfDLJMA3 |
-| [KPI] Rejection Reason Breakdown | 00OP800000AfDMvMAN |
-| [KPI] Pending Conversion Days | 00OP800000AfCgzMAF |
-| [KPI] Trial Completed Awaiting Followup | 00OP800000AfDQ9MAN |
-| [KPI] Open Actions Bsport To Create | 00OP800000AfEajMAF |
-| [KPI] Conversion Rates Summary | 00OP800000AfDRlMAN |
-| [KPI] Monthly Registration Trend | 00OP800000AfOBtMAN |
+Behandelde hefbomen: **1 (kosten omlaag)**, **3 (meer mensen)**, **4 (meer aan dezelfde mensen)**. Alle losse ideeën verwerkt: tariefkaart, regionale balans, Indeed-efficiëntie, SEO, cold calls B2B, social, 6 nieuwe producten (Bucket B), decoy pricing, follow-up reminders, jaarabo, churnpunt-korting, cadeau-pad, small-wins mini-toets, schooljaar-overgang, voorrang-koppelen, voortgangsrapportage, opgavenboekjes, cijfergarantie, B2B (letselschade/scholen/subsidies/NL-expats), VOG-screening.
 
-**Kritieke fix toegepast op alle reports:** `standardDateFilter` was automatisch op `CUSTOM startDate=vandaag` gezet door de API — gefixed naar `CUSTOM 2020-01-01 t/m 2027-12-31` zodat alle historische data zichtbaar is. Scope gezet op `organization`.
+## Beslissingen
+- **Meetfundament = prioriteit #1**, maar loopt **PARALLEL** met quick wins (op verzoek Raouf/Yasin).
+- Quick wins parallel: (1) "lessen-bijna-op" reminder, (2) tariefkaart docenten.
+- Financieel plan wordt vast wekelijks/maandelijks sturingsdocument in `docs/financieel-plan/`.
+- Cijfergarantie: **niet** "verzekering" noemen → "resultaatbelofte", jurist raadplegen.
+- Letselschade-tarief €60/u mogelijk te laag → all-in €70–85 testen.
 
-### Dashboards gebouwd
-- **Student Funnel & Growth** — Monthly Trend, Funnel Overview, New Registrations, Unreachable, Rejection
-- **Speed & Quality KPIs** — Pending Conversion Days, Trial Completed, Conversion Rates
-- **Open Acties Team** — Bsport To Create, Pending Conversion Days
+## Baseline-cijfers (juni 2026)
+- LTV ~€800 | CAC ~€99 (onbetrouwbaar, alleen laatste maand) | LTV:CAC ~8:1 (fragiel)
+- Brutomarge 33–55% (te breed → tariefkaart) | Kosten €4.622/mnd (€55.468/jr)
+- Grootste kostenpost: SEO-specialist €1.542/mnd (33% van totaal) — moet zich bewijzen in klanten.
 
-### Salesforce Home pagina
-- Lightning App Builder → `Bright Panda Home` aangemaakt (Home Template One Region)
-- Alle 3 dashboards toegevoegd als componenten
-- Geactiveerd als App Default voor Sales app
-- Dashboards verplaatst naar `Home Page Dashboards` folder zodat ze vindbaar zijn
+## Wachten op (getallen ophalen uit Salesforce)
+- Gemiddelde klantlevensduur (maanden) — scharnierpunt voor LTV/jaarabo/churnpunt
+- Lead → Client conversie (per stap, per kanaal)
+- Klanten via SEO/organisch afgelopen 3–6 mnd
+- Werkelijke CAC per kanaal over meerdere maanden (sanity check: ~16 klanten/mnd uit advertenties?)
+- LTV per instroommaand (seizoen) + churnpunt (piek-uitval maand)
 
-### Student flow analyse
-Volledige flow doorgelopen — gaps geïdentificeerd:
-- Scenario 1 trigger klopt niet — moet `Start_Process__c` veld gebruiken
-- Geen "Docent gevonden" email naar ouder
-- Geen No Show flow
-- Geen Unreachable re-engagement
-- Geen churn win-back
-- Slack #proeflessen en #escalaties nog te bouwen
+## Eerstvolgende acties
+1. Salesforce inrichten: statusdatums per lifecycle-overgang + kanaal consequent + conversietracking (fundament)
+2. Quick win: "lessen-bijna-op" reminder bouwen (Make.com + MailerLite/360dialog)
+3. Quick win: tariefkaart docenten opstellen (matrix obv opleiding/leeftijd/pro/regio)
+4. Openstaande getallen ophalen → LTV-rekensom verfijnen
 
-### Matching Teacher beslissing
-- Huidig: Scenario 1 triggert op `Trial_Lesson_Status__c` leeg — klopt niet
-- Nieuw: `Start_Process__c` checkbox aanmaken op `Student_Teacher_Matching__c`
-- Scenario 1 splitsen in 2 routes: Route 1 = email ouder, Route 2 = WhatsApp docent
-- Nog te bouwen!
-
-### Progress bar design
-- 5 stappen: Aanvraag → Op zoek naar geschikte docent → Docent gevonden → Proefles → Bijles van start!
-- Prototype gebouwd in claude.ai/design (High Fidelity)
-- Brand: Montserrat, #1d467f blauw, #f59e0c amber
-- Plan: GIF exporteren via ScreenToGif → uploaden in MailerLite
-
-### Eerstvolgende acties
-1. `Start_Process__c` veld aanmaken op Student_Teacher_Matching__c
-2. Scenario 1 aanpassen + nieuw scenario "Docent gevonden" email bouwen
-3. Progress bar GIF exporteren en in emails verwerken
-4. Pending Conversion emails schrijven (dag 2, 5, 9)
-5. Client welkomstmail schrijven
-6. Scenario 21 + 22 end-to-end testen
-
-### Let op
-- KPI Reports hebben `standardDateFilter CUSTOM 2020-2027` — elk jaar updaten naar 2028 etc.
-- Dashboard scope is `organization` — alle gebruikers zien alle data
-- Formula velden nog handmatig aanmaken in Setup voor tijdberekeningen
-- Rejection_Reason__c is nog leeg — chart toont pas data als gevuld
+## Let op
+- **Hefboom 2 (prijs omhoog) is OVERGESLAGEN** in deze sessie — nog te behandelen in volgende sessie.
+- Focusrisico: 6 nieuwe productlijnen tegelijk met 2 oprichters → scoren op potentieel × effort, 1–2 per kwartaal.
+- VOG: AVG — registreer dát het gezien is + datum, document niet onnodig bewaren.
+- Geen financieel/juridisch advies gegeven; contract-/verzekerings-/garantiekeuzes bij Raouf/Yasin + accountant/jurist.
