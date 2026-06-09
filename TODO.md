@@ -1,9 +1,10 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 1 juni 2026
+Laatst bijgewerkt: 9 juni 2026
 
 ---
 
 ## ✅ Afgerond (recent)
+- **✅ GEDAAN: Scenario 1 omgebouwd naar event-driven webhook** (9 juni 2026) — trigger via `Start_Trial_Class_Process__c` checkbox + Salesforce Flow "Scenario 1 — Teacher Invitation Webhook" (V10), polling vervalt. Inclusief "Docent gevonden" notificatie naar ouder via MailerLite (module 13, groep "Teacher Found - Parent Email"). Loop + retry-"spook-webhooks" opgelost (Webhook Response Content-Type: application/json + anti-loop guard `Trial_Lesson_Status Is Null` met "Only when updated to meet"). Schone test bevestigd: 1 webhook, 0 errored interviews, 0 wachtende async jobs. Zie SESSION_LOG.md + docs/make/salesforce-flow-webhook-integratie.md.
 - **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026)
 - **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**
 - **✅ GEDAAN: Scenario 21 — Intake Flow gebouwd** (26 april 2026)
@@ -20,8 +21,6 @@ Laatst bijgewerkt: 1 juni 2026
 ## 🔴 Hoge prioriteit
 
 - **Scenario 21 + 22 testen** — end-to-end test uitvoeren met testrecord
-
-- **Scenario 1 aanpassen** — trigger wijzigen naar `Start_Process__c` veld (besluit sessie 14 mei). Veld nog aanmaken op Student_Teacher_Matching__c object. Nieuw scenario bouwen voor "Docent gevonden" email naar ouder met progress bar.
 
 - **Student Path guidance teksten instellen in Salesforce**
 
@@ -120,9 +119,8 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 
 ## 🔧 Matching Teacher flow
 
-- **`Start_Process__c` checkbox veld aanmaken** op Student_Teacher_Matching__c
-- **Scenario 1 trigger aanpassen** → van `Trial_Lesson_Status__c` leeg naar `Start_Process__c = true`
-- **Nieuw scenario bouwen** — "Docent gevonden" notificatie naar ouder (MailerLite email + progress bar stap 3)
+- ✅ **GEDAAN (9 juni 2026):** `Start_Trial_Class_Process__c` checkbox in gebruik, Scenario 1 trigger omgezet van "Trial_Lesson_Status leeg + polling" naar deze checkbox via Salesforce Flow (V10), en "Docent gevonden" notificatie naar ouder via MailerLite (module 13) live. Zie SESSION_LOG.md.
+- **Progress bar stap 3 in de "Docent gevonden" ouder-email** — visueel nog afronden (valt samen met Email Design hierboven).
 
 ---
 
@@ -137,6 +135,7 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 
 - **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
 - **Scenario 21 polling vervangen door Salesforce webhook** (na Enterprise upgrade)
+- **Scenario 17 (Auto On-boarded) omzetten naar event-driven webhook** — zelfde patroon als Scenario 1 en 11 (zie salesforce-flow-webhook-integratie.md)
 - **Re-engagement flow bouwen voor No Show matchings**
 - **AVG/GDPR data verwijdering automatiseren** (2 scenarios)
 
