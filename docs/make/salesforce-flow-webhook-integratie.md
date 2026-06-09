@@ -5,8 +5,71 @@
 Dit document beschrijft het patroon voor het triggeren van Make.com scenario's via een Salesforce Record-Triggered Flow. Dit patroon vervangt polling-triggers en zorgt voor event-driven automatisering.
 
 Geïmplementeerd voor:
+- **Scenario 1** — Docent-uitnodiging (bij aanvinken Start_Trial_Class_Process__c)
 - **Scenario 10** — Nieuwe student aanmelding (direct bij aanmaken)
 - **Scenario 11** — Post-proefles flow (70 minuten na Trial_Lesson_Date__c)
+
+---
+
+## Scenario 1 — Teacher Invitation
+
+### Architectuur
+
+```
+Start_Trial_Class_Process__c aangevinkt op Student Teacher Matching
+        ↓
+Record-Triggered Flow (Scenario 1 — Teacher Invitation Webhook, V10)
+        ↓
+Set Request Body (Assignment)
+        ↓
+HTTP Callout → Make.com Webhook
+        ↓
+Scenario 1 triggert direct (WhatsApp docent + ouder, MailerLite, Salesforce-update)
+```
+
+### Salesforce Flow configuratie
+
+**Flow naam:** Scenario 1 — Teacher Invitation Webhook
+**FlowDefinitionViewId:** 300P800000yCuWyIAK
+**Type:** Record-Triggered Flow
+**Object:** Student Teacher Matching
+**Trigger:** A record is updated
+**Condities (All AND):**
+- `Status__c` Equals `Trial Class`
+- `Start_Trial_Class_Process__c` Equals `True`
+- `Trial_Lesson_Status__c` Is Null `True`
+
+**When to Run for Updated Records:** Only when a record is updated to meet the condition requirements
+**Optimize for:** Actions and Related Records
+**Asynchronous Path:** Aan (verplicht voor externe callouts)
+
+> **Let op — anti-loop:** gebruik bewust GEEN Is Changed-operator. De combinatie van de `Trial_Lesson_Status Is Null`-conditie en "Only when a record is updated to meet the condition requirements" zorgt dat de flow alleen vuurt bij de overgang naar de qualifying-staat (het aanvinken). Zodra Make module 7 `Trial_Lesson_Status` op "Teacher Invited" zet, verlaat het record de qualifying-staat en kan een vervolg-update niet opnieuw triggeren.
+
+#### Set Request Body (Assignment)
+
+Vult de Apex-Defined variabele `RequestBodyScenario1` met:
+
+| Variable | Waarde |
+|---|---|
+| matchingId | `{!$Record.Id}` |
+| name | `{!$Record.Name}` (Matching Number) |
+| status | `{!$Record.Status__c}` |
+| teacherId | `{!$Record.Teacher__c}` |
+| studentId | `{!$Record.Student__c}` |
+| subjects | `{!$Record.Subject_s__c}` |
+
+#### HTTP Callout Action
+
+**External Service:** MakeScenario1Webhook
+**Operation:** Make Scenario 1 Webhook
+**Body:** `RequestBodyScenario1`
+
+### Make.com configuratie
+
+- **Trigger:** Custom Webhook (hook 3197287). Detecteert 6 velden: studentId, teacherId, subjects, name, status, matchingId.
+- **Module 18:** Webhook Response, status 200, body `{"accepted": true}`, header `Content-Type: application/json` (verplicht — zie troubleshooting hieronder).
+- **Filter na trigger:** `{{14.status}}` Equal `Trial Class`.
+- Alle vervolgmodules gebruiken de payload `{{14.x}}` voor de IDs: module 3 (teacher) = `{{14.teacherId}}`, module 6 (student) = `{{14.studentId}}`, module 10 (GAS vakvertaling) = `{{encodeURL(14.subjects)}}`, module 7 (update) = `{{14.matchingId}}`, Tally-link = `{{14.name}}`.
 
 ---
 
@@ -140,6 +203,7 @@ Vult de `RequestBodyPostProefles` variabele (Apex-Defined, type `ExternalService
 
 | Naam | Named Credential | Gebruikt voor |
 |---|---|---|
+| MakeScenario1Webhook | MakeNewStudentWebhook | Scenario 1 |
 | MakeNewStudentWebhook2 | MakeNewStudentWebhook | Scenario 10 |
 | MakePostProeflesWebhook | MakeNewStudentWebhook | Scenario 11 |
 
@@ -152,12 +216,12 @@ Vult de `RequestBodyPostProefles` variabele (Apex-Defined, type `ExternalService
 
 ## Make.com configuratie (patroon)
 
-Voor beide scenario's geldt:
+Voor alle scenario's geldt:
 
 1. **Trigger:** Custom Webhook module
 2. **Direct na trigger:** Webhook Response module met `{"accepted": true}` en `Content-Type: application/json`
 
-> **Belangrijk:** De Webhook Response module moet direct na de Custom Webhook trigger staan. Salesforce wacht op deze response — als die te laat komt of de verkeerde Content-Type heeft, faalt de Salesforce Flow.
+> **Belangrijk:** De Webhook Response module moet direct na de Custom Webhook trigger staan. Salesforce wacht op deze response — als die te laat komt of de verkeerde Content-Type heeft, faalt de Salesforce Flow én plant Salesforce automatische retries in (zie troubleshooting).
 
 ---
 
@@ -183,7 +247,74 @@ Voor beide scenario's geldt:
 **Oorzaak:** De ouder is al aanwezig in MailerLite met status unsubscribed/bounced.
 **Oplossing:** Geen actie nodig bij echte aanmeldingen. Dit treedt alleen op bij hergebruikte test-emailadressen.
 
+### Webhook vuurt herhaaldelijk / loop (elke ~3 min)
+**Oorzaak:** De entry-condities missen een guard, of de flow staat op "Every time a record is updated and meets the condition requirements". Daardoor hertriggert de update die Make zelf terugschrijft (de Salesforce-update aan het einde van het scenario) de flow opnieuw. Het interval is gelijk aan de sleep-duur in het scenario.
+**Oplossing:** Voeg een conditie toe op het veld dat Make aan het einde zet (bij Scenario 1: `Trial_Lesson_Status Is Null`) en zet "When to run for updated records = Only when a record is updated to meet the condition requirements". Gebruik GEEN Is Changed-operator — die dwingt "Every time" af en is niet de juiste loop-blokkade.
+
+### Spook-webhooks ~29 minuten later, ongevraagd (retries van mislukte async-runs)
+**Oorzaak:** De asynchrone flow-run is mislukt (bijvoorbeeld doordat de Webhook Response geen `application/json` teruggaf en Salesforce het antwoord niet kon parsen). Salesforce retryt een mislukte async-run automatisch tot 2x, met vertraging, en met de ORIGINELE record-context. Die retries vuren later, negeren de actuele entry-condities en gaan dus af ook al kwalificeert het record niet meer (bv. een paar tegelijk, tientallen minuten later). Ze laten geen error-record achter zodra de onderliggende fout is verholpen.
+**Oplossing:** Zorg dat de async-run in één keer slaagt: fix de Webhook Response (status 200 + `Content-Type: application/json`). Een geslaagde run laat 0 errored interviews achter en plant geen retry. Controleer met de diagnostische queries hieronder of er nog iets openstaat.
+
+### Verkeerde flow-versie actief
+**Oorzaak:** De versie die je in de builder bewerkt is een (Invalid)Draft en nooit geactiveerd; een oudere versie is nog actief. Je aanpassingen hebben dan geen effect.
+**Oplossing:** Controleer via SOQL welke versie Active is en activeer de juiste (Save As New Version → Activate). Vertrouw niet op de titel/badge in de builder.
+
+### Diagnostische queries
+```sql
+-- Welke flow-versie is echt actief?
+SELECT VersionNumber, Status FROM FlowVersionView
+WHERE FlowDefinitionViewId = '<FlowDefinitionViewId>' ORDER BY VersionNumber DESC
+
+-- Vastgelopen of wachtende flow-interviews
+SELECT InterviewStatus, CurrentElement, CreatedDate FROM FlowInterview
+WHERE InterviewLabel LIKE '<flow naam>%' ORDER BY CreatedDate DESC
+
+-- Wachtende async-uitvoeringen / retries
+SELECT Status, JobType, CreatedDate FROM AsyncApexJob
+WHERE Status IN ('Queued','Processing','Preparing','Holding')
+
+-- Andere automatiseringen uitsluiten (Process Builder = ProcessType 'Workflow', geplande flows = TriggerType 'Scheduled')
+SELECT ApiName, Label, ProcessType, TriggerType FROM FlowDefinitionView WHERE IsActive = true
+```
+
 ---
+
+## OpenAPI Schema — MakeScenario1Webhook (Scenario 1)
+
+```json
+{
+  "openapi": "3.0.1",
+  "info": {"title": "MakeScenario1Webhook", "description": ""},
+  "paths": {
+    "/y1yxam9512t7mrqxcsumjb4cvy0atnsk": {
+      "post": {
+        "operationId": "Make Scenario 1 Webhook",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "studentId": {"type": "string"},
+                  "teacherId": {"type": "string"},
+                  "subjects": {"type": "string"},
+                  "matchingId": {"type": "string"},
+                  "name": {"type": "string"},
+                  "status": {"type": "string"}
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "2XX": {"description": "", "content": {"application/json": {"schema": {"type": "object", "properties": {"accepted": {"type": "boolean"}}}}}}
+        }
+      }
+    }
+  }
+}
+```
 
 ## OpenAPI Schema — MakeNewStudentWebhook2 (Scenario 10)
 
