@@ -156,19 +156,20 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 **Teacher Lifecycle:** New → Interview Invited → Interview → Contracting → Pending Onboarding → On-boarded → Contract Expiring Soon → Renew → Offboarded → Not a Match → Not Interested
 
 **Student Lifecycle:** New → Intake → Matching Teacher → Trial Class → Pending Conversion → Client → Unreachable → Churned - Temporary → Churned - Finished
+> LET OP: de feitelijke picklist bevat ook waarden die afwijken van bovenstaande tekst (o.a. "Matching Teacher", "Enrollment"). Bij twijfel de echte picklist-waarden verifiëren via een query op bestaande records — documentatie en picklist liepen op 2026-06-10 niet 100% gelijk.
 
 **Contact_Status__c (Student) — LET OP: waarden hebben een komma:**
 - Not Contacted | Called - 1st Attempt, No Answer | Called - 2nd Attempt, No Answer | Called - 3rd Attempt, No Answer | Reached - Need to Call Back | Reached
 
 **Trial_Lesson_Status__c:** New → Teacher Invited → Availability Conflict → Trial Lesson Scheduled → Trial Lesson Completed → No Show
 
-**Student Teacher Matching Status__c:** Active | (andere waarden)
+**Student Teacher Matching Status__c:** Active | Pending | (andere waarden)
 
 **Intake flow checkbox velden (Student) — LET OP: API namen hebben dubbele _c__c door fout bij aanmaken, werkt wel:**
 - `Intake_1st_Attempt_Sent_c__c` | `Intake_2nd_Attempt_Sent_c__c` | `Intake_3rd_Attempt_Sent_c__c`
 - `Intake_Reached_Callback_Sent__c` | `Intake_Reached_Sent__c`
 
-**Pending_Conversion_Date__c** — datum waarop student naar Pending Conversion is gegaan (gevuld door Scenario 23)
+**Pending_Conversion_Date__c** — datum waarop student naar Pending Conversion is gegaan (gevuld door de Salesforce-flow Scenario 23)
 
 **Teacher velden:** LifecycleStage__c, IBAN__c, NameOnBankCard__c, OfficialName__c, HourlyRate__c, Contract_Start_Date__c, Contract_End_Date__c, Offboarded_Date__c, Profile_Completed_Date__c, Date_of_Birth__c, Claude_Recommendation__c, Teaching_Level_Details__c, PreferenceLocation__c, Can_Give_Exam_Training__c, Can_Teach_Until_Education_Level__c, Can_Teach_Until_School_Year__c, CanTeachElementarySchool__c, Subjects__c, Study__c, University__c, HBO_WO__c, HBO_Bachelor__c, WO_Bachelor__c, WO_Master__c, University_HBO__c, University_WO__c, Follow2ndStudy__c, X2nd_Study_HBO_WO__c, X2nd_University_HBO__c, X2nd_HBO_Bachelor__c, X2nd_WO_Bachelor__c, X2nd_WO_Master__c, Comments_FromWebForm__c, PreferredLanguage__c, ReferredToBPVia__c, Previous_Lifecycle_Stage__c, Contact_Status__c, Is_Pro_Teacher__c, Contract_Sent__c, Documentation_Agreed__c, Bsport_Account_Created__c, Contract_URL__c, Documentation_Reminder_Sent__c, Pending_Onboarding_Date__c, PersonOtherCity, Graduated__c, Exam_Training_Details__c, Profile_Comments__c
 
@@ -185,6 +186,22 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 **Can_Teach_Until_School_Year__c:** Groep 1 t/m Groep 8 | 1 t/m 6
 
 **Graduated__c:** Studeer momenteel | Afgestudeerd
+
+## SALESFORCE-NATIEVE FLOWS (geen Make)
+
+Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. Dit is de voorkeur wanneer de actie een pure Salesforce-update is (geen externe call): sneller, betrouwbaarder, geen polling.
+
+| Flow | Object | Trigger | Doel |
+|---|---|---|---|
+| `Scenario_23_Active_Matching_to_Pending_Conversion` | Student Teacher Matching | Status__c = Active (record updated) | Zet leerling naar Pending Conversion |
+
+**Scenario 23 — Active Matching → Pending Conversion (Salesforce-natief, vervangt Make 5495257):**
+- Record-Triggered Flow, object Student Teacher Matching, "A record is updated"
+- Entry-conditie: `Status__c` Equals `Active`, "Only when a record is updated to meet the condition requirements", Optimize for Actions and Related Records, GEEN async path (interne DML)
+- Eén Update Records-element op Account met DUBBELE guard-conditie: `Id` = `{!$Record.Student__c}` AND `LifecycleStage__c` = `Trial Class`
+- Zet: `LifecycleStage__c` = `Pending Conversion` + `Pending_Conversion_Date__c` = `{!Vandaag}` (Formula-resource, Date, `TODAY()`)
+- DE KERN: de `LifecycleStage = Trial Class`-conditie op de Update is de poortwachter. Een bestaande klant (Client) wordt NIET teruggezet — beschermt migratie-matchings, extra-vak-matchings en bestaande klanten. Geen anti-loop-guard nodig.
+- Getest 2026-06-10: Client-record blijft Client (guard werkt). Make Scenario 23 (5495257) moet nog gedeactiveerd worden zodra de "Trial Class → wordt wél omgezet"-test ook bevestigd is.
 
 ## MAKE.COM SCENARIOS
 
@@ -214,7 +231,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
 | 21 | Intake Flow: Contact Status (Watch Records, elke 15 min, 5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
 | 22 | Daily Callbacks Slack 09:00 (dagelijks, 5 routes) | 🔧 Inactief (wacht op test) | 5451841 |
-| 23 | Active Matching → Pending Conversion (Watch Records, elke 15 min) | 🔧 Inactief | 5495257 |
+| 23 | Active Matching → Pending Conversion | ⛔️ VERVANGEN door Salesforce-natieve flow — deactiveren | 5495257 |
 | 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
 | 25 | Client Welkomstmail (event-driven via Salesforce Flow "Scenario 25 — Client Welcome Webhook"; webhook /l6owd25tp5nachw2b075w7cvperjvdh7) | ✅ Actief | 5497116 |
 | 26 | Intake Rejection Follow-up Email (Watch Records, elke 15 min, 6 routes) | 🔧 Inactief | 5500907 |
@@ -234,10 +251,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 - Route 4: Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie
 - Route 5: Dagelijks overzicht (5e route in Make)
 
-**Scenario 23 — Active Matching → Pending:**
-- Trigger: Watch Records op Student_Teacher_Matching__c
-- Filter: Status__c = 'Active' → Get Student Account → Filter: LifecycleStage = 'Trial Class'
-- Update: LifecycleStage = 'Pending Conversion' + Pending_Conversion_Date__c = now
+**Scenario 23 — Active Matching → Pending:** VERVANGEN. Draait nu als Salesforce-natieve flow (zie sectie "SALESFORCE-NATIEVE FLOWS"). Make-scenario 5495257 moet gedeactiveerd worden zodra de tweede test (Trial Class → Pending Conversion) bevestigd is, zodat ze niet dubbel draaien.
 
 **Scenario 24 — Pending Conversion Reminders:**
 - Dagelijks 10:00 | Filter: Total bundles > 0
@@ -258,6 +272,8 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 ## SALESFORCE FLOW → MAKE WEBHOOK (PLAYBOOK)
 
 Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10, 11 en 25. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
+
+> LET OP — wanneer GEEN webhook nodig: als de actie een pure Salesforce-update is (geen externe call, alleen velden bijwerken), bouw dan een Salesforce-natieve Record-Triggered Flow zonder External Service/webhook (zie Scenario 23). Het webhook-playbook hieronder is alleen voor scenario's die écht naar Make moeten (WhatsApp, MailerLite, e.d.).
 
 ### Eenmalige infra — AL AANWEZIG, hergebruiken (niet opnieuw maken)
 - **External Credential:** `MakeWebhookNoAuth` (Authentication Protocol: No Authentication)
@@ -296,7 +312,7 @@ SELECT Status, JobType, CreatedDate FROM AsyncApexJob WHERE Status IN ('Queued',
 Een schone run = IsActive true op de juiste flow + **0 wachtende async jobs**.
 
 ### Let op
-- **Flow-limiet:** op Professional Edition geldt een maximum aantal actieve Flows (zie regel 20). Check ruimte voordat je een nieuwe Record-Triggered Flow aanmaakt; combineer logica waar mogelijk.
+- **Flow-limiet:** jullie zitten op **Enterprise Edition** → max 2.000 actieve flows per type per org. Dit is in de praktijk geen beperking. (De oude "max 5 flows"-regel gold alleen voor Professional/Essentials Edition en is NIET meer van toepassing.)
 - **FlowDefinitionView/FlowDefinitionViewId** timeouts via MCP komen voor — verifieer dan via de Setup UI (Flows-lijst) of via FlowVersionView.
 - Module-inhoud in Make altijd **handmatig in de UI** aanpassen; API-blueprint-updates verliezen variabele-metadata.
 
@@ -321,12 +337,13 @@ Een schone run = IsActive true op de juiste flow + **0 wachtende async jobs**.
 17. **Watch Records pikt nieuwe SF velden pas op na Run once**
 18. **Teaching_Location__c is DEPRECATED** — nooit meer vullen. Gebruik `PreferenceLocation__c` met Engelstalige waarden.
 19. **PreferredLanguage__c:** Engelstalige waarden: Dutch / English / Both / No Preference
-20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
+20. **Salesforce Enterprise Edition:** max 2.000 actieve flows per type (geen praktische beperking). De oude "max 5 flows"-regel (Professional Edition) is NIET meer van toepassing.
 21. **Comments_FromWebForm__c:** alleen van aanmeldformulier — NOOIT vanuit Tally. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
 22. **Brand font is Montserrat** — niet Verdana. Voor emails: Montserrat via Google Fonts importeren, Verdana als fallback
-23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + (indien teruggeschreven wordt) een anti-loop-guard.
+23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + (indien teruggeschreven wordt) een anti-loop-guard. Is de actie een PURE Salesforce-update (geen externe call)? Bouw dan een Salesforce-natieve flow zonder webhook (zie Scenario 23).
 24. **External Service NOOIT achteraf wijzigen:** stel alle payload-velden vooraf vast en zet ze in één keer goed in het OpenAPI-schema. Een External Service die in een flow gebruikt wordt kan niet meer aangepast worden ("referenced in a flow").
-25. **Sleutelwoorden:**
+25. **Salesforce-natieve flow datumveld:** "Current Date" staat niet in de resource-picker. Gebruik een Formula-resource (Data Type: Date, formule `TODAY()`).
+26. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
