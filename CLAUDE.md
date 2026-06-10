@@ -195,13 +195,13 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 |---|---|---|---|
 | `Scenario_23_Active_Matching_to_Pending_Conversion` | Student Teacher Matching | Status__c = Active (record updated) | Zet leerling naar Pending Conversion |
 
-**Scenario 23 — Active Matching → Pending Conversion (Salesforce-natief, vervangt Make 5495257):**
+**Scenario 23 — Active Matching → Pending Conversion (Salesforce-natief, vervangt het verwijderde Make 5495257):**
 - Record-Triggered Flow, object Student Teacher Matching, "A record is updated"
 - Entry-conditie: `Status__c` Equals `Active`, "Only when a record is updated to meet the condition requirements", Optimize for Actions and Related Records, GEEN async path (interne DML)
 - Eén Update Records-element op Account met DUBBELE guard-conditie: `Id` = `{!$Record.Student__c}` AND `LifecycleStage__c` = `Trial Class`
 - Zet: `LifecycleStage__c` = `Pending Conversion` + `Pending_Conversion_Date__c` = `{!Vandaag}` (Formula-resource, Date, `TODAY()`)
 - DE KERN: de `LifecycleStage = Trial Class`-conditie op de Update is de poortwachter. Een bestaande klant (Client) wordt NIET teruggezet — beschermt migratie-matchings, extra-vak-matchings en bestaande klanten. Geen anti-loop-guard nodig.
-- Getest 2026-06-10: Client-record blijft Client (guard werkt). Make Scenario 23 (5495257) moet nog gedeactiveerd worden zodra de "Trial Class → wordt wél omgezet"-test ook bevestigd is.
+- Getest 2026-06-10: Client-record blijft Client (guard werkt). Het oude Make-scenario 23 (5495257) is VERWIJDERD; deze flow is nu de enige bron voor deze automatisering.
 
 ## MAKE.COM SCENARIOS
 
@@ -231,7 +231,7 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
 | 21 | Intake Flow: Contact Status (Watch Records, elke 15 min, 5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
 | 22 | Daily Callbacks Slack 09:00 (dagelijks, 5 routes) | 🔧 Inactief (wacht op test) | 5451841 |
-| 23 | Active Matching → Pending Conversion | ⛔️ VERVANGEN door Salesforce-natieve flow — deactiveren | 5495257 |
+| 23 | Active Matching → Pending Conversion | ⛔️ VERWIJDERD — vervangen door Salesforce-natieve flow | — |
 | 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
 | 25 | Client Welkomstmail (event-driven via Salesforce Flow "Scenario 25 — Client Welcome Webhook"; webhook /l6owd25tp5nachw2b075w7cvperjvdh7) | ✅ Actief | 5497116 |
 | 26 | Intake Rejection Follow-up Email (Watch Records, elke 15 min, 6 routes) | 🔧 Inactief | 5500907 |
@@ -251,7 +251,7 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 - Route 4: Pending Conversion + Pending_Conversion_Date__c != null → Slack #pending-conversie
 - Route 5: Dagelijks overzicht (5e route in Make)
 
-**Scenario 23 — Active Matching → Pending:** VERVANGEN. Draait nu als Salesforce-natieve flow (zie sectie "SALESFORCE-NATIEVE FLOWS"). Make-scenario 5495257 moet gedeactiveerd worden zodra de tweede test (Trial Class → Pending Conversion) bevestigd is, zodat ze niet dubbel draaien.
+**Scenario 23 — Active Matching → Pending:** VERWIJDERD uit Make. Draait nu uitsluitend als Salesforce-natieve flow (zie sectie "SALESFORCE-NATIEVE FLOWS"). Er is geen Make-scenario meer voor deze automatisering.
 
 **Scenario 24 — Pending Conversion Reminders:**
 - Dagelijks 10:00 | Filter: Total bundles > 0
