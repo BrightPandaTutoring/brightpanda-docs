@@ -1,50 +1,59 @@
 # Bright Panda — Session Log
 
-Laatste sessie: 9 juni 2026
+Laatste sessie: 10 juni 2026
 
 ## Waar aan gewerkt
 
-Scenario 1 (Teacher Invitation, Make ID 4729958) omgebouwd van polling naar een event-driven Salesforce webhook-trigger, plus het volledig opsporen en oplossen van een hardnekkig probleem waarbij de webhook herhaaldelijk en ongevraagd bleef afvuren.
+Twee automatiseringen omgezet naar event-driven / Salesforce-natief: Scenario 25 (Client Welkomstmail) via het Salesforce Flow → Make webhook-playbook, en Scenario 23 (Active Matching → Pending Conversion) volledig herbouwd als Salesforce-natieve Record-Triggered Flow (zonder Make). Daarnaast de tips-mail (aftercare) opgeschoond.
 
 ### Afgerond
-- MailerLite-module (module 13) in Scenario 1: Create/Update Subscriber naar groep "Teacher Found - Parent Email" (189010938726188387). Vakken via `{{10.data}}` (NL-vertaling GAS), niet `{{6.Subjects__c}}`.
-- Salesforce Record-Triggered Flow "Scenario 1 — Teacher Invitation Webhook" gebouwd op Student_Teacher_Matching__c, met async pad -> External Service callout naar de Make-webhook.
-- Make Scenario 1 omgezet naar Custom Webhook-trigger (hook 3197287) + Webhook Response module direct na de trigger.
-- Alle modulereferenties in Scenario 1 omgezet naar de webhook-payload `{{14.x}}` (matchingId, teacherId, studentId, subjects, name, status). Modules 3, 5, 6, 7, 9, 10, 12, 13 gecontroleerd en correct.
-- Loop en spook-webhooks volledig opgelost (zie hieronder). Schone test op 16:49 bevestigd: één webhook, nul errored interviews, nul wachtende async jobs, geen naloper.
 
-### Trigger-mechaniek (bevestigd)
-Scenario 1 triggert via de handmatige checkbox `Start_Trial_Class_Process__c` op Student_Teacher_Matching__c. Workflow: zet Status = Trial Class, vul Teacher/Student/Subject(s), vink Start_Trial_Class_Process aan -> Salesforce Flow (async) -> webhook -> Make Scenario 1 -> docent krijgt WhatsApp `teacher_invitation` + Tally-link, daarna ouder-bericht, MailerLite, en module 7 zet Trial_Lesson_Status = "Teacher Invited".
+**Scenario 25 — Client Welkomstmail (event-driven) — GETEST WERKEND**
+- Make Scenario 25 (ID 5497116) omgezet van polling naar Custom Webhook (module 3, pad `/l6owd25tp5nachw2b075w7cvperjvdh7`) + Webhook Response (module 5, `{"accepted": true}`, Content-Type application/json). Oude filter (verwees naar niet-bestaande module) verwijderd — Salesforce-flow filtert al.
+- MailerLite-module: `{{3.ParentSEmail__c}}`, `{{3.ParentSName__c}}`, `{{3.FirstName}}` → groep "Actieve Klanten" (182829305032606767).
+- External Service `MakeClientWelcomeWebhook` (Complete Schema, Named Credential `MakeNewStudentWebhook`), operation `SendClientWelcomeToMake`, Apex-type `MakeClientWelcomeWebhook_SendClientWelcomeToMake_IN_body` met 4 velden (Id, ParentSEmail__c, ParentSName__c, FirstName).
+- Record-Triggered Flow op Account: condities `LifecycleStage__c` = Client AND `RecordTypeId` = Student (012KB000000ojZGYAY), "Only when updated to meet", async pad. Geen anti-loop-guard nodig (scenario schrijft niets terug naar Account). Flow-label "Scenario 25 — Client Welcome Webhook", API-naam werd `Send_to_Make`.
+- End-to-end getest: tips-mail kwam binnen. ✓
 
-## Wat er misging en hoe het is opgelost (belangrijk voor de toekomst)
+**Scenario 23 — Active Matching → Pending Conversion (Salesforce-NATIEF) — 1 van 2 tests bevestigd**
+- Bewust GEEN Make/webhook: pure Salesforce-update, dus sneller/betrouwbaarder als native flow.
+- Record-Triggered Flow op Student Teacher Matching, entry-conditie `Status__c` = Active, "Only when updated to meet", geen async (interne DML).
+- Eén Update Records op Account met DUBBELE guard: `Id` = `{!$Record.Student__c}` AND `LifecycleStage__c` = `Trial Class`. Zet `LifecycleStage__c` = Pending Conversion + `Pending_Conversion_Date__c` = `{!Vandaag}` (Formula-resource, Date, `TODAY()`).
+- Flow geverifieerd actief: `Scenario_23_Active_Matching_to_Pending_Conversion`, IsActive true, RecordAfterSave, object Student Teacher Matching.
 
-Kernsymptoom: na het aanvinken van Start_Trial_Class_Process bleef de webhook herhaaldelijk afvuren, ook zonder dat er iets werd aangepast. Er bleken DRIE losse oorzaken te zijn, één voor één gevonden:
+**Tips-mail (aftercare) opgeschoond**
+- `docs/mailerlite/emails/6-tips-voor-de-bijles.html`: alle `{$teacher_name}` verwijderd, vervangen door "de docent"/"the tutor" (bewuste keuze om Scenario 25 simpel te houden — geen docent-lookup). Resterende merge tags: {$name}, {$student_name}, {$unsubscribe}.
 
-### 1. Verkeerde flow-versie actief
-De versie die in de Flow Builder werd bewerkt (V8) had status InvalidDraft en was nooit geactiveerd. De actieve versie was V9, met loop-gevoelige condities. Alle aanpassingen in V8 hadden dus geen enkel effect.
-Les: controleer altijd welke versie ECHT actief is via SOQL op FlowVersionView. Vertrouw niet op de titel/badge in de builder.
+## Belangrijkste beslissing (business-logica)
 
-### 2. Ontbrekende anti-loop guard in de actieve versie
-V9 had geen `Trial_Lesson_Status Is Null`-conditie en stond op "Every time a record is updated and meets the condition requirements". Daardoor hertriggerde elke update van module 7 de flow opnieuw -> loop elke ~3 minuten (gelijk aan de sleep-duur in Make).
-Oplossing (V10, nu actief): entry-condities Status = Trial Class AND Start_Trial_Class_Process = True AND Trial_Lesson_Status Is Null, met "When to run for updated records = Only when a record is updated to meet the condition requirements". Dit is de echte loop-blokkade: zodra module 7 Trial_Lesson_Status op "Teacher Invited" zet, voldoet het record niet meer aan de condities en kan een vervolg-update niet opnieuw triggeren. Het vinken van de checkbox is de enige overgang die de flow start, dus precies één keer. Deze "Only when... meet"-optie voldoet ook aan de async-eis, dus GEEN Is Changed gebruiken (Is Changed dwingt "Every time" af).
+De guard `LifecycleStage = Trial Class` op de Scenario 23-flow is cruciaal. "Matching wordt Active" is op zichzelf een te breed signaal: een bestaande klant (Client) die een extra vak/proefles aanvraagt, of een migratie van bestaande klanten, mag NIET teruggezet worden naar Pending Conversion. Door alleen om te zetten als het account op dat moment op Trial Class staat, worden migratie-matchings, extra-vak-matchings en bestaande klanten beschermd. Dit is getest en bevestigd (zie hieronder).
 
-### 3. Verkeerde Content-Type -> mislukte async-runs -> automatische retries (de "spook-webhooks")
-De Webhook Response module gaf geen `Content-Type: application/json` terug. Make ontving de POST en draaide het scenario wél (status Success in de webhook-log), maar Salesforce kon het antwoord niet parsen en markeerde de asynchrone flow-run als mislukt. Salesforce doet dan automatisch tot 2 retries, met vertraging, en met de ORIGINELE record-context. Die retries vuurden ~29 minuten later (bv. om 16:07, twee tegelijk = het waargenomen paar) en gingen af ook al stond het record inmiddels op "Teacher Invited" -> retries her-evalueren de entry-condities niet. Ze lieten geen error-record achter omdat de Content-Type tegen die tijd al gefixt was, wat verklaarde waarom er achteraf 0 errored interviews te vinden waren.
-Oplossing: Webhook Response module (module 18) -> header `Content-Type: application/json`, body `{"accepted": true}`, status 200. Sindsdien slagen runs in één keer (0 errored interviews), dus geen retries en geen nalopers. Bevestigd met de 16:49-test.
+## Tests
 
-### Diagnostische SOQL-queries die hielpen (herbruikbaar)
-- Actieve flow-versie: `FlowVersionView` WHERE `FlowDefinitionViewId = '300P800000yCuWyIAK'` ORDER BY VersionNumber DESC -> toont welke versie Active is en welke InvalidDraft/Obsolete.
-- Achterstand/fouten: `FlowInterview` WHERE `InterviewLabel LIKE 'Scenario 1%'` -> errored of waiting interviews.
-- Wachtende retries/async: `AsyncApexJob` WHERE `Status IN ('Queued','Processing','Preparing','Holding')`.
-- Andere automatiseringen uitsluiten: `FlowDefinitionView` WHERE `IsActive = true` gefilterd op ProcessType (Workflow = Process Builder) en TriggerType (Scheduled) -> bevestigde dat niets anders het veld aanraakt.
+**Scenario 23 — Test 1 (guard blokkeert) — GESLAAGD**
+Testrecord: Matching 0016 (a0CP80000GejQk5MQE), student "Raouf Student" (001P8000010CE5HIAW), stond op Client. Matching → Active gezet. Resultaat: Raouf bleef Client, Pending_Conversion_Date leeg. De guard werkt: een bestaande klant wordt niet teruggezet. ✓
+
+**Scenario 23 — Test 2 (wordt wél omgezet) — NIET BEVESTIGD, handmatig afmaken**
+Opzet: Raouf op Trial Class zetten + matching terug naar Pending → dan matching → Active. Verwachting: Raouf → Pending Conversion + Pending_Conversion_Date = vandaag. De verificatie-query liep vast op Salesforce MCP-timeouts (meerdere keren geen respons na 4 min), dus NIET bevestigd of de omzetting daadwerkelijk plaatsvond.
 
 ## Wachten op / eerstvolgende acties
-- Eindbevestiging (optioneel): rond ~17:18 (ongeveer 29 min na de 16:49-test) de Make webhook-log checken. Geen binnenkomst = 100% bevestigd dat de naloper weg is. De data (0 errored interviews, 0 async jobs) wijst al op schoon.
-- 36 oude vastgelopen flow-interviews zijn opgeruimd (verwijderd via DML).
-- Debug logging op de integratie-gebruiker aanzetten als er ooit tóch nog een afwijking optreedt, voor volledige tracing van de trigger.
+
+1. **Scenario 23 test 2 handmatig afmaken:** check dat account Raouf Student (001P8000010CE5HIAW) op Trial Class staat → zet matching 0016 op Pending → dan op Active → controleer of leerling op Pending Conversion komt + Pending_Conversion_Date__c = vandaag. Daarna testrecord opruimen (Raouf terug naar Client).
+2. **Make Scenario 23 (ID 5495257) DEACTIVEREN** zodra test 2 bevestigd is — anders draaien de native flow en het Make-scenario dubbel.
+3. **Scenario 3** (Trial Lesson Scheduled & Availability Conflict): MailerLite-module bouwen + filter-fix (`status` = tekst `chosen`) + end-to-end test. Nog open uit eerdere sessie.
+4. **Scenario 17** (Auto On-boarded) nog omzetten van polling (dagelijks 08:00) naar event-driven.
+5. **Picklist-discrepantie student-lifecycle** uitzoeken: documentatie noemt waarden die afwijken van de feitelijke picklist (o.a. "Matching Teacher", "Enrollment").
 
 ## Let op (valkuilen voor de toekomst)
-- "Scheduled Paths: 2" in het Start-element betekent hier alleen Run Immediately + Run Asynchronously; dit zijn GEEN tijdgestuurde paden. Niet mee op het verkeerde been laten zetten.
-- Salesforce retryt mislukte asynchrone flow-paden automatisch (tot 2x) met de originele context. Een mislukte callout-response is dus niet onschuldig: die veroorzaakt latere "spook"-calls. Zorg altijd voor een correcte Webhook Response (200 + application/json) bij elk flow->Make webhook-patroon.
-- Module 7 raakt `Start_Trial_Class_Process__c` bewust niet aan (blijft True als audit-bewijs). De loop-bescherming komt van de Is Null-guard plus "Only when updated to meet", niet van het terugzetten van dat veld.
-- Testrecord: Matching 0016 (a0CP80000GejQk5MQE), Raouf Student + Raouf Angudi Teacher.
+
+- **External Service nooit achteraf wijzigen:** zodra die in een flow gebruikt wordt kan het schema niet meer aangepast worden ("referenced in a flow") → delete-loop. Stel alle payload-velden vooraf vast en zet ze in één keer goed (Complete Schema). Dit was gisteren de grootste tijdvreter.
+- **Volgorde event-driven bouwen:** Make eerst (webhook-URL) → External Service met ALLE velden → Flow.
+- **Pure Salesforce-update?** Bouw dan een Salesforce-natieve flow zonder webhook (zoals Scenario 23), niet via Make.
+- **Datumveld in flow:** "Current Date" staat niet in de resource-picker. Gebruik Formula-resource (Data Type Date, `TODAY()`).
+- **Flow-limiet:** Enterprise Edition = max 2.000 flows per type. De oude "max 5"-regel (Professional) is NIET van toepassing. CLAUDE.md regel 20 gecorrigeerd.
+- **Salesforce MCP timeouts** komen voor (deze sessie meermaals bij verificatie-queries). Verifieer dan via de Setup UI of probeer opnieuw; een timeout betekent niet automatisch dat de DML mislukte.
+- **Assignment-valkuil:** bij het vullen van de Apex-variabele Id koppelen aan Account ID, niet aan Record Type ID (deze fout is gisteren gemaakt en gecorrigeerd).
+
+## GitHub commits deze sessie
+- `6-tips-voor-de-bijles.html`: teacher_name verwijderd (hosted versie).
+- CLAUDE.md: Scenario 25 event-driven toegevoegd; daarna Scenario 23 → Salesforce-natieve flow (nieuwe sectie "SALESFORCE-NATIEVE FLOWS"), flow-limiet gecorrigeerd (Enterprise max 2000), regels 24/25 toegevoegd (External Service niet achteraf wijzigen; datum-formula `TODAY()`), Scenario 23 in tabel = "⛔️ VERVANGEN — deactiveren". Laatste commit `3d0b2533`.
