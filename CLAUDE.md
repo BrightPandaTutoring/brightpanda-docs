@@ -192,7 +192,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 
 | # | Naam | Status | ID |
 |---|------|--------|----|
-| 01 | Teacher Invitation (polling elke 15 min) | 🔧 Inactief | 4729958 |
+| 01 | Teacher Invitation (event-driven via Salesforce Flow, trigger: Start_Trial_Class_Process__c) | ✅ Actief | 4729958 |
 | 02 | Parent Timeslot Invitation (webhook) | 🔧 Inactief | 4740354 |
 | 03 | Trial Lesson Scheduled & Availability Conflict (webhook) | 🔧 Inactief | 4783259 |
 | 04 | Teacher Timeslot Submission (webhook) | 🔧 Inactief | 4839158 |
@@ -248,6 +248,54 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 **Scenario 25 — Client Welkomstmail:**
 - Watch Records → LifecycleStage = 'Client' AND RecordTypeId = Student → MailerLite groep "Actieve Klanten" (ID: 182829305032606767)
 
+## SALESFORCE FLOW → MAKE WEBHOOK (PLAYBOOK)
+
+Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10 en 11. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
+
+### Eenmalige infra — AL AANWEZIG, hergebruiken (niet opnieuw maken)
+- **External Credential:** `MakeWebhookNoAuth` (Authentication Protocol: No Authentication)
+- **Named Credential:** `MakeNewStudentWebhook` → URL `https://hook.eu1.make.com`, External Credential = MakeWebhookNoAuth, Generate Authorization Header = UIT, Allow Formulas in HTTP Body = AAN
+- **Permission Set:** `Make Webhook Access` (External Credential Principal Access op MakeWebhookNoAuth), toegewezen aan Raouf Angudi
+
+Deze drie maak je maar één keer. Voor elk nieuw scenario hergebruik je ze; je maakt alleen een nieuwe External Service + Flow.
+
+### Stappenplan nieuw scenario
+
+1. **Make eerst:** vervang de trigger door een **Custom Webhook** (of maak een nieuwe aan). Zet daar **direct** achter een **Webhook Response** module: status `200`, body `{"accepted": true}`, header `Content-Type: application/json`. Kopieer het webhook-pad (deel na `hook.eu1.make.com`, bv. `/y1yxam...`). Zet het scenario op Active en draai **Run once** zodat het luistert.
+2. **External Service** (Setup → External Services → Add): kies de Named Credential `MakeNewStudentWebhook` en plak een OpenAPI-schema (zie integratie-doc voor een kant-en-klare template). De `operationId` wordt de actie-naam in de flow; de `requestBody` properties zijn de velden die je meestuurt. Geef de service een herkenbare naam (bv. `MakeScenarioXWebhook`).
+3. **Apex-Defined variabele:** Salesforce genereert bij de External Service een Apex-type voor de request body. Maak in de flow een variabele van dat type (bv. `RequestBodyScenarioX`).
+4. **Record-Triggered Flow** (Setup → Flows → New → Record-Triggered Flow):
+   - **Object:** het juiste object (bv. `Student_Teacher_Matching__c` of `Account`).
+   - **Trigger:** A record is created / updated / created or updated.
+   - **Entry-condities:** zo specifiek mogelijk. Bij een **update-trigger ALTIJD een anti-loop-guard**: een conditie op het veld dat Make aan het einde van het scenario terugschrijft (bv. `Trial_Lesson_Status Is Null`). Anders hertriggert die slot-update de flow → loop.
+   - **When to run for updated records:** "Only when a record is updated to meet the condition requirements". Gebruik **GEEN** Is Changed-operator (dat dwingt "Every time" af).
+   - **Optimize for:** Actions and Related Records.
+   - Voeg een **Asynchronous path** toe (verplicht voor externe callouts).
+5. **In het async-pad:**
+   a. **Assignment:** vul `RequestBodyScenarioX` met `{!$Record.x}`-velden.
+   b. **Action → External Service:** kies de operation, body = `RequestBodyScenarioX`.
+6. **Activeer** de flow (Save → Activate) en controleer dat de NIEUWE versie Active is.
+
+### De twee klassieke fouten (anti-loop & retry)
+- **Webhook vuurt herhaaldelijk / loop (elke ~X min):** entry-conditie mist de Is Null-guard, of de flow staat op "Every time". Fix: guard + "Only when a record is updated to meet the condition requirements".
+- **Spook-webhooks ~29 min later, ongevraagd:** de Webhook Response miste `Content-Type: application/json` → Salesforce kon de response niet parsen → de async-run faalde → Salesforce retryt automatisch tot 2x met de ORIGINELE record-context. Die retries negeren de actuele condities. Fix: `Content-Type: application/json` op de Webhook Response.
+
+### Verificatie na bouwen (SOQL via MCP)
+```sql
+-- Welke versie is echt actief?
+SELECT VersionNumber, Status FROM FlowVersionView WHERE FlowDefinitionViewId = '<id>' ORDER BY VersionNumber DESC
+-- Mislukte/wachtende flow-runs
+SELECT InterviewStatus, CurrentElement, CreatedDate FROM FlowInterview WHERE InterviewLabel LIKE '<flownaam>%' ORDER BY CreatedDate DESC
+-- Wachtende retries / async jobs
+SELECT Status, JobType, CreatedDate FROM AsyncApexJob WHERE Status IN ('Queued','Processing','Preparing','Holding')
+```
+Een schone run = **0 errored interviews + 0 wachtende async jobs**.
+
+### Let op
+- **Flow-limiet:** op Professional Edition geldt een maximum aantal actieve Flows (zie regel 20). Check ruimte voordat je een nieuwe Record-Triggered Flow aanmaakt; combineer logica waar mogelijk.
+- **FlowDefinitionView/FlowDefinitionViewId** timeouts via MCP komen voor — verifieer dan via de Setup UI (Flows-lijst) of via FlowVersionView.
+- Module-inhoud in Make altijd **handmatig in de UI** aanpassen; API-blueprint-updates verliezen variabele-metadata.
+
 ## KRITIEKE REGELS
 
 1. **Scenario verwijderen:** ALTIJD eerst bevestiging vragen
@@ -272,7 +320,8 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
 21. **Comments_FromWebForm__c:** alleen van aanmeldformulier — NOOIT vanuit Tally. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
 22. **Brand font is Montserrat** — niet Verdana. Voor emails: Montserrat via Google Fonts importeren, Verdana als fallback
-23. **Sleutelwoorden:**
+23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + een anti-loop-guard.
+24. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
