@@ -216,7 +216,7 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 | 22 | Daily Callbacks Slack 09:00 (dagelijks, 5 routes) | 🔧 Inactief (wacht op test) | 5451841 |
 | 23 | Active Matching → Pending Conversion (Watch Records, elke 15 min) | 🔧 Inactief | 5495257 |
 | 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
-| 25 | Client Welkomstmail (Watch Records, elke 15 min) | 🔧 Inactief | 5497116 |
+| 25 | Client Welkomstmail (event-driven via Salesforce Flow "Scenario 25 — Client Welcome Webhook"; webhook /l6owd25tp5nachw2b075w7cvperjvdh7) | ✅ Actief | 5497116 |
 | 26 | Intake Rejection Follow-up Email (Watch Records, elke 15 min, 6 routes) | 🔧 Inactief | 5500907 |
 | 27 | Trial Rejection Follow-up Email (Watch Records, elke 15 min) | 🔧 Inactief | 5663018 |
 
@@ -245,12 +245,19 @@ Variabelen: {$name} = ouder, {$student_name} = leerling
 - Dag 5: MailerLite groep "Pending Conversion - Day 5" (ID: 186074791205144311)
 - Dag 9: MailerLite groep "Pending Conversion - Day 9" (ID: 186074799441708427)
 
-**Scenario 25 — Client Welkomstmail:**
-- Watch Records → LifecycleStage = 'Client' AND RecordTypeId = Student → MailerLite groep "Actieve Klanten" (ID: 182829305032606767)
+**Scenario 25 — Client Welkomstmail (event-driven):**
+- Trigger: Salesforce Record-Triggered Flow "Scenario 25 — Client Welcome Webhook" (API-naam flow: `Send_to_Make`), object Account, A record is updated
+- Entry-condities: `LifecycleStage__c` = 'Client' AND `RecordTypeId` = Student (012KB000000ojZGYAY), "Only when a record is updated to meet the condition requirements"
+- Geen anti-loop-guard nodig: scenario schrijft niets terug naar het Account (alleen MailerLite), dus de overgang naar Client vuurt eenmalig
+- External Service: `MakeClientWelcomeWebhook`, operation `SendClientWelcomeToMake`, Named Credential `MakeNewStudentWebhook`
+- Apex-Defined variabele: `RequestBodyClientWelcome` (type `MakeClientWelcomeWebhook_SendClientWelcomeToMake_IN_body`), velden: Id, ParentSEmail__c, ParentSName__c, FirstName
+- Make: Custom Webhook (module 3, /l6owd25tp5nachw2b075w7cvperjvdh7) → Webhook Response (module 5, {"accepted": true} + Content-Type application/json) → MailerLite Create/Update Subscriber → groep "Actieve Klanten" (ID: 182829305032606767)
+- Email: `docs/mailerlite/emails/6-tips-voor-de-bijles.html` (7 tips, NL + EN). Merge tags: {$name}, {$student_name}, {$unsubscribe}. Geen teacher_name (bewust vervangen door "de docent"/"the tutor")
+- Getest werkend op 2026-06-10
 
 ## SALESFORCE FLOW → MAKE WEBHOOK (PLAYBOOK)
 
-Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10 en 11. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
+Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10, 11 en 25. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
 
 ### Eenmalige infra — AL AANWEZIG, hergebruiken (niet opnieuw maken)
 - **External Credential:** `MakeWebhookNoAuth` (Authentication Protocol: No Authentication)
@@ -259,22 +266,21 @@ Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te l
 
 Deze drie maak je maar één keer. Voor elk nieuw scenario hergebruik je ze; je maakt alleen een nieuwe External Service + Flow.
 
-### Stappenplan nieuw scenario
+### VOLGORDE (zo voorkom je het vastlopen van gisteren)
+De grootste tijdvreter is het ACHTERAF moeten wijzigen van de External Service: zodra die in een flow gebruikt wordt, kun je het schema niet meer aanpassen ("Can't update the external service as it's referenced in a flow") en kom je in een delete-loop terecht. Daarom: **stel ALLE payload-velden vooraf vast en zet ze in één keer goed in het OpenAPI-schema vóór je opslaat.** Bepaal de velden, dan pas bouwen.
 
-1. **Make eerst:** vervang de trigger door een **Custom Webhook** (of maak een nieuwe aan). Zet daar **direct** achter een **Webhook Response** module: status `200`, body `{"accepted": true}`, header `Content-Type: application/json`. Kopieer het webhook-pad (deel na `hook.eu1.make.com`, bv. `/y1yxam...`). Zet het scenario op Active en draai **Run once** zodat het luistert.
-2. **External Service** (Setup → External Services → Add): kies de Named Credential `MakeNewStudentWebhook` en plak een OpenAPI-schema (zie integratie-doc voor een kant-en-klare template). De `operationId` wordt de actie-naam in de flow; de `requestBody` properties zijn de velden die je meestuurt. Geef de service een herkenbare naam (bv. `MakeScenarioXWebhook`).
-3. **Apex-Defined variabele:** Salesforce genereert bij de External Service een Apex-type voor de request body. Maak in de flow een variabele van dat type (bv. `RequestBodyScenarioX`).
-4. **Record-Triggered Flow** (Setup → Flows → New → Record-Triggered Flow):
-   - **Object:** het juiste object (bv. `Student_Teacher_Matching__c` of `Account`).
-   - **Trigger:** A record is created / updated / created or updated.
-   - **Entry-condities:** zo specifiek mogelijk. Bij een **update-trigger ALTIJD een anti-loop-guard**: een conditie op het veld dat Make aan het einde van het scenario terugschrijft (bv. `Trial_Lesson_Status Is Null`). Anders hertriggert die slot-update de flow → loop.
-   - **When to run for updated records:** "Only when a record is updated to meet the condition requirements". Gebruik **GEEN** Is Changed-operator (dat dwingt "Every time" af).
+1. **Make eerst** (zodat je de webhook-URL hebt vóór stap 2): vervang de trigger door een **Custom Webhook**. Zet daar **direct** achter een **Webhook Response**: status `200`, body `{"accepted": true}`, header `Content-Type: application/json`. Verwijder oude filters die naar de oude trigger-module verwijzen — het Salesforce-Flow filtert al, een Make-filter is dubbelop. Kopieer het webhook-pad. Zet het scenario op Active en draai **Run once**.
+2. **External Service** (Setup → External Services → Add): Service Schema = **Complete Schema**, Named Credential `MakeNewStudentWebhook`, plak het OpenAPI-schema met het pad en ALLE velden in één keer. De `operationId` wordt de actie-naam in de flow. Save & Next → operation aanvinken → Finish. Noteer het gegenereerde Apex-type (`<Service>_<operationId>_IN_body`).
+3. **Record-Triggered Flow** (Setup → Flows → New → Record-Triggered Flow):
+   - **Object** + **Trigger** (created / updated / created or updated).
+   - **Entry-condities:** zo specifiek mogelijk. Bij een **update-trigger met terugschrijvende Make-stap ALTIJD een anti-loop-guard** (conditie op het veld dat Make terugschrijft, bv. `Trial_Lesson_Status Is Null`). Schrijft het scenario NIETS terug naar het getriggerde record (zoals Scenario 25), dan is een guard niet nodig.
+   - **When to run for updated records:** "Only when a record is updated to meet the condition requirements". Gebruik **GEEN** Is Changed-operator.
    - **Optimize for:** Actions and Related Records.
    - Voeg een **Asynchronous path** toe (verplicht voor externe callouts).
-5. **In het async-pad:**
-   a. **Assignment:** vul `RequestBodyScenarioX` met `{!$Record.x}`-velden.
-   b. **Action → External Service:** kies de operation, body = `RequestBodyScenarioX`.
-6. **Activeer** de flow (Save → Activate) en controleer dat de NIEUWE versie Active is.
+4. **In het async-pad:**
+   a. **Assignment:** maak een Apex-Defined variabele van het in stap 2 genoteerde type en vul de velden met `{!$Record.x}` (Triggering Record). LET OP: koppel het juiste subveld — Id → Account ID, niet Record Type ID.
+   b. **Action → External Service:** kies de operation, body = die variabele.
+5. **Save → Activate** en controleer dat de NIEUWE versie Active is (SOQL hieronder).
 
 ### De twee klassieke fouten (anti-loop & retry)
 - **Webhook vuurt herhaaldelijk / loop (elke ~X min):** entry-conditie mist de Is Null-guard, of de flow staat op "Every time". Fix: guard + "Only when a record is updated to meet the condition requirements".
@@ -282,14 +288,12 @@ Deze drie maak je maar één keer. Voor elk nieuw scenario hergebruik je ze; je 
 
 ### Verificatie na bouwen (SOQL via MCP)
 ```sql
--- Welke versie is echt actief?
-SELECT VersionNumber, Status FROM FlowVersionView WHERE FlowDefinitionViewId = '<id>' ORDER BY VersionNumber DESC
--- Mislukte/wachtende flow-runs
-SELECT InterviewStatus, CurrentElement, CreatedDate FROM FlowInterview WHERE InterviewLabel LIKE '<flownaam>%' ORDER BY CreatedDate DESC
+-- Is de flow actief? (FlowDefinitionView; let op: API-naam kan afwijken van label, zoek desnoods op Label LIKE)
+SELECT ApiName, Label, IsActive, TriggerType, ProcessType FROM FlowDefinitionView WHERE Label LIKE '<deel van label>%'
 -- Wachtende retries / async jobs
 SELECT Status, JobType, CreatedDate FROM AsyncApexJob WHERE Status IN ('Queued','Processing','Preparing','Holding')
 ```
-Een schone run = **0 errored interviews + 0 wachtende async jobs**.
+Een schone run = IsActive true op de juiste flow + **0 wachtende async jobs**.
 
 ### Let op
 - **Flow-limiet:** op Professional Edition geldt een maximum aantal actieve Flows (zie regel 20). Check ruimte voordat je een nieuwe Record-Triggered Flow aanmaakt; combineer logica waar mogelijk.
@@ -320,8 +324,9 @@ Een schone run = **0 errored interviews + 0 wachtende async jobs**.
 20. **Salesforce Professional Edition:** max 5 Flows, geen CDC
 21. **Comments_FromWebForm__c:** alleen van aanmeldformulier — NOOIT vanuit Tally. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
 22. **Brand font is Montserrat** — niet Verdana. Voor emails: Montserrat via Google Fonts importeren, Verdana als fallback
-23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + een anti-loop-guard.
-24. **Sleutelwoorden:**
+23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + (indien teruggeschreven wordt) een anti-loop-guard.
+24. **External Service NOOIT achteraf wijzigen:** stel alle payload-velden vooraf vast en zet ze in één keer goed in het OpenAPI-schema. Een External Service die in een flow gebruikt wordt kan niet meer aangepast worden ("referenced in a flow").
+25. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
