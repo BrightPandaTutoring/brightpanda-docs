@@ -208,16 +208,16 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 ⚠️ **Altijd Make.com checken via MCP voor het aanmaken van een nieuw scenario.**
 
 | # | Naam | Status | ID |
-|---|------|--------|----|
+|---|------|--------|----||
 | 01 | Teacher Invitation (event-driven via Salesforce Flow, trigger: Start_Trial_Class_Process__c) | ✅ Actief | 4729958 |
 | 02 | Parent Timeslot Invitation (webhook) | 🔧 Inactief | 4740354 |
 | 03 | Trial Lesson Scheduled & Availability Conflict (webhook) | 🔧 Inactief | 4783259 |
 | 04 | Teacher Timeslot Submission (webhook) | 🔧 Inactief | 4839158 |
 | 05 | Availability Conflict Reminder (elke 4u) | 🔧 Inactief | 4840663 |
-| 06 | Teacher Availability Reminder (elke 2u) | 🔧 Inactief | 4842456 |
-| 07 | Internal Alert Teacher No Response (elke 15 min) | 🔧 Inactief | 4858555 |
-| 08 | Lesson Date Reminder (elke 15 min) | 🔧 Inactief | 4892054 |
-| 09 | Parent Timeslot Reminders & Escalatie (elke 15 min) | 🔧 Inactief | 4744104 |
+| 06 | Teacher Availability Reminder (elke 4u) | 🔧 Inactief | 4842456 |
+| 07 | Internal Alert Teacher No Response (elke 4u) | 🔧 Inactief | 4858555 |
+| 08 | Lesson Date Reminder (elke 30 min) | 🔧 Inactief | 4892054 |
+| 09 | Parent Timeslot Reminders & Escalatie (elke 3u) | 🔧 Inactief | 4744104 |
 | 10 | Student New Registration → MailerLite + WhatsApp + Slack (webhook) | ✅ Actief | 4969006 |
 | 11 | Post-proefles flow (event-driven via Salesforce Flow, 70 min na Trial_Lesson_Date__c) | ✅ Actief | 5015744 |
 | 12 | Docent New Registration (Watch Records, elke 1u) | ✅ Actief | 5223712 |
@@ -229,7 +229,7 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 | 18 | Bsport Member Created → Salesforce (webhook) | ✅ Actief | 5337858 |
 | 19 | Documentation Reminder Pending Onboarding (dagelijks 09:00) | ✅ Actief | 5339372 |
 | 20 | Tally Documentation Agreed → Salesforce (webhook) | ✅ Actief | 5340439 |
-| 21 | Intake Flow: Contact Status (Watch Records, elke 15 min, 5 routes) | 🔧 Inactief (wacht op test) | 5442970 |
+| 21 | Intake Flow: Contact Status (event-driven via Salesforce Flow 'Scenario 21 Intake Webhook'; webhook /wg18bd9j8vkf15rwi3p1d57msoq7smi9) | ✅ Actief — Make trigger nog omzetten van Watch Records naar Custom Webhook | 5442970 |
 | 22 | Daily Callbacks Slack 09:00 (dagelijks, 5 routes) | 🔧 Inactief (wacht op test) | 5451841 |
 | 23 | Active Matching → Pending Conversion | ⛔️ VERWIJDERD — vervangen door Salesforce-natieve flow | — |
 | 24 | Pending Conversion Reminders (dagelijks 10:00) | 🔧 Inactief | 5496102 |
@@ -237,12 +237,23 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 | 26 | Intake Rejection Follow-up Email (Watch Records, elke 15 min, 6 routes) | 🔧 Inactief | 5500907 |
 | 27 | Trial Rejection Follow-up Email (Watch Records, elke 15 min) | 🔧 Inactief | 5663018 |
 
-**Scenario 21 — Intake Flow routes:**
-- Route 1: Called - 1st Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
-- Route 2: Called - 2nd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
-- Route 3: Called - 3rd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF Update (Unreachable + checkbox)
-- Route 4: Reached - Need to Call Back + checkbox false → SF checkbox true + Slack #callbacks direct
-- Route 5: Reached + checkbox false → MailerLite + SF checkbox true
+**Scenario 21 — Intake Flow (event-driven via Salesforce Flow):**
+- Trigger: Salesforce Record-Triggered Flow `Scenario_21_Intake_Webhook`, object Account, A record is updated
+- Entry-condities: `Record Type ID` Equals `012KB000000ojZGYAY` AND `Contact Status` Does Not Equal (leeg)
+- When to run: Only when a record is updated to meet the condition requirements
+- LET OP: gebruik GEEN `Is Changed` operator — die blokkeert het opslaan van een flow met async pad (Salesforce-bug, zie regel 27)
+- External Service: `MakeIntakeContactStatusWebhook`, operation `SendIntakeContactStatusToMake`, Named Credential `MakeNewStudentWebhook`
+- Apex-Defined variabele: `RequestBodyIntakeStatus` (type `MakeIntakeContactStatusWebhook_SendIntakeContactStatusToMake_IN_body`)
+- Payload velden: Id, Contact_Status__c, FirstName, ParentSName__c, ParentSPhone__c, Subjects__c, Intake_1st_Attempt_Sent_c__c, Intake_2nd_Attempt_Sent_c__c, Intake_3rd_Attempt_Sent_c__c, Intake_Reached_Callback_Sent__c, Intake_Reached_Sent__c
+- Make webhook URL: `/wg18bd9j8vkf15rwi3p1d57msoq7smi9`
+- Make: Custom Webhook (module nog te vervangen van Watch Records) → Webhook Response (`{"accepted": true}`, Content-Type application/json) → 5 routes op Contact_Status__c
+- **TODO: Make Scenario 21 trigger handmatig omzetten van Watch Records naar Custom Webhook BP-Intake-Contact-Status-Webhook**
+- 5 routes (Make-logica ongewijzigd):
+  - Route 1: Called - 1st Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
+  - Route 2: Called - 2nd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF checkbox true
+  - Route 3: Called - 3rd Attempt, No Answer + checkbox false → WhatsApp + MailerLite + SF Update (Unreachable + checkbox)
+  - Route 4: Reached - Need to Call Back + checkbox false → SF checkbox true + Slack #callbacks
+  - Route 5: Reached + checkbox false → MailerLite + SF checkbox true
 
 **Scenario 22 — Daily Callbacks Slack routes:**
 - Route 1: LifecycleStage = 'New' → Slack #nieuwe-aanmeldingen
@@ -271,7 +282,7 @@ Sommige automatiseringen draaien volledig in Salesforce, zonder Make-scenario. D
 
 ## SALESFORCE FLOW → MAKE WEBHOOK (PLAYBOOK)
 
-Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10, 11 en 25. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
+Gebruik dit om elk Salesforce-event direct (event-driven) een Make-scenario te laten triggeren, in plaats van polling. Toegepast in Scenario 1, 10, 11, 21 en 25. Volledige technische referentie + OpenAPI-schema's + troubleshooting: `docs/make/salesforce-flow-webhook-integratie.md`.
 
 > LET OP — wanneer GEEN webhook nodig: als de actie een pure Salesforce-update is (geen externe call, alleen velden bijwerken), bouw dan een Salesforce-natieve Record-Triggered Flow zonder External Service/webhook (zie Scenario 23). Het webhook-playbook hieronder is alleen voor scenario's die écht naar Make moeten (WhatsApp, MailerLite, e.d.).
 
@@ -289,8 +300,9 @@ De grootste tijdvreter is het ACHTERAF moeten wijzigen van de External Service: 
 2. **External Service** (Setup → External Services → Add): Service Schema = **Complete Schema**, Named Credential `MakeNewStudentWebhook`, plak het OpenAPI-schema met het pad en ALLE velden in één keer. De `operationId` wordt de actie-naam in de flow. Save & Next → operation aanvinken → Finish. Noteer het gegenereerde Apex-type (`<Service>_<operationId>_IN_body`).
 3. **Record-Triggered Flow** (Setup → Flows → New → Record-Triggered Flow):
    - **Object** + **Trigger** (created / updated / created or updated).
-   - **Entry-condities:** zo specifiek mogelijk. Bij een **update-trigger met terugschrijvende Make-stap ALTIJD een anti-loop-guard** (conditie op het veld dat Make terugschrijft, bv. `Trial_Lesson_Status Is Null`). Schrijft het scenario NIETS terug naar het getriggerde record (zoals Scenario 25), dan is een guard niet nodig.
-   - **When to run for updated records:** "Only when a record is updated to meet the condition requirements". Gebruik **GEEN** Is Changed-operator.
+   - **Entry-condities:** zo specifiek mogelijk. Gebruik NOOIT `Is Changed` — dit blokkeert het opslaan van een flow met async pad (zie regel 27). Gebruik `Does Not Equal (leeg)` als alternatief voor "is gevuld".
+   - Bij een **update-trigger met terugschrijvende Make-stap ALTIJD een anti-loop-guard** (conditie op het veld dat Make terugschrijft). Schrijft het scenario NIETS terug naar het getriggerde record, dan is een guard niet nodig.
+   - **When to run for updated records:** "Only when a record is updated to meet the condition requirements".
    - **Optimize for:** Actions and Related Records.
    - Voeg een **Asynchronous path** toe (verplicht voor externe callouts).
 4. **In het async-pad:**
@@ -304,7 +316,7 @@ De grootste tijdvreter is het ACHTERAF moeten wijzigen van de External Service: 
 
 ### Verificatie na bouwen (SOQL via MCP)
 ```sql
--- Is de flow actief? (FlowDefinitionView; let op: API-naam kan afwijken van label, zoek desnoods op Label LIKE)
+-- Is de flow actief?
 SELECT ApiName, Label, IsActive, TriggerType, ProcessType FROM FlowDefinitionView WHERE Label LIKE '<deel van label>%'
 -- Wachtende retries / async jobs
 SELECT Status, JobType, CreatedDate FROM AsyncApexJob WHERE Status IN ('Queued','Processing','Preparing','Holding')
@@ -312,8 +324,8 @@ SELECT Status, JobType, CreatedDate FROM AsyncApexJob WHERE Status IN ('Queued',
 Een schone run = IsActive true op de juiste flow + **0 wachtende async jobs**.
 
 ### Let op
-- **Flow-limiet:** jullie zitten op **Enterprise Edition** → max 2.000 actieve flows per type per org. Dit is in de praktijk geen beperking. (De oude "max 5 flows"-regel gold alleen voor Professional/Essentials Edition en is NIET meer van toepassing.)
-- **FlowDefinitionView/FlowDefinitionViewId** timeouts via MCP komen voor — verifieer dan via de Setup UI (Flows-lijst) of via FlowVersionView.
+- **Flow-limiet:** jullie zitten op **Enterprise Edition** → max 2.000 actieve flows per type per org. Dit is in de praktijk geen beperking.
+- **FlowDefinitionView** timeouts via MCP komen voor — verifieer dan via de Setup UI.
 - Module-inhoud in Make altijd **handmatig in de UI** aanpassen; API-blueprint-updates verliezen variabele-metadata.
 
 ## KRITIEKE REGELS
@@ -340,13 +352,14 @@ Een schone run = IsActive true op de juiste flow + **0 wachtende async jobs**.
 20. **Salesforce Enterprise Edition:** max 2.000 actieve flows per type (geen praktische beperking). De oude "max 5 flows"-regel (Professional Edition) is NIET meer van toepassing.
 21. **Comments_FromWebForm__c:** alleen van aanmeldformulier — NOOIT vanuit Tally. Voor opmerkingen uit Tally: gebruik Profile_Comments__c
 22. **Brand font is Montserrat** — niet Verdana. Voor emails: Montserrat via Google Fonts importeren, Verdana als fallback
-23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook (zie sectie hierboven), niet via Watch Records. Zorg altijd voor de Webhook Response met `Content-Type: application/json` + (indien teruggeschreven wordt) een anti-loop-guard. Is de actie een PURE Salesforce-update (geen externe call)? Bouw dan een Salesforce-natieve flow zonder webhook (zie Scenario 23).
-24. **External Service NOOIT achteraf wijzigen:** stel alle payload-velden vooraf vast en zet ze in één keer goed in het OpenAPI-schema. Een External Service die in een flow gebruikt wordt kan niet meer aangepast worden ("referenced in a flow").
+23. **Event-driven boven polling:** nieuwe triggers bouwen via het Salesforce Flow → Make Webhook playbook, niet via Watch Records. Zorg altijd voor Webhook Response met `Content-Type: application/json`. Remi-nders/escalaties op tijdsdrempel = polling houden (geen event).
+24. **External Service NOOIT achteraf wijzigen:** stel alle payload-velden vooraf vast in één keer. Een External Service die in een flow gebruikt wordt kan niet meer aangepast worden ("referenced in a flow").
 25. **Salesforce-natieve flow datumveld:** "Current Date" staat niet in de resource-picker. Gebruik een Formula-resource (Data Type: Date, formule `TODAY()`).
 26. **Sleutelwoorden:**
     - **"Afsluiten"**: samenvatting → SESSION_LOG.md overschrijven → commit + push
     - **"Update"**: korte tussentijdse samenvatting
     - **"Pak op"**: lees SESSION_LOG.md + CLAUDE.md + TODO.md → korte status → vraag wat te doen
+27. **Is Changed operator blokkeert opslaan met async pad:** gebruik NOOIT `Is Changed` als entry-conditie in een flow met async pad — Salesforce geeft dan een "unexpected error" bij elke save-poging (fout `-63617461`). Gebruik `Does Not Equal (leeg)` als alternatief: filtert op gevulde waarden zonder de save te blokkeren.
 
 ## DAGSTART ROUTINE
 
