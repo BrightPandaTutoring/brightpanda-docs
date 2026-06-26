@@ -4,6 +4,7 @@ Laatst bijgewerkt: 26 juni 2026
 ---
 
 ## ✅ Afgerond (recent)
+- **✅ GEDAAN: Gmail logo aangepast** (26 juni 2026) — pulserende versie van het Bright Panda logo ingesteld als Gmail-profielfoto / verzendlogo
 - **✅ GEDAAN: Scenario 21 + 22 end-to-end getest** (26 juni 2026)
 - **✅ GEDAAN: Scenario 21 polling vervangen door Salesforce webhook** (26 juni 2026)
 - **✅ GEDAAN: Scenario 17 (Auto On-boarded) omgezet naar event-driven webhook** (26 juni 2026)
@@ -80,4 +81,3 @@ Laatst bijgewerkt: 26 juni 2026
 ## 📬 Overig
 
 - **Gmail inbox info@brightpanda.nl opruimen via Cowork**
-- **Gmail logo aanpassen** — pulserende versie van het Bright Panda logo instellen als Gmail-profielfoto / verzendlogo (betere merkbeleving bij uitgaande mail)
