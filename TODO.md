@@ -4,6 +4,12 @@ Laatst bijgewerkt: 26 juni 2026
 ---
 
 ## ✅ Afgerond (recent)
+- **✅ GEDAAN: Scenario 21 + 22 end-to-end getest** (26 juni 2026)
+- **✅ GEDAAN: Scenario 21 polling vervangen door Salesforce webhook** (26 juni 2026)
+- **✅ GEDAAN: Scenario 17 (Auto On-boarded) omgezet naar event-driven webhook** (26 juni 2026)
+- **✅ GEDAAN: Email Design (Progress Bar) volledig afgerond** (26 juni 2026) — progress bar HiFi uitgewerkt, GIF geëxporteerd en verwerkt in intake emails, Intake - Reached email + automation aangemaakt, Pending Conversion emails dag 2/5/9 geschreven, Client welkomstmail geschreven, Progress bar stap 3 in "Docent gevonden" email afgerond
+- **✅ GEDAAN: MailerLite flows afgerond** (26 juni 2026) — Post-proefles email flow ingericht, Client welkomstmail aangemaakt, Intake - Reached email + automation aangemaakt
+- **✅ GEDAAN: Ashna Rajaram profiel volledig ingevuld** (26 juni 2026)
 - **✅ GEDAAN: Student Path guidance teksten ingesteld in Salesforce** (26 juni 2026) — teksten + key fields voor alle lifecycle stages (New, Enrollment, Matching Teacher, Trial Class, Client, Stopped - Never Converted, Stopped - Existing Client, Wrong Match, Churned)
 - **✅ GEDAAN: Scenario 1 omgebouwd naar event-driven webhook** (9 juni 2026) — trigger via `Start_Trial_Class_Process__c` checkbox + Salesforce Flow "Scenario 1 — Teacher Invitation Webhook" (V10), polling vervalt. Inclusief "Docent gevonden" notificatie naar ouder via MailerLite (module 13, groep "Teacher Found - Parent Email"). Loop + retry-"spook-webhooks" opgelost (Webhook Response Content-Type: application/json + anti-loop guard `Trial_Lesson_Status Is Null` met "Only when updated to meet"). Schone test bevestigd: 1 webhook, 0 errored interviews, 0 wachtende async jobs. Zie SESSION_LOG.md + docs/make/salesforce-flow-webhook-integratie.md.
 - **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026)
@@ -21,8 +27,6 @@ Laatst bijgewerkt: 26 juni 2026
 
 ## 🔴 Hoge prioriteit
 
-- **Scenario 21 + 22 testen** — end-to-end test uitvoeren met testrecord
-
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen
 
 ---
@@ -37,23 +41,6 @@ Laatst bijgewerkt: 26 juni 2026
 
 ---
 
-## 🎨 Email Design (Progress Bar)
-
-- **Progress bar verder uitwerken in claude.ai/design** — prototype klaar, nog uit te werken in High Fidelity
-- **Progress bar als GIF exporteren** en in alle intake emails verwerken (via ScreenToGif of Canva)
-- **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
-- **Pending Conversion emails schrijven** — dag 2, 5, 9 (automations aangemaakt, emails nog leeg)
-- **Client welkomstmail schrijven** — automation aangemaakt (Scenario 25), email nog leeg
-
----
-
-## 🔧 Matching Teacher flow
-
-- ✅ **GEDAAN (9 juni 2026):** `Start_Trial_Class_Process__c` checkbox in gebruik, Scenario 1 trigger omgezet van "Trial_Lesson_Status leeg + polling" naar deze checkbox via Salesforce Flow (V10), en "Docent gevonden" notificatie naar ouder via MailerLite (module 13) live. Zie SESSION_LOG.md.
-- **Progress bar stap 3 in de "Docent gevonden" ouder-email** — visueel nog afronden (valt samen met Email Design hierboven).
-
----
-
 ## 💬 Slack
 
 - **Persoonlijk Slack account aanmaken voor Raouf** (eigen email, bv. raouf@brightpanda.nl) → joinen in Brightpanda workspace → User ID doorgeven zodat @mention in Make scenario 10 toegevoegd kan worden → dan krijgt Raouf ook badge notificaties bij nieuwe aanmeldingen
@@ -63,9 +50,6 @@ Laatst bijgewerkt: 26 juni 2026
 
 ## ⚙️ Make.com / Automations
 
-- **MailerLite email "Intake - Reached" schrijven en automation aanmaken**
-- **Scenario 21 polling vervangen door Salesforce webhook** (na Enterprise upgrade)
-- **Scenario 17 (Auto On-boarded) omzetten naar event-driven webhook** — zelfde patroon als Scenario 1 en 11 (zie salesforce-flow-webhook-integratie.md)
 - **Re-engagement flow bouwen voor No Show matchings**
 - **AVG/GDPR data verwijdering automatiseren** (2 scenarios)
 
@@ -73,16 +57,7 @@ Laatst bijgewerkt: 26 juni 2026
 
 ## 📧 MailerLite
 
-- **Post-proefles email flow inrichten**
 - **Pending Conversion emails schrijven** (dag 2, 5, 9)
-- **Client welkomstmail schrijven**
-- **MailerLite email "Intake - Reached" aanmaken**
-
----
-
-## 👤 Docenten opvolging
-
-- **Ashna Rajaram opvolgen**: studie, instelling, IBAN, naam op bankpas, max niveau, max leerjaar, examentraining voorkeur, basisschool voorkeur nog niet ingevuld.
 
 ---
 
