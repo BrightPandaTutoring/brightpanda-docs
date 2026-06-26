@@ -1,9 +1,10 @@
 # Bright Panda — TODO
-Laatst bijgewerkt: 9 juni 2026
+Laatst bijgewerkt: 26 juni 2026
 
 ---
 
 ## ✅ Afgerond (recent)
+- **✅ GEDAAN: Student Path guidance teksten ingesteld in Salesforce** (26 juni 2026) — teksten + key fields voor alle lifecycle stages (New, Enrollment, Matching Teacher, Trial Class, Client, Stopped - Never Converted, Stopped - Existing Client, Wrong Match, Churned)
 - **✅ GEDAAN: Scenario 1 omgebouwd naar event-driven webhook** (9 juni 2026) — trigger via `Start_Trial_Class_Process__c` checkbox + Salesforce Flow "Scenario 1 — Teacher Invitation Webhook" (V10), polling vervalt. Inclusief "Docent gevonden" notificatie naar ouder via MailerLite (module 13, groep "Teacher Found - Parent Email"). Loop + retry-"spook-webhooks" opgelost (Webhook Response Content-Type: application/json + anti-loop guard `Trial_Lesson_Status Is Null` met "Only when updated to meet"). Schone test bevestigd: 1 webhook, 0 errored interviews, 0 wachtende async jobs. Zie SESSION_LOG.md + docs/make/salesforce-flow-webhook-integratie.md.
 - **✅ GEDAAN: WhatsApp templates goedgekeurd door Meta** (20 april 2026)
 - **✅ GEDAAN: Docent Gids NL v1.0 + Teacher Guide EN v1.0 volledig afgerond**
@@ -21,8 +22,6 @@ Laatst bijgewerkt: 9 juni 2026
 ## 🔴 Hoge prioriteit
 
 - **Scenario 21 + 22 testen** — end-to-end test uitvoeren met testrecord
-
-- **Student Path guidance teksten instellen in Salesforce**
 
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen
 
@@ -79,9 +78,6 @@ Beslissing genomen op 28 mei 2026. TutorCruncher vervangt Bsport. Salesforce bli
 - **Ad Hoc Charge categorieën aanmaken** — registratiekosten, examentraining, extra vak, Pro service
 
 ### Fase 2 — Make.com integratie bouwen
-- **Scenario A:** Salesforce lifecycle → "Trial Class" → automatisch Job aanmaken in TutorCruncher (docent + leerling + tarief)
-- **Scenario B:** TutorCruncher webhook "Les voltooid" → Salesforce `Trial_Lesson_Status__c` bijwerken
-- **Scenario C:** TutorCruncher webhook "Betaling ontvangen" → Salesforce record bijwerken
 - **Scenario D:** Maandelijks op de 1e → GET /payment-orders/ → alle docenten automatisch uitbetalen via API + maandoverzicht versturen
 
 ### Fase 3 — Upsell bouwen
