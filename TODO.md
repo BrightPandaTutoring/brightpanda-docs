@@ -51,6 +51,8 @@ Laatst bijgewerkt: 26 juni 2026
 
 ## ⚙️ Make.com / Automations
 
+- **Scenario 13 — Contract Expiring Soon route bouwen** — huidige situatie: Salesforce Flow zet stage correct op `Contract Expiring Soon` na 335 dagen, maar Scenario 13 heeft geen route die hierop reageert. Bouwen: WhatsApp of Slack alert naar Raouf/Yasin met docent naam + einddatum contract → handmatige beoordeling
+- **Scenario 13 — Renew route bouwen** — huidige situatie: route bestaat maar is een lege placeholder. Bouwen: nieuw DocuSeal contract versturen met bijgewerkte `Contract_Start_Date__c` (= vandaag) en `Contract_End_Date__c` (= vandaag + 365 dagen), zelfde flow als de Contracting route
 - **Re-engagement flow bouwen voor No Show matchings**
 - **AVG/GDPR data verwijdering automatiseren** (2 scenarios)
 
@@ -65,9 +67,7 @@ Laatst bijgewerkt: 26 juni 2026
 ## 📈 Groei & Marketing
 
 - **Marketingpositionering uitwerken** — inspelen op de emotie van de klant om hogere lesprijs te rechtvaardigen en sterkere merkbeleving te creëren
-
 - **Vergoedingsframework uitwerken voor docenten** — duidelijke richtlijnen voor aankomend schooljaar: wat bieden we docenten, hoe blijven we competitief op de markt én eerlijk richting docent
-
 - **Financieel plan maken** — volledige kostenanalyse: waar gaat het geld naartoe, welke kosten kunnen omlaag, waar laten we kansen liggen, en hoe verbeteren we dit radicaal voor aankomend schooljaar
 
 ---
