@@ -30,6 +30,8 @@ Laatst bijgewerkt: 26 juni 2026
 
 - **Sanctie toevoegen aan freelance contract (DocuSeal)**: juridisch laten beoordelen
 
+- **B2B meeting voorbereiden — letselschade bedrijf** — casemanager (regio) zit aan tafel. Trial was ~1 jaar geleden, liep goed, toen €50/uur all-in gevraagd. Doel meeting: partnerschap formaliseren. Nog uitzoeken: naam bedrijf, huidig B2C uurtarief als referentie voor pricing, verwacht volume, all-in tarief bepalen, agenda + pitch voorbereiden
+
 ---
 
 ## 📊 Salesforce Dashboards
